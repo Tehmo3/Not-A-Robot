@@ -24,12 +24,12 @@ client.on('message', message => {
 	}
 })
 
-var messageArray = [];
+var messageObject = {};
+var last;
 
 var logMessages = function(messages, message) {
-	messages.forEach(message => messageArray.push({content: message.content, id: message.id}))
-	fetchMoreMessages(message, messageArray[i-1]);
-	console.log(messageArray.length)
+	messages.forEach(message => insertMessages(message))
+	fetchMoreMessages(message, last);
 }
 
 var fetchMoreMessages = function(message, messageLast) {
@@ -41,4 +41,14 @@ var fetchMoreMessages = function(message, messageLast) {
 	else {
 		console.log("All messages found!")
 	}
+}
+
+var insertMessages = function(message) {
+	if (messageObject[message.author]) {
+		messageObject[message.author].push({content: message.content, id: message.id})
+	}
+	else {
+		messageObject[message.author] = [];
+	}
+	last = message;
 }
