@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+secrets.json
+node_modules
+
 # Windows shortcuts
 *.lnk
 
