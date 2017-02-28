@@ -28,15 +28,12 @@ var messageArray = [];
 
 var logMessages = function(messages, message) {
 	messages.forEach(message => messageArray.push({content: message.content, id: message.id}))
-	for (var i = 0; i < messageArray.length; i++) {
-		console.log(messageArray[i].content)
-	}
 	fetchMoreMessages(message, messageArray[i-1]);
+	console.log(messageArray.length)
 }
 
 var fetchMoreMessages = function(message, messageLast) {
 	if (message) {
-		console.log("LAST!", messageLast.content);
 		message.channel.fetchMessages({limit: 100, before:messageLast.id})
 		.then(messages => logMessages(messages))
 		.catch(console.error)
