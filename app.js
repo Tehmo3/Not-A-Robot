@@ -18,6 +18,7 @@ function output(error, token) {
 	}
 }
 var userID;
+var randomSentence;
 client.on('message', message => {
 	var messageArray = message.content.split(" ");
 	if (messageArray[0] === '!log') {
@@ -29,6 +30,11 @@ client.on('message', message => {
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1];
 		client.users.forEach(user => findID(username, user, userID, obj));
+		console.log(randomSentence);
+		message.channel.sendMessage(randomSentence)
+		.then(message => console.log(`Sent message: ${message.content}`))
+ 	.catch(console.error);
+
 	}
 
 
@@ -48,7 +54,11 @@ var makeChain = function(user, obj) {
 		const states = obj[user];
 		const chain = new Chain(states);
 		const sentence = chain.walk();
-		console.log(sentence);
+		var sentenceArray = [];
+		for (var i = 0; i < Math.floor(Math.random() * 20) + 1 ; i++) {
+			sentenceArray.push(sentence[0]);
+		}
+		randomSentence = sentenceArray.join(" ");
 	}
 }
 
