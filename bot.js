@@ -5,6 +5,7 @@ var	Discord = require("discord.js"),
 
 var client = new Discord.Client();
 
+var num_messages = 0;
 
 client.login(config.token, output);
 
@@ -69,7 +70,6 @@ var makeChain = function(user, obj) {
 		const text = obj[user].join(" ");
 		const fakeSentenceGenerator = new Text(text);
 		randomSentence = fakeSentenceGenerator.makeSentence();
-		console.log("RANDOM SENTENCE!", randomSentence)
 	}
 }
 
@@ -77,14 +77,15 @@ var messageObject = {};
 var last;
 
 var logMessages = function(messages, message) {
-	messages.forEach(message => insertMessages(message))
+	console.log("reading messages");
+	messages.forEach(messageLog => insertMessages(messageLog))
 	fetchMoreMessages(message, last);
 }
 
 var fetchMoreMessages = function(message, messageLast) {
-	if (message) {
+	if (messageLast && num_messages<config.max_messages) {
 		message.channel.fetchMessages({limit: 100, before:messageLast.id})
-		.then(messages => logMessages(messages))
+		.then(messages => logMessages(messages, message))
 		.catch(console.error)
 	}
 	else {
@@ -102,6 +103,8 @@ var fetchMoreMessages = function(message, messageLast) {
 }
 
 var insertMessages = function(message) {
+	num_messages++;
+	console.log(num_messages);
 	if (messageObject[message.author]) {
 		if (!message.content.startsWith("!")) {
 					messageObject[message.author].push([message.content])
