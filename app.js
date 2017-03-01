@@ -27,6 +27,10 @@ client.on('message', message => {
 		.catch(console.error)
 	}
 	else if (messageArray[0] === "!text") {
+		if (message.author === client.user) {
+			console.log("WOOPS DONT TRIGGER YOURSELF!")
+			return;
+		}
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1];
 		client.users.forEach(user => findID(username, user, userID, obj));
@@ -92,7 +96,11 @@ var fetchMoreMessages = function(message, messageLast) {
 
 var insertMessages = function(message) {
 	if (messageObject[message.author]) {
-		messageObject[message.author].push([message.content])
+		var content = message.content.split(" ");
+		console.log(content);
+		content.forEach(function(element) {
+					messageObject[message.author].push([element])
+		})
 	}
 	else {
 		messageObject[message.author] = [];
