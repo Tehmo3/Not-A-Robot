@@ -1,10 +1,12 @@
 {
   "name": "Discord Bot",
+  "email": "hello@jaspermiles.me",
   "description": "A discord bot that simulates friends!",
   "version": "1.0.0",
   "author": "Jasper Miles",
   "dependencies": {
     "discord.js": "^11.0.0",
     "markov-chains-text": "^1.0.0"
-  }
+   },
+   "license" : "MIT"
 }
