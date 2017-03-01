@@ -67,9 +67,9 @@ var makeChain = function(user, obj) {
 	if (user && obj) {
 		user = '<@' + user + '>'
 		const text = obj[user].join(" ");
-		console.log(text);
 		const fakeSentenceGenerator = new Text(text);
 		randomSentence = fakeSentenceGenerator.makeSentence();
+		console.log("RANDOM SENTENCE!", randomSentence)
 	}
 }
 
@@ -103,7 +103,9 @@ var fetchMoreMessages = function(message, messageLast) {
 
 var insertMessages = function(message) {
 	if (messageObject[message.author]) {
-		messageObject[message.author].push([message.content])
+		if (!message.content.startsWith("!")) {
+					messageObject[message.author].push([message.content])
+		}
 	}
 	else {
 		messageObject[message.author] = [];
