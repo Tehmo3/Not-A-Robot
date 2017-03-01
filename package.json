@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Jasper Miles",
   "dependencies": {
-    "discord.js": "^11.0.0"
+    "discord.js": "^11.0.0",
+    "markov-chains": "^1.0.2"
   }
 }
