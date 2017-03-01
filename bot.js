@@ -4,7 +4,7 @@ var	Discord = require("discord.js"),
 	Text = require('markov-chains-text').default;
 
 var client = new Discord.Client();
-
+var date = new Date();
 var num_messages = 0;
 
 client.login(config.token, output);
@@ -44,7 +44,7 @@ client.on('message', message => {
 			console.log("WOOPS DONT TRIGGER YOURSELF!")
 			return;
 		}
-		message.channel.sendMessage(randomSentence)
+		message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
 		.then(message => console.log(`Sent message: ${message.content}`))
  	.catch(console.error);
 	}
