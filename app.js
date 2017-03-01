@@ -20,7 +20,12 @@ function output(error, token) {
 var userID;
 var randomSentence;
 client.on('message', message => {
+	var validChannels = config.channel.split(" ");
 	var messageArray = message.content.split(" ");
+	if (validChannels.indexOf(message.channel.name) === -1) {
+		console.log("not a valid channel")
+		return;
+	}
 	if (messageArray[0] === '!log') {
 		if (message.author === client.user) {
 			console.log("WOOPS DONT TRIGGER YOURSELF!")
