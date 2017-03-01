@@ -107,7 +107,10 @@ var insertMessages = function(message) {
 	console.log(num_messages);
 	if (messageObject[message.author]) {
 		if (!message.content.startsWith("!")) {
-					messageObject[message.author].push([message.content])
+					var messageArray = message.content.split(" ");
+					messageArray.forEach(function(element) {
+						messageObject[message.author].push([element])
+					})
 		}
 	}
 	else {
