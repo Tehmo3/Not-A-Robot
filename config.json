@@ -1,0 +1,7 @@
+{
+    "token": "DISCORD_TOKEN_HERE", 
+    "channel": "general other_channel_here",
+    "max_messages": 8160,
+    "admins": "YOUR_USERNAME OTHER_ADMINS_USERNAME",
+    "blacklist": "Normies"
+}
