@@ -1,9 +1,8 @@
 {
-  "name": "express-boilerplate",
-  "description": "Example of a suggested structure for a Web application using Express.",
-  "version": "0.3.0",
-  "private": true,
-  "author": "Martin Angers",
+  "name": "Discord Bot",
+  "description": "A discord bot that simulates friends!",
+  "version": "1.0.0",
+  "author": "Jasper Miles",
   "dependencies": {
     "discord.js": "^11.0.0"
   }

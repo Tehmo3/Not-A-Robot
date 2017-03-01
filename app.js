@@ -1,5 +1,5 @@
 var	Discord = require("discord.js"),
-	config = require("./secrets.json");
+	config = require("./config.json");
 
 var client = new Discord.Client();
 
