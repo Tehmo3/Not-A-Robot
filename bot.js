@@ -23,13 +23,14 @@ var randomSentence;
 client.on('message', message => {
 	var validChannels = config.channel.split(" ");
 	var messageArray = message.content.split(" ");
+	var admins = config.admins.split(" ")
 	if (validChannels.indexOf(message.channel.name) === -1) {
 		console.log("not a valid channel")
 		return;
 	}
 	if (messageArray[0] === '!log') {
-		if (message.author === client.user) {
-			console.log("WOOPS DONT TRIGGER YOURSELF!")
+		if (message.author === client.user || admins.indexOf(message.author.username) === -1) {
+			console.log("Error")
 			return;
 		}
     	message.channel.fetchMessages({limit: 100})
