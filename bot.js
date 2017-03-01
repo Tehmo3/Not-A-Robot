@@ -41,7 +41,7 @@ client.on('message', message => {
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj));
-		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.role_permissions)) {
+		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
 			console.log("Error!")
 			return;
 		}
