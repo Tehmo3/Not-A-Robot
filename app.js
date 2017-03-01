@@ -22,23 +22,29 @@ var randomSentence;
 client.on('message', message => {
 	var messageArray = message.content.split(" ");
 	if (messageArray[0] === '!log') {
+		if (message.author === client.user) {
+			console.log("WOOPS DONT TRIGGER YOURSELF!")
+			return;
+		}
     	message.channel.fetchMessages({limit: 100})
 		.then(messages => logMessages(messages, message))
 		.catch(console.error)
 	}
 	else if (messageArray[0] === "!text") {
-		if (message.author === client.user) {
+		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
+		var username = messageArray[1]
+		client.users.forEach(user => findID(username, user, userID, obj));
+		if (message.author === client.user || userID === client.user ) {
 			console.log("WOOPS DONT TRIGGER YOURSELF!")
 			return;
 		}
-		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
-		var username = messageArray[1];
-		client.users.forEach(user => findID(username, user, userID, obj));
-		console.log(randomSentence);
 		message.channel.sendMessage(randomSentence)
 		.then(message => console.log(`Sent message: ${message.content}`))
  	.catch(console.error);
-
+	}
+	else if (messageArray[0] === "!help") {
+		console.log("SOMEONE NEEDS MY HELP!");
+		message.channel.sendMessage(helpMessage())
 	}
 
 
@@ -101,4 +107,8 @@ var insertMessages = function(message) {
 		messageObject[message.author] = [];
 	}
 	last = message;
+}
+
+var helpMessage = function() {
+	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say ```"
 }
