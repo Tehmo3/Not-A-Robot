@@ -1,5 +1,6 @@
 var	Discord = require("discord.js"),
-	config = require("./config.json");
+	config = require("./config.json"),
+	fs = require("fs");
 
 var client = new Discord.Client();
 
@@ -40,6 +41,15 @@ var fetchMoreMessages = function(message, messageLast) {
 	}
 	else {
 		console.log("All messages found!")
+		var json = JSON.stringify(messageObject);
+		fs.writeFile('textLogs.json', json, 'utf8', function(err) {
+			if (err) {
+				console.log("Error!:", err);
+			}
+			else {
+				console.log("File Written!");
+			}
+		})
 	}
 }
 
