@@ -41,8 +41,8 @@ client.on('message', message => {
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj));
-		if (message.author === client.user || userID === client.user ) {
-			console.log("WOOPS DONT TRIGGER YOURSELF!")
+		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.role_permissions)) {
+			console.log("Error!")
 			return;
 		}
 		message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
