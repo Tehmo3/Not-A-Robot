@@ -103,10 +103,7 @@ var fetchMoreMessages = function(message, messageLast) {
 
 var insertMessages = function(message) {
 	if (messageObject[message.author]) {
-		var content = message.content.split(" ");
-		content.forEach(function(element) {
-					messageObject[message.author].push([element])
-		})
+		messageObject[message.author].push([message.content])
 	}
 	else {
 		messageObject[message.author] = [];
