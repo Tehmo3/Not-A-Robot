@@ -1,7 +1,7 @@
 var	Discord = require("discord.js"),
 	config = require("./config.json"),
 	fs = require("fs"),
-	Chain = require('markov-chains').default;
+	Text = require('markov-chains-text').default;
 
 var client = new Discord.Client();
 
@@ -55,14 +55,10 @@ var findID = function(username, user, userID, obj) {
 var makeChain = function(user, obj) {
 	if (user && obj) {
 		user = '<@' + user + '>'
-		const states = obj[user];
-		const chain = new Chain(states);
-		const sentence = chain.walk();
-		var sentenceArray = [];
-		for (var i = 0; i < Math.floor(Math.random() * 20) + 1 ; i++) {
-			sentenceArray.push(sentence[0]);
-		}
-		randomSentence = sentenceArray.join(" ");
+		const text = obj[user].join(" ");
+		console.log(text);
+		const fakeSentenceGenerator = new Text(text);
+		randomSentence = fakeSentenceGenerator.makeSentence();
 	}
 }
 
@@ -97,7 +93,6 @@ var fetchMoreMessages = function(message, messageLast) {
 var insertMessages = function(message) {
 	if (messageObject[message.author]) {
 		var content = message.content.split(" ");
-		console.log(content);
 		content.forEach(function(element) {
 					messageObject[message.author].push([element])
 		})
