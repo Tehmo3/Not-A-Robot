@@ -29,7 +29,7 @@ client.on('message', message => {
 		return;
 	}
 	if (messageArray[0] === '!log') {
-		if (message.author === client.user || admins.indexOf(message.author.username) === -1) {
+		if (message.author === client.user || admins.indexOf(message.author.username) === -1 || message.member.roles.exists("name",config.blacklist)) {
 			console.log("Error")
 			return;
 		}
@@ -84,7 +84,7 @@ var logMessages = function(messages, message) {
 }
 
 var fetchMoreMessages = function(message, messageLast) {
-	if (messageLast && num_messages<config.max_messages) {
+	if (num_messages<config.max_messages) {
 		message.channel.fetchMessages({limit: 100, before:messageLast.id})
 		.then(messages => logMessages(messages, message))
 		.catch(console.error)
