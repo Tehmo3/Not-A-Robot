@@ -30,9 +30,11 @@ client.on('message', message => {
 	}
 	if (messageArray[0] === '!log') {
 		if (message.author === client.user || admins.indexOf(message.author.username) === -1 || message.member.roles.exists("name",config.blacklist)) {
+			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("Error")
 			return;
 		}
+		message.channel.sendMessage("```LOGGING MESSAGES ```");
     	message.channel.fetchMessages({limit: 100})
 		.then(messages => logMessages(messages, message))
 		.catch(console.error)
@@ -42,12 +44,13 @@ client.on('message', message => {
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj));
 		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
+			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("Error!")
 			return;
 		}
 		message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
-		.then(message => console.log(`Sent message: ${message.content}`))
- 	.catch(console.error);
+		.then(message => messageSent(message))
+ 		.catch(console.error);
 	}
 	else if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
@@ -56,6 +59,11 @@ client.on('message', message => {
 
 
 })
+
+var messageSent = function(message) {
+	console.log(`Sent message: ${message.content}`);
+	randomSentence = "NULL";
+}
 
 var findID = function(username, user, userID, obj) {
 	if(user.username === username) {
@@ -90,6 +98,7 @@ var fetchMoreMessages = function(message, messageLast) {
 		.catch(console.error)
 	}
 	else {
+		message.channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages found!")
 		var json = JSON.stringify(messageObject);
 		fs.writeFile('textLogs.json', json, 'utf8', function(err) {
