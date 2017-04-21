@@ -18,8 +18,11 @@ function output(error, token) {
 		console.log("Logged in!");
 	}
 }
+
 var userID;
 var randomSentence;
+
+
 client.on('message', message => {
 	var validChannels = config.channel.split(" ");
 	var messageArray = message.content.split(" ");
@@ -48,16 +51,19 @@ client.on('message', message => {
 			console.log("Error!")
 			return;
 		}
-		message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
-		.then(message => messageSent(message))
- 		.catch(console.error);
+		if (!username) {
+			message.channel.sendMessage("```Please specify a user. ```");
+		}
+		else {
+			message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
+			.then(message => messageSent(message))
+			.catch(console.error);	
+		}
 	}
 	else if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
 		message.channel.sendMessage(helpMessage())
 	}
-
-
 })
 
 var messageSent = function(message) {
