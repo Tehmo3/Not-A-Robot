@@ -11,6 +11,7 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 !log - Reads through your entire chat logs and saves a file called textLogs.json used to store the messages.
 !text <username> - Sends a message using messages from <username>s past.
 !link <username> - Sends a link that <username> has sent in the past.
+!song - Links a song from Soundcloud or Spotify that was previously linked in the chat.
 ```
 
 # How to use
