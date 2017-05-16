@@ -1,4 +1,5 @@
 {
+  "name": "Not A Robot",
   "email": "hello@jaspermiles.me",
   "description": "A discord bot that simulates friends!",
   "version": "1.3.0",
