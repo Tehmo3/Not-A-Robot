@@ -1,7 +1,7 @@
 {
-    "token": "Mjg2NDY1NzIwNzAxOTQzODE5.C5pJuw.RwZSbT3GliXzacv9lKgXOTtKufg",
-    "channel": "general",
-    "max_messages": 15823,
-    "admins": "Tehmo3 Floorless",
+    "token": "DISCORD_TOKEN_HERE", 
+    "channel": "general other_channel_here",
+    "max_messages": 8160,
+    "admins": "YOUR_USERNAME OTHER_ADMINS_USERNAME",
     "blacklist": "Normies"
 }
