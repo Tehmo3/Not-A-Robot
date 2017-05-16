@@ -176,5 +176,5 @@ var insertMessages = function(message) {
 }
 
 var helpMessage = function() {
-	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n !link <username> - Sends a link that user has sent in the past ```"
+	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past ```"
 }
