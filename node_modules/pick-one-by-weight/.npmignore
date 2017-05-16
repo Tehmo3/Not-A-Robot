@@ -1,0 +1,6 @@
+.DS_Store
+npm-debug.log
+lib/tests/*.js
+src
+.travis.yml
+.jshintrc

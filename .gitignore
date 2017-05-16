@@ -15,7 +15,6 @@ $RECYCLE.BIN/
 *.msp
 
 config.json
-node_modules
 textLogs.json
 songLogs.json
 linkLogs.json
