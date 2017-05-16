@@ -15,9 +15,7 @@ $RECYCLE.BIN/
 *.msp
 
 config.json
-textLogs.json
-songLogs.json
-linkLogs.json
+data.json
 
 # Windows shortcuts
 *.lnk

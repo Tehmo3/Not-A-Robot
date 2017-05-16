@@ -1,12 +1,11 @@
 var	Discord = require("discord.js"),
 	config = require("./config.json"),
 	fs = require("fs"),
+	logMessages = require("./helpers/log.js").logMessages,
 	Text = require('markov-chains-text').default;
 
 var client = new Discord.Client();
 var date = new Date();
-var num_messages = 0;
-
 client.login(config.token, output);
 
 function output(error, token) {
@@ -44,7 +43,9 @@ client.on('message', message => {
 		.catch(console.error)
 	}
 	if (messageArray[0] === "!text" || messageArray[0] === '!link') {
-		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
+		var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+		obj = obj["messages"]
+		console.log(obj);
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj, messageArray[0]));
 		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
@@ -87,7 +88,8 @@ client.on('message', message => {
 })
 
 var getSong = function() {
-	var obj = JSON.parse(fs.readFileSync('songLogs.json', 'utf8'));
+	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+	obj = obj["songs"]
 	song = obj[Math.floor(Math.random()*obj.length)]
 	return song
 }
@@ -108,7 +110,8 @@ var findID = function(username, user, userID, obj, type) {
 }
 
 var getLink = function (userID) {
-	var obj = JSON.parse(fs.readFileSync('linkLogs.json', 'utf8'));
+	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+	obj = obj["links"]
 	user = '<@' + userID + '>'
 	randomLink = obj[user][Math.floor(Math.random()*obj[user].length)]
 }
@@ -120,83 +123,6 @@ var makeChain = function(user, obj) {
 		const fakeSentenceGenerator = new Text(text);
 		randomSentence = fakeSentenceGenerator.makeSentence();
 	}
-}
-
-var messageObject = {};
-var linkObject = {};
-var songObject = [];
-var last;
-
-var logMessages = function(messages, message) {
-	console.log("reading messages");
-	messages.forEach(messageLog => insertMessages(messageLog))
-	fetchMoreMessages(message, last);
-}
-
-var fetchMoreMessages = function(message, messageLast) {
-	if (num_messages<config.max_messages) {
-		message.channel.fetchMessages({limit: 100, before:messageLast.id})
-		.then(messages => logMessages(messages, message))
-		.catch(console.error)
-	}
-	else {
-		message.channel.sendMessage("```MESSAGES LOGGED ```");
-		console.log("All messages found!")
-		var json = JSON.stringify(messageObject);
-		var json2 = JSON.stringify(linkObject);
-		var json3 = JSON.stringify(songObject);
-		fs.writeFile('textLogs.json', json, 'utf8', function(err) {
-			if (err) {
-				console.log("Error!:", err);
-			}
-			else {
-				console.log("File Written!");
-			}
-		})
-		fs.writeFile('linkLogs.json', json2, 'utf8', function(err) {
-			if (err) {
-				console.log("Error!:", err);
-			}
-			else {
-				console.log("File Written!");
-			}
-		})
-		fs.writeFile('songLogs.json', json3, 'utf8', function(err) {
-			if (err) {
-				console.log("Error!:", err);
-			}
-			else {
-				console.log("File Written!");
-			}
-		})
-	}
-}
-
-var insertMessages = function(message) {
-	var pattern = /^((http|https|ftp):\/\/)/;
-	num_messages++;
-	console.log(num_messages);
-	if (!messageObject[message.author]) {
-		messageObject[message.author] = []
-	}
-	if (!linkObject[message.author]) {
-		linkObject[message.author] = []
-	}
-	if (!message.content.startsWith("!")) {
-		var messageArray = message.content.split(" ");
-		messageArray.forEach(function(element) {
-			if (!pattern.test(element)) {
-				messageObject[message.author].push([element])
-			}
-			else if (element.indexOf("spotify.com") > -1 || element.indexOf("soundcloud.com") > -1) {
-				songObject.push([element])
-			}
-			else {
-				linkObject[message.author].push([element])
-			}
-		})
-	}
-	last = message;
 }
 
 var helpMessage = function() {
