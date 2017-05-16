@@ -21,6 +21,7 @@ function output(error, token) {
 
 var userID;
 var randomSentence;
+var randomLink;
 
 
 client.on('message', message => {
@@ -42,10 +43,10 @@ client.on('message', message => {
 		.then(messages => logMessages(messages, message))
 		.catch(console.error)
 	}
-	else if (messageArray[0] === "!text") {
+	else if (messageArray[0] === "!text" || messageArray[0] === '!link') {
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1]
-		client.users.forEach(user => findID(username, user, userID, obj));
+		client.users.forEach(user => findID(username, user, userID, obj, messageArray[0]));
 		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
 			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("Error!")
@@ -54,10 +55,24 @@ client.on('message', message => {
 		if (!username) {
 			message.channel.sendMessage("```Please specify a user. ```");
 		}
-		else {
-			message.channel.sendMessage(randomSentence+ "- " + username + " "+ date.getFullYear())
+		else if (messageArray[0] === "!text") {
+			console.log(typeof randomSentence == 'undefined');
+			if (typeof randomSentence == 'undefined') {
+				message.channel.sendMessage("User not found")
+				return;
+			}
+			message.channel.sendMessage(randomSentence+ " - " + username + " "+ date.getFullYear())
 			.then(message => messageSent(message))
-			.catch(console.error);	
+			.catch(console.error);
+		}
+		else if (messageArray[0] = '!link') {
+			if (typeof randomLink == "undefined") {
+				message.channel.sendMessage("User not found")
+				return;
+			}
+			message.channel.sendMessage(randomLink+ " - " + username + " "+ date.getFullYear())
+			.then(message => messageSent(message))
+			.catch(console.error);
 		}
 	}
 	else if (messageArray[0] === "!help") {
@@ -69,14 +84,22 @@ client.on('message', message => {
 var messageSent = function(message) {
 	console.log(`Sent message: ${message.content}`);
 	randomSentence = "NULL";
+	randomLink = "NULL";
 }
 
-var findID = function(username, user, userID, obj) {
+var findID = function(username, user, userID, obj, type) {
 	if(user.username === username) {
 		 userID = user.id;
-		 makeChain(userID, obj);
+		 if (type == '!text') { makeChain(userID, obj); }
+		 if (type == '!link') { getLink(userID)}
 		 return;
 	}
+}
+
+var getLink = function (userID) {
+	var obj = JSON.parse(fs.readFileSync('linkLogs.json', 'utf8'));
+	user = '<@' + userID + '>'
+	randomLink = obj[user][Math.floor(Math.random()*obj[user].length)]
 }
 
 var makeChain = function(user, obj) {
@@ -89,6 +112,7 @@ var makeChain = function(user, obj) {
 }
 
 var messageObject = {};
+var linkObject = {};
 var last;
 
 var logMessages = function(messages, message) {
@@ -107,7 +131,16 @@ var fetchMoreMessages = function(message, messageLast) {
 		message.channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages found!")
 		var json = JSON.stringify(messageObject);
+		var json2 = JSON.stringify(linkObject);
 		fs.writeFile('textLogs.json', json, 'utf8', function(err) {
+			if (err) {
+				console.log("Error!:", err);
+			}
+			else {
+				console.log("File Written!");
+			}
+		})
+		fs.writeFile('linkLogs.json', json2, 'utf8', function(err) {
 			if (err) {
 				console.log("Error!:", err);
 			}
@@ -119,22 +152,29 @@ var fetchMoreMessages = function(message, messageLast) {
 }
 
 var insertMessages = function(message) {
+	var pattern = /^((http|https|ftp):\/\/)/;
 	num_messages++;
 	console.log(num_messages);
-	if (messageObject[message.author]) {
-		if (!message.content.startsWith("!")) {
-					var messageArray = message.content.split(" ");
-					messageArray.forEach(function(element) {
-						messageObject[message.author].push([element])
-					})
-		}
+	if (!messageObject[message.author]) {
+		messageObject[message.author] = []
 	}
-	else {
-		messageObject[message.author] = [];
+	if (!linkObject[message.author]) {
+		linkObject[message.author] = []
+	}
+	if (!message.content.startsWith("!")) {
+		var messageArray = message.content.split(" ");
+		messageArray.forEach(function(element) {
+			if (!pattern.test(element)) {
+				messageObject[message.author].push([element])
+			}
+			else {
+				linkObject[message.author].push([element])
+			}
+		})
 	}
 	last = message;
 }
 
 var helpMessage = function() {
-	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say ```"
+	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n !link <username> - Sends a link that user has sent in the past ```"
 }
