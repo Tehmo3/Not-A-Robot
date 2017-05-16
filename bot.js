@@ -56,7 +56,6 @@ client.on('message', message => {
 			message.channel.sendMessage("```Please specify a user. ```");
 		}
 		else if (messageArray[0] === "!text") {
-			console.log(typeof randomSentence == 'undefined');
 			if (typeof randomSentence == 'undefined') {
 				message.channel.sendMessage("User not found")
 				return;
