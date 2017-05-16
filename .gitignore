@@ -17,6 +17,8 @@ $RECYCLE.BIN/
 config.json
 node_modules
 textLogs.json
+songLogs.json
+linkLogs.json
 
 # Windows shortcuts
 *.lnk

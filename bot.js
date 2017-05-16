@@ -38,12 +38,12 @@ client.on('message', message => {
 			console.log("Error")
 			return;
 		}
-		message.channel.sendMessage("```LOGGING MESSAGES ```");
+		message.channel.sendMessage("```Logging messages, this may take a while. ```");
     	message.channel.fetchMessages({limit: 100})
 		.then(messages => logMessages(messages, message))
 		.catch(console.error)
 	}
-	else if (messageArray[0] === "!text" || messageArray[0] === '!link') {
+	if (messageArray[0] === "!text" || messageArray[0] === '!link') {
 		var obj = JSON.parse(fs.readFileSync('textLogs.json', 'utf8'));
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj, messageArray[0]));
@@ -52,7 +52,7 @@ client.on('message', message => {
 			console.log("Error!")
 			return;
 		}
-		if (!username) {
+		if (!username && messageArray[0] != '!song') {
 			message.channel.sendMessage("```Please specify a user. ```");
 		}
 		else if (messageArray[0] === "!text") {
@@ -64,7 +64,7 @@ client.on('message', message => {
 			.then(message => messageSent(message))
 			.catch(console.error);
 		}
-		else if (messageArray[0] = '!link') {
+		else if (messageArray[0] == '!link') {
 			if (typeof randomLink == "undefined") {
 				message.channel.sendMessage("User not found")
 				return;
@@ -74,12 +74,23 @@ client.on('message', message => {
 			.catch(console.error);
 		}
 	}
+	if (messageArray[0] === "!song") {
+		var song = getSong()
+		message.channel.sendMessage(song)
+		.then(message => messageSent(message))
+		.catch(console.error);
+	}
 	else if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
 		message.channel.sendMessage(helpMessage())
 	}
 })
 
+var getSong = function() {
+	var obj = JSON.parse(fs.readFileSync('songLogs.json', 'utf8'));
+	song = obj[Math.floor(Math.random()*obj.length)]
+	return song
+}
 var messageSent = function(message) {
 	console.log(`Sent message: ${message.content}`);
 	randomSentence = "NULL";
@@ -87,6 +98,7 @@ var messageSent = function(message) {
 }
 
 var findID = function(username, user, userID, obj, type) {
+	if (type == '!song') { return}
 	if(user.username === username) {
 		 userID = user.id;
 		 if (type == '!text') { makeChain(userID, obj); }
@@ -112,6 +124,7 @@ var makeChain = function(user, obj) {
 
 var messageObject = {};
 var linkObject = {};
+var songObject = [];
 var last;
 
 var logMessages = function(messages, message) {
@@ -131,6 +144,7 @@ var fetchMoreMessages = function(message, messageLast) {
 		console.log("All messages found!")
 		var json = JSON.stringify(messageObject);
 		var json2 = JSON.stringify(linkObject);
+		var json3 = JSON.stringify(songObject);
 		fs.writeFile('textLogs.json', json, 'utf8', function(err) {
 			if (err) {
 				console.log("Error!:", err);
@@ -140,6 +154,14 @@ var fetchMoreMessages = function(message, messageLast) {
 			}
 		})
 		fs.writeFile('linkLogs.json', json2, 'utf8', function(err) {
+			if (err) {
+				console.log("Error!:", err);
+			}
+			else {
+				console.log("File Written!");
+			}
+		})
+		fs.writeFile('songLogs.json', json3, 'utf8', function(err) {
 			if (err) {
 				console.log("Error!:", err);
 			}
@@ -165,6 +187,9 @@ var insertMessages = function(message) {
 		messageArray.forEach(function(element) {
 			if (!pattern.test(element)) {
 				messageObject[message.author].push([element])
+			}
+			else if (element.indexOf("spotify.com") > -1 || element.indexOf("soundcloud.com") > -1) {
+				songObject.push([element])
 			}
 			else {
 				linkObject[message.author].push([element])
