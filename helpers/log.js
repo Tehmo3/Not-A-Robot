@@ -48,7 +48,8 @@ var insertMessages = function(messages, data) {
 		if (!message.content.startsWith("!")) {
 			messageArray = message.content.split(" ");
 			messageArray.forEach(function(element) {
-				if (!pattern.test(element)) {
+                if (element.startsWith('<@') || element.startsWith('@') ) {}
+				else if (!pattern.test(element)) {
 					data.messageObject[message.author].push([element])
 				}
 				else if (element.indexOf("spotify.com") > -1 || element.indexOf("soundcloud.com") > -1) {
