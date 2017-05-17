@@ -1,19 +1,18 @@
 var config = require("../config.json"),
-	fs = require("fs");
+	fs = require("fs"),
+	exports = module.exports = {};
 
-var exports = module.exports = {}
 
 exports.logMessages = function(message) {
 	console.log("reading messages");
 	var data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-	fetchMoreMessages(message.channel, message.id, data);
+	fetchMoreMessages(message.channel, message.id, data); //Lets read some messages!
 }
 
-logMessages = exports.logMessages;
 
 var fetchMoreMessages = function(channel, messageLast, data) {
-	if (data.num_messages<config.max_messages) {
-		channel.fetchMessages({limit: 100, before:messageLast})
+	if (data.num_messages<config.max_messages) { //More messages to be read!
+		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
@@ -21,16 +20,21 @@ var fetchMoreMessages = function(channel, messageLast, data) {
 	else {
 		channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages found!")
-		var json = JSON.stringify(data);
-		fs.writeFile('data.json', json, 'utf8', function(err) {
-			if (err) {
-				console.log("Error!:", err);
-			}
-			else {
-				console.log("File Written!");
-			}
-		})
+		saveFile(data)
 	}
+}
+
+var saveFile = function (data) {
+	var json = JSON.stringify(data);
+	fs.writeFile('data.json', json, 'utf8', function(err) {
+		if (err) {
+			console.log("Error!:", err);
+		}
+		else {
+			console.log("File Written!");
+		}
+	})
+
 }
 
 var insertMessages = function(messages, data) {

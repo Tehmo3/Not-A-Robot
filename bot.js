@@ -2,10 +2,10 @@ var	Discord = require("discord.js"),
 	config = require("./config.json"),
 	fs = require("fs"),
 	logMessages = require("./helpers/log.js").logMessages,
-	Text = require('markov-chains-text').default;
+	sendText = require("./helpers/!text.js").sendText,
+	sendLink = require("./helpers/!link.js").sendLink;
 
 var client = new Discord.Client();
-var date = new Date();
 client.login(config.token, output);
 
 function output(error, token) {
@@ -17,10 +17,6 @@ function output(error, token) {
 		console.log("Logged in!");
 	}
 }
-
-var userID;
-var randomSentence;
-var randomLink;
 
 
 client.on('message', message => {
@@ -40,37 +36,11 @@ client.on('message', message => {
 		message.channel.sendMessage("```Logging messages, this may take a while. ```");
     	logMessages(message)
 	}
-	if (messageArray[0] === "!text" || messageArray[0] === '!link') {
-		var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-		obj = obj["messageObject"]
-		var username = messageArray[1]
-		client.users.forEach(user => findID(username, user, userID, obj, messageArray[0]));
-		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
-			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-			console.log("Error!")
-			return;
-		}
-		if (!username && messageArray[0] != '!song') {
-			message.channel.sendMessage("```Please specify a user. ```");
-		}
-		else if (messageArray[0] === "!text") {
-			if (typeof randomSentence == 'undefined') {
-				message.channel.sendMessage("User not found")
-				return;
-			}
-			message.channel.sendMessage(randomSentence+ " - " + username + " "+ date.getFullYear())
-			.then(message => messageSent(message))
-			.catch(console.error);
-		}
-		else if (messageArray[0] == '!link') {
-			if (typeof randomLink == "undefined") {
-				message.channel.sendMessage("User not found")
-				return;
-			}
-			message.channel.sendMessage(randomLink+ " - " + username + " "+ date.getFullYear())
-			.then(message => messageSent(message))
-			.catch(console.error);
-		}
+	if (messageArray[0] === "!text") {
+		sendText(client, message.channel, messageArray[1]);
+	}
+	if (messageArray[0] === "!link") {
+		sendLink(client, message.channel, messageArray[1])
 	}
 	if (messageArray[0] === "!song") {
 		var song = getSong()
@@ -89,37 +59,6 @@ var getSong = function() {
 	obj = obj["songObject"]
 	song = obj[Math.floor(Math.random()*obj.length)]
 	return song
-}
-var messageSent = function(message) {
-	console.log(`Sent message: ${message.content}`);
-	randomSentence = "NULL";
-	randomLink = "NULL";
-}
-
-var findID = function(username, user, userID, obj, type) {
-	if (type == '!song') { return}
-	if(user.username === username) {
-		 userID = user.id;
-		 if (type == '!text') { makeChain(userID, obj); }
-		 if (type == '!link') { getLink(userID)}
-		 return;
-	}
-}
-
-var getLink = function (userID) {
-	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-	obj = obj["linkObject"]
-	user = '<@' + userID + '>'
-	randomLink = obj[user][Math.floor(Math.random()*obj[user].length)]
-}
-
-var makeChain = function(user, obj) {
-	if (user && obj) {
-		user = '<@' + user + '>'
-		const text = obj[user].join(" ");
-		const fakeSentenceGenerator = new Text(text);
-		randomSentence = fakeSentenceGenerator.makeSentence();
-	}
 }
 
 var helpMessage = function() {
