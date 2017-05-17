@@ -1,32 +1,27 @@
 var config = require("../config.json"),
-	fs = require("fs"),
-	linkObject = {},
-	songObject = [],
-	messageObject = {},
- 	last,
- 	num_messages = 0;
+	fs = require("fs");
 
 var exports = module.exports = {}
 
-exports.logMessages = function(messages, message) {
+exports.logMessages = function(message) {
 	console.log("reading messages");
-	messages.forEach(messageLog => insertMessages(messageLog))
-	fetchMoreMessages(message, last);
+	var data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+	fetchMoreMessages(message.channel, message.id, data);
 }
 
 logMessages = exports.logMessages;
 
-var fetchMoreMessages = function(message, messageLast) {
-	if (num_messages<config.max_messages) {
-		message.channel.fetchMessages({limit: 100, before:messageLast.id})
-		.then(messages => logMessages(messages, message))
+var fetchMoreMessages = function(channel, messageLast, data) {
+	if (data.num_messages<config.max_messages) {
+		channel.fetchMessages({limit: 100, before:messageLast})
+		.then(messages => insertMessages(messages, data))
+		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
 	}
 	else {
-		message.channel.sendMessage("```MESSAGES LOGGED ```");
+		channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages found!")
-        var totalobj = {links: linkObject, songs: songObject, messages: messageObject}
-		var json = JSON.stringify(totalobj);
+		var json = JSON.stringify(data);
 		fs.writeFile('data.json', json, 'utf8', function(err) {
 			if (err) {
 				console.log("Error!:", err);
@@ -38,29 +33,29 @@ var fetchMoreMessages = function(message, messageLast) {
 	}
 }
 
-var insertMessages = function(message) {
+var insertMessages = function(messages, data) {
 	var pattern = /^((http|https|ftp):\/\/)/;
-	num_messages++;
-	console.log(num_messages);
-	if (!messageObject[message.author]) {
-		messageObject[message.author] = []
-	}
-	if (!linkObject[message.author]) {
-		linkObject[message.author] = []
-	}
-	if (!message.content.startsWith("!")) {
-		var messageArray = message.content.split(" ");
-		messageArray.forEach(function(element) {
-			if (!pattern.test(element)) {
-				messageObject[message.author].push([element])
-			}
-			else if (element.indexOf("spotify.com") > -1 || element.indexOf("soundcloud.com") > -1) {
-				songObject.push([element])
-			}
-			else {
-				linkObject[message.author].push([element])
-			}
-		})
-	}
-	last = message;
+	var messageArray = [];
+	messages.forEach(function (message) {
+		data.num_messages++;
+		console.log(data.num_messages);
+		if (!data.messageObject[message.author]) { data.messageObject[message.author] = [] }
+		if (!data.linkObject[message.author]) { data.linkObject[message.author] = [] }
+		if (!message.content.startsWith("!")) {
+			messageArray = message.content.split(" ");
+			messageArray.forEach(function(element) {
+				if (!pattern.test(element)) {
+					data.messageObject[message.author].push([element])
+				}
+				else if (element.indexOf("spotify.com") > -1 || element.indexOf("soundcloud.com") > -1) {
+					data.songObject.push([element])
+				}
+				else {
+					data.linkObject[message.author].push([element])
+				}
+			})
+		}
+		last = message;
+	});
+	return [last, data];
 }

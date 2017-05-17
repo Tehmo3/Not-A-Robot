@@ -38,14 +38,11 @@ client.on('message', message => {
 			return;
 		}
 		message.channel.sendMessage("```Logging messages, this may take a while. ```");
-    	message.channel.fetchMessages({limit: 100})
-		.then(messages => logMessages(messages, message))
-		.catch(console.error)
+    	logMessages(message)
 	}
 	if (messageArray[0] === "!text" || messageArray[0] === '!link') {
 		var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-		obj = obj["messages"]
-		console.log(obj);
+		obj = obj["messageObject"]
 		var username = messageArray[1]
 		client.users.forEach(user => findID(username, user, userID, obj, messageArray[0]));
 		if (message.author === client.user || userID === client.user || message.member.roles.exists("name",config.blacklist)) {
@@ -89,7 +86,7 @@ client.on('message', message => {
 
 var getSong = function() {
 	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-	obj = obj["songs"]
+	obj = obj["songObject"]
 	song = obj[Math.floor(Math.random()*obj.length)]
 	return song
 }
@@ -111,7 +108,7 @@ var findID = function(username, user, userID, obj, type) {
 
 var getLink = function (userID) {
 	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-	obj = obj["links"]
+	obj = obj["linkObject"]
 	user = '<@' + userID + '>'
 	randomLink = obj[user][Math.floor(Math.random()*obj[user].length)]
 }
