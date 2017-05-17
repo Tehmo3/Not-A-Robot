@@ -28,8 +28,13 @@ client.on('message', message => {
 		console.log("not a valid channel")
 		return;
 	}
+	if (message.member.roles.exists("name",config.blacklist)) {
+		message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+		console.log("Error")
+		return;
+	}
 	if (messageArray[0] === '!log') {
-		if (message.author === client.user || admins.indexOf(message.author.username) === -1 || message.member.roles.exists("name",config.blacklist)) {
+		if (admins.indexOf(message.author.username) === -1) {
 			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("Error")
 			return;
