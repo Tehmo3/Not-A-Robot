@@ -34,7 +34,7 @@ client.on('message', message => {
 	}
 	if (messageArray[0] === '!log') {
 		var admins = config.admins.split(" ")
-		if (admins.indexOf(message.author.username) === -1) {
+		if (admins.indexOf(message.author.id) === -1) {
 			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("That user does not have permission for that")
 			return;
@@ -43,10 +43,10 @@ client.on('message', message => {
     	logMessages(message)
 	}
 	if (messageArray[0] === "!text") {
-		sendText(client, message.channel, messageArray[1]);
+		sendText(client, message.channel, messageArray.slice(1).join(" "));
 	}
 	if (messageArray[0] === "!link") {
-		sendLink(client, message.channel, messageArray[1]);
+		sendLink(client, message.channel, messageArray.slice(1).join(" "));
 	}
 	if (messageArray[0] === "!song") {
 		sendSong(message.channel);
