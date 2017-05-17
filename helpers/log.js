@@ -1,5 +1,4 @@
-var config = require("../config.json"),
-	fs = require("fs"),
+var fs = require("fs"),
 	exports = module.exports = {};
 
 
@@ -11,7 +10,7 @@ exports.logMessages = function(message) {
 
 
 var fetchMoreMessages = function(channel, messageLast, data) {
-	if (data.num_messages<config.max_messages) { //More messages to be read!
+	if (data) {
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
@@ -19,8 +18,8 @@ var fetchMoreMessages = function(channel, messageLast, data) {
 	}
 	else {
 		channel.sendMessage("```MESSAGES LOGGED ```");
-		console.log("All messages found!")
-		saveFile(data)
+		console.log("All messages read")
+		return
 	}
 }
 
@@ -62,5 +61,9 @@ var insertMessages = function(messages, data) {
 		}
 		last = message;
 	});
+	if (messages.array().length == 0) {
+		saveFile(data)
+		return [last, null];
+	}
 	return [last, data];
 }
