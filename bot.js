@@ -3,6 +3,7 @@ var	Discord = require("discord.js"),
 	fs = require("fs"),
 	logMessages = require("./helpers/log.js").logMessages,
 	sendText = require("./helpers/!text.js").sendText,
+	sendSong = require("./helpers/!song.js").sendSong,
 	sendLink = require("./helpers/!link.js").sendLink;
 
 var client = new Discord.Client();
@@ -40,13 +41,10 @@ client.on('message', message => {
 		sendText(client, message.channel, messageArray[1]);
 	}
 	if (messageArray[0] === "!link") {
-		sendLink(client, message.channel, messageArray[1])
+		sendLink(client, message.channel, messageArray[1]);
 	}
 	if (messageArray[0] === "!song") {
-		var song = getSong()
-		message.channel.sendMessage(song)
-		.then(message => messageSent(message))
-		.catch(console.error);
+		sendSong(message.channel);
 	}
 	else if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
@@ -54,12 +52,6 @@ client.on('message', message => {
 	}
 })
 
-var getSong = function() {
-	var obj = JSON.parse(fs.readFileSync('data.json', 'utf8'));
-	obj = obj["songObject"]
-	song = obj[Math.floor(Math.random()*obj.length)]
-	return song
-}
 
 var helpMessage = function() {
 	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past\n!song links a song from spotify or soundcloud that was previously sent in the discord! ```"
