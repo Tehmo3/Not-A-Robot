@@ -23,20 +23,20 @@ function output(error, token) {
 client.on('message', message => {
 	var validChannels = config.channel.split(" ");
 	var messageArray = message.content.split(" ");
-	var admins = config.admins.split(" ")
 	if (validChannels.indexOf(message.channel.name) === -1) {
 		console.log("not a valid channel")
 		return;
 	}
-	if (message.member.roles.exists("name",config.blacklist)) {
+	if (messageArray[0][0] == '!' && message.member.roles.exists("name",config.blacklist)) {
 		message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-		console.log("Error")
+		console.log("That user does not have permission for that")
 		return;
 	}
 	if (messageArray[0] === '!log') {
+		var admins = config.admins.split(" ")
 		if (admins.indexOf(message.author.username) === -1) {
 			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-			console.log("Error")
+			console.log("That user does not have permission for that")
 			return;
 		}
 		message.channel.sendMessage("```Logging messages, this may take a while. ```");
@@ -51,7 +51,7 @@ client.on('message', message => {
 	if (messageArray[0] === "!song") {
 		sendSong(message.channel);
 	}
-	else if (messageArray[0] === "!help") {
+	if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
 		message.channel.sendMessage(helpMessage())
 	}
