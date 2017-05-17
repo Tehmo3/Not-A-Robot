@@ -29,8 +29,8 @@ note: I chose to include node_modules due to a small change I made in the `marko
 {
     "token": "DISCORD_TOKEN_HERE", //Your discord app bot user token
     "channel": "general other_channel_here", //Channels to accept calls from
-    "max_messages": 8160, //Maximum number of messages to read in
-    "admins": "YOUR_USERNAME OTHER_ADMINS_USERNAME", //Usernames of users allowed to use !log command
+    "admins": "admin1ID admin2ID", //ID's of users allowed to use !log command. For instructions see
     "blacklist": "Normies" //A role that will not be allowed to use the bot
 }
 ```
+note: to find User ID see [HERE](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
