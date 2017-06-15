@@ -2,13 +2,15 @@ var	Discord = require("discord.js"),
 	config = require("./config.json"),
 	fs = require("fs"),
 	logMessages = require("./helpers/!log.js"),
-	sendText = require("./helpers/!text.js"),
+	sendText = require("./helpers/!text.js").sendText,
 	sendSong = require("./helpers/!song.js"),
 	sendLink = require("./helpers/!link.js");
-  startQuiz = require('./helpers/quiz.js');
+  startQuiz = require('./helpers/quiz.js').startQuiz;
+  checkAnswer = require('./helpers/quiz.js').checkAnswer;
 
 var client = new Discord.Client();
 client.login(config.token, output);
+var currQuiz = null;
 
 function output(error, token) {
 	if (error) {
@@ -57,7 +59,12 @@ client.on('message', message => {
 		message.channel.sendMessage(helpMessage())
 	}
   if (messageArray[0] === "!whosaidthat") {
-    startQuiz('text');
+    currQuiz = startQuiz(client, 'text');
+        console.log(currQuiz);
+    message.channel.sendMessage(currQuiz.question);
+  }
+  else if (currQuiz !== null){
+    currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
   }
 })
 

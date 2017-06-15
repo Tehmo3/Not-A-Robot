@@ -36,4 +36,7 @@ var makeChain = function(user, obj) {
     return randomSentence
 }
 
-module.exports = sendText;
+module.exports = {
+  sendText,
+  makeChain,
+}
