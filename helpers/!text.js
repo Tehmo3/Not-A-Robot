@@ -1,8 +1,7 @@
 var fs = require("fs"),
-	exports = module.exports = {},
     Text = require('markov-chains-text').default;
 
-exports.sendText = function (client, channel, username) {
+sendText = function (client, channel, username) {
     var date = new Date(),
     userID = 0,
     obj = JSON.parse(fs.readFileSync('data.json', 'utf8'))['messageObject'];
@@ -36,3 +35,5 @@ var makeChain = function(user, obj) {
 	}
     return randomSentence
 }
+
+module.exports = sendText;

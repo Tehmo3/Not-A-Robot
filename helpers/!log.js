@@ -1,8 +1,7 @@
-var fs = require("fs"),
-	exports = module.exports = {};
+var fs = require("fs");
 
 
-exports.logMessages = function(message) {
+logMessages = function(message) {
 	console.log("reading messages");
 	var data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
 	fetchMoreMessages(message.channel, message.id, data); //Lets read some messages!
@@ -67,3 +66,5 @@ var insertMessages = function(messages, data) {
 	}
 	return [last, data];
 }
+
+module.exports = logMessages;

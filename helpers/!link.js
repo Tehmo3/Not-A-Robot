@@ -1,7 +1,6 @@
-var	fs = require("fs"),
-	exports = module.exports = {};
+var	fs = require("fs");
 
-exports.sendLink = function(client, channel, username) {
+sendLink = function(client, channel, username) {
     var date = new Date(),
     userID = 0,
     obj = JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
@@ -30,3 +29,5 @@ var getLink = function (userID, data) {
 	randomLink = data[user][Math.floor(Math.random()*data[user].length)]
     return randomLink;
 }
+
+module.exports = sendLink;

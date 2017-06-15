@@ -1,10 +1,11 @@
 var	Discord = require("discord.js"),
 	config = require("./config.json"),
 	fs = require("fs"),
-	logMessages = require("./helpers/log.js").logMessages,
-	sendText = require("./helpers/!text.js").sendText,
-	sendSong = require("./helpers/!song.js").sendSong,
-	sendLink = require("./helpers/!link.js").sendLink;
+	logMessages = require("./helpers/!log.js"),
+	sendText = require("./helpers/!text.js"),
+	sendSong = require("./helpers/!song.js"),
+	sendLink = require("./helpers/!link.js");
+  startQuiz = require('./helpers/quiz.js');
 
 var client = new Discord.Client();
 client.login(config.token, output);
@@ -55,6 +56,9 @@ client.on('message', message => {
 		console.log("SOMEONE NEEDS MY HELP!");
 		message.channel.sendMessage(helpMessage())
 	}
+  if (messageArray[0] === "!whosaidthat") {
+    startQuiz('text');
+  }
 })
 
 
