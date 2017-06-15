@@ -1,6 +1,6 @@
 {
   "token": "DISCORD_TOKEN_HERE",
   "channel": "general other_channel_here",
-  "admins": "YOUR_USERNAME OTHER_ADMINS_USERNAME",
+  "admins": "YOUR_ID OTHER_ADMINS_ID",
   "blacklist": "Normies"
 }
