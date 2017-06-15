@@ -12,6 +12,7 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 !text <username> - Sends a message using messages from <username>s past.
 !link <username> - Sends a link that <username> has sent in the past.
 !song - Links a song from Soundcloud or Spotify that was previously linked in the chat.
+!whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!
 ```
 
 # How to use
