@@ -7,6 +7,9 @@ function startQuiz(client, type) {
   if (type === 'text') {
     currentQuiz = textQuiz(client);
   }
+  else if (type === 'link') {
+    currentQuiz = linkQuiz(client);
+  }
   return currentQuiz;
 }
 
@@ -16,7 +19,21 @@ function textQuiz(client) {
   var user = client.users.find(user => user.id == userID);
   var text = makeChain(userID, obj);
   try {
-    return {username: user.username, question: text, solved: false};
+    return {answer: user.username, question: text, solved: false};
+  }
+  catch (e) {
+    return textQuiz(client);
+  }
+}
+
+function linkQuiz(client) {
+  var obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
+  var userID = fetchRandom(obj);
+  var user = client.users.find(user => user.id == userID.slice(2,-1))
+  var newObj = obj[userID];
+  var text = newObj[Math.floor(Math.random() * newObj.length)];
+  try {
+    return {answer: user.username, question: text, solved: false};
   }
   catch (e) {
     return textQuiz(client);
@@ -24,7 +41,7 @@ function textQuiz(client) {
 }
 
 function checkAnswer(currQuiz, guess, channel) {
-  if (guess === currQuiz.username && currQuiz !== null) {
+  if (guess === currQuiz.answer && currQuiz !== null) {
     channel.sendMessage("```CORRECT!```");
     return null;
   }

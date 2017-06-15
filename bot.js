@@ -60,9 +60,15 @@ client.on('message', message => {
 	}
   if (messageArray[0] === "!whosaidthat") {
     currQuiz = startQuiz(client, 'text');
-        console.log(currQuiz);
+    console.log(currQuiz);
     message.channel.sendMessage(currQuiz.question);
   }
+  if(messageArray[0] === "!wholinkedthat") {
+    currQuiz = startQuiz(client, 'link');
+    console.log(currQuiz);
+    message.channel.sendMessage(currQuiz.question);
+  }
+
   else if (currQuiz !== null){
     currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
   }
@@ -70,5 +76,5 @@ client.on('message', message => {
 
 
 var helpMessage = function() {
-	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past\n!song links a song from spotify or soundcloud that was previously sent in the discord!\n!whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it! ```"
+	return " ```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past\n!song links a song from spotify or soundcloud that was previously sent in the discord!\n!whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!\n!wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it! ```"
 }
