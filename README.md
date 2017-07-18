@@ -16,7 +16,7 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 !wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it!
 ```
 
-# How to use
+# How do I install the bot?
 1. Navigate [here](https://discordapp.com/developers/applications/me) and create a new app, make sure to name it and give it a basic description!.
 2. Create a bot user by pressing 'Create a bot user', make sure to copy your client ID.
 3. Go to https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0 and insert your client ID into the url.
