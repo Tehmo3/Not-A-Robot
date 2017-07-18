@@ -1,9 +1,9 @@
-var fs = require("fs");
-var Text = require('markov-chains-text').default;
-var makeChain = require('./!text.js').makeChain;
+const fs = require("fs"),
+    Text = require('markov-chains-text').default,
+    makeChain = require('./!text.js').makeChain;
 
 function startQuiz(client, type) {
-  var currentQuiz;
+  let currentQuiz = null;
   if (type === 'text') {
     currentQuiz = textQuiz(client);
   }
@@ -14,10 +14,10 @@ function startQuiz(client, type) {
 }
 
 function textQuiz(client) {
-  var obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['messageObject'];
-  var userID = fetchRandom(obj).slice(2,-1);
-  var user = client.users.find(user => user.id == userID);
-  var text = makeChain(userID, obj);
+  const obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['messageObject'];
+  const userID = fetchRandom(obj).slice(2,-1);
+  const user = client.users.find(user => user.id == userID);
+  const text = makeChain(userID, obj);
   try {
     return {answer: user.username, question: text, solved: false};
   }
@@ -27,11 +27,11 @@ function textQuiz(client) {
 }
 
 function linkQuiz(client) {
-  var obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
-  var userID = fetchRandom(obj);
-  var user = client.users.find(user => user.id == userID.slice(2,-1))
-  var newObj = obj[userID];
-  var text = newObj[Math.floor(Math.random() * newObj.length)];
+  const obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
+  const userID = fetchRandom(obj);
+  const user = client.users.find(user => user.id == userID.slice(2,-1))
+  const newObj = obj[userID];
+  const text = newObj[Math.floor(Math.random() * newObj.length)];
   try {
     return {answer: user.username, question: text, solved: false};
   }
@@ -52,7 +52,8 @@ function checkAnswer(currQuiz, guess, channel) {
 
 
 function fetchRandom(obj) {
-    var temp_key, keys = [];
+    let temp_key = '',
+        keys = [];
     for(temp_key in obj) {
        if(obj.hasOwnProperty(temp_key)) {
            keys.push(temp_key);

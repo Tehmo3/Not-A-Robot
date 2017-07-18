@@ -1,14 +1,14 @@
-var fs = require("fs");
+const fs = require("fs");
 
 
 logMessages = function(message) {
 	console.log("reading messages");
-	var data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+	let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
 	fetchMoreMessages(message.channel, message.id, data); //Lets read some messages!
 }
 
 
-var fetchMoreMessages = function(channel, messageLast, data) {
+function fetchMoreMessages(channel, messageLast, data) {
 	if (data) {
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data))
@@ -22,8 +22,8 @@ var fetchMoreMessages = function(channel, messageLast, data) {
 	}
 }
 
-var saveFile = function (data) {
-	var json = JSON.stringify(data);
+function saveFile(data) {
+	const json = JSON.stringify(data);
 	fs.writeFile('data.json', json, 'utf8', function(err) {
 		if (err) {
 			console.log("Error!:", err);
@@ -35,9 +35,9 @@ var saveFile = function (data) {
 
 }
 
-var insertMessages = function(messages, data) {
-	var pattern = /^((http|https|ftp):\/\/)/;
-	var messageArray = [];
+function insertMessages(messages, data) {
+	const pattern = /^((http|https|ftp):\/\/)/;
+	let messageArray = [];
 	messages.forEach(function (message) {
 		data.num_messages++;
 		console.log(data.num_messages);
