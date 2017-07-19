@@ -4,8 +4,9 @@ const	Discord = require("discord.js"),
 	logMessages = require("./helpers/!log.js"),
 	sendText = require("./helpers/!text.js").sendText,
 	sendSong = require("./helpers/!song.js"),
-	sendLink = require("./helpers/!link.js");
-  startQuiz = require('./helpers/quiz.js').startQuiz;
+	sendLink = require("./helpers/!link.js"),
+  sendAdvice = require("./helpers/!advice.js"),
+  startQuiz = require('./helpers/quiz.js').startQuiz,
   checkAnswer = require('./helpers/quiz.js').checkAnswer;
 
 const client = new Discord.Client();
@@ -54,6 +55,9 @@ client.on('message', message => {
 	if (messageArray[0] === "!song") {
 		sendSong(message.channel);
 	}
+  if (messageArray[0] === "!advice") {
+    sendAdvice(message.channel);
+  }
 	if (messageArray[0] === "!help") {
 		console.log("SOMEONE NEEDS MY HELP!");
 		message.channel.sendMessage(helpMessage())

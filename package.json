@@ -6,17 +6,17 @@
   "author": "Jasper Miles",
   "homepage": "https://github.com/Tehmo3/Not-A-Robot",
   "bugs": {
-      "url": "https://github.com/Tehmo3/Not-A-Robot/issues",
-      "email": "hello@jaspermiles.me"
-
+    "url": "https://github.com/Tehmo3/Not-A-Robot/issues",
+    "email": "hello@jaspermiles.me"
   },
   "dependencies": {
     "discord.js": "11.0.0",
-    "markov-chains-text": "1.0.0"
-   },
-   "license" : "MIT",
-   "repository" : {
-       "type": "git",
-       "url": "https://github.com/Tehmo3/Not-A-Robot"
-   }
+    "markov-chains-text": "1.0.0",
+    "request": "2.81.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tehmo3/Not-A-Robot"
+  }
 }
