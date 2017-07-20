@@ -9,29 +9,30 @@ logMessages = function(message) {
   let processed = 0;
   const total = message.guild.channels.array().length;
   message.guild.channels.forEach(function(channel) {
+    if (channel.type !== "text") { return }
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    fetchMoreMessages(message, null, data, true, function(outputData) {
+    fetchMoreMessages(channel, null, data, true, function(outputData) {
       overallData[message.channel.id] = outputData;
       processed++;
       if (processed === total) {
         saveFile(overallData, message.guild.id);
+        message.channel.sendMessage("```MESSAGES LOGGED ```");
+        console.log("All messages read")
       }
     }); //Lets read some messages!
   });
 }
 
 
-function fetchMoreMessages(message, messageLast, data, cont, callback) {
+function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	if (cont) {
-		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data, message.guild.id))
-		.then(array => fetchMoreMessages(message, array[0].id, array[2], array[1], callback))
+		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+		.then(messages => insertMessages(messages, data, channel.guild.id))
+		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
 		.catch(console.error)
 	}
 	else {
-		// message.channel.sendMessage("```MESSAGES LOGGED ```");
-		// console.log("All messages read")
 		callback(data);
 	}
 }
