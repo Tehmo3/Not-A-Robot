@@ -80,11 +80,11 @@ function checkAnswer(currQuiz, guess, channel, id) {
     if (err) { throw err }
     if (!databaseChannel) { return }
     else {
-      if (databaseChannel.textQuiz.answer && guess === databaseChannel.textQuiz.answer) {
+      if (databaseChannel.textQuiz && guess === databaseChannel.textQuiz.answer) {
         channel.sendMessage("```CORRECT! (who said that)```");
         databaseChannel.textQuiz = null;
       }
-      else if (databaseChannel.linkQuiz.answer && guess === databaseChannel.linkQuiz.answer) {
+      else if (databaseChannel.linkQuiz && guess === databaseChannel.linkQuiz.answer) {
         channel.sendMessage("```CORRECT! (who linked that)```");
         databaseChannel.songQuiz = null;
       }
