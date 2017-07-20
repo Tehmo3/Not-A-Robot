@@ -29,9 +29,9 @@ function saveFile(data, channel) {
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
+      //Remove this later!
       var newChannel = new Channel({
         channelID: channel.id,
-        admins: [process.env.admin],
         channels: ['general'],
         blacklist: 'Normies',
         messages: data

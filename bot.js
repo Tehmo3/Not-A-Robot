@@ -41,6 +41,12 @@ function output(error, token) {
 	}
 }
 
+function getIfAdmin(userID, guild) {
+  const members = guild.members.find(member => member.id === userID)
+  console.log(members);
+  return members.hasPermission('MANAGE_MESSAGES');
+}
+
 
 client.on('message', message => {
 	const validChannels = [process.env.channel];
@@ -50,7 +56,7 @@ client.on('message', message => {
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
       if (!channel) { return }
-      if (message.member.roles.exists("name",channel.blacklist)) {
+      if (!getIfAdmin(message.author.id, message.guild)) {
         message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
         console.log("That user does not have permission for that");
         return;
