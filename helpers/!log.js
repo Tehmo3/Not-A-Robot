@@ -10,15 +10,15 @@ logMessages = function(message) {
 }
 
 
-function fetchMoreMessages(channel, messageLast, data) {
+function fetchMoreMessages(message, messageLast, data) {
 	if (data) {
-		channel.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data, channel.guild.id))
+		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+		.then(messages => insertMessages(messages, data, message.guild.id))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
 	}
 	else {
-		channel.sendMessage("```MESSAGES LOGGED ```");
+		message.channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages read")
 		return
 	}
