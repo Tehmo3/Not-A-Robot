@@ -59,59 +59,74 @@ client.on('message', message => {
     const query = {channelID: message.channel.id}
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
-      if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
-        message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-        console.log("That user does not have permission for that");
-        return;
+      if (!channel) {
+        var newChannel = new Channel({
+          channelID: message.channel.id,
+          channels: ['general'],
+          blacklist: ['Normies'],
+          messages: null
+        });
+        newChannel.save(function (err) {
+          if (err) throw err;
+          console.log("data saved for channel", channel.id);
+          message.channel.send("```Sorry about that.. Call !log now please!```");
+        })
       }
-      else if(channel.channels.indexOf(message.channel.name) === -1) {
-        console.log("not a valid channel")
-        return;
-      }
-      if (messageArray[0] === '!log') {
-        if (!getIfAdmin(message.author.id, message.guild)) {
+      else {
+        if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
           message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-          console.log("That user does not have permission for that")
+          console.log("That user does not have permission for that");
           return;
         }
-        message.channel.sendMessage("```Logging messages, this may take a while. ```");
-        logMessages(message)
-      }
-      if (messageArray[0] === "!text") {
-        sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
-      }
-      if (messageArray[0] === "!link") {
-        sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
-      }
-      if (messageArray[0] === "!song") {
-        sendSong(message.channel, channel.messages.songObject);
-      }
-      if (messageArray[0] === "!advice") {
-        sendAdvice(message.channel);
-      }
-      if (messageArray[0] === "!help") {
-        console.log("SOMEONE NEEDS MY HELP!");
-        message.channel.sendMessage(helpMessage())
-      }
-      if (messageArray[0] === "!disallowRole") {
-        adminCommands.disallowRole(message.channel, messageArray.slice(1));
-      }
-      if (messageArray[0] === "!allowRole") {
-        adminCommands.allowRole(message.channel, messageArray.slice(1));
-      }
-      if (messageArray[0] === "!whosaidthat") {
-        currQuiz = startQuiz(client, 'text', channel.messages);
-        console.log(currQuiz);
-        message.channel.sendMessage(currQuiz.question);
-      }
-      if(messageArray[0] === "!wholinkedthat") {
-        currQuiz = startQuiz(client, 'link', channel.messages);
-        console.log(currQuiz);
-        message.channel.sendMessage(currQuiz.question);
-      }
-      else if (currQuiz !== null && messageArray[0] === '!answer'){
-        let sliced = messageArray.slice(1)
-        currQuiz = checkAnswer(currQuiz, sliced.join(" "), message.channel);
+        else if(channel.channels.indexOf(message.channel.name) === -1) {
+          console.log("not a valid channel")
+          return;
+        }
+        if (messageArray[0] === '!log') {
+          if (!getIfAdmin(message.author.id, message.guild)) {
+            message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+            console.log("That user does not have permission for that")
+            return;
+          }
+          message.channel.sendMessage("```Logging messages, this may take a while. ```");
+          logMessages(message)
+        }
+        if (messageArray[0] === "!text") {
+          sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
+        }
+        if (messageArray[0] === "!link") {
+          sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
+        }
+        if (messageArray[0] === "!song") {
+          sendSong(message.channel, channel.messages.songObject);
+        }
+        if (messageArray[0] === "!advice") {
+          sendAdvice(message.channel);
+        }
+        if (messageArray[0] === "!help") {
+          console.log("SOMEONE NEEDS MY HELP!");
+          message.channel.sendMessage(helpMessage())
+        }
+        if (messageArray[0] === "!disallowRole") {
+          adminCommands.disallowRole(message.channel, messageArray.slice(1));
+        }
+        if (messageArray[0] === "!allowRole") {
+          adminCommands.allowRole(message.channel, messageArray.slice(1));
+        }
+        if (messageArray[0] === "!whosaidthat") {
+          currQuiz = startQuiz(client, 'text', channel.messages);
+          console.log(currQuiz);
+          message.channel.sendMessage(currQuiz.question);
+        }
+        if(messageArray[0] === "!wholinkedthat") {
+          currQuiz = startQuiz(client, 'link', channel.messages);
+          console.log(currQuiz);
+          message.channel.sendMessage(currQuiz.question);
+        }
+        else if (currQuiz !== null && messageArray[0] === '!answer'){
+          let sliced = messageArray.slice(1)
+          currQuiz = checkAnswer(currQuiz, sliced.join(" "), message.channel);
+        }
       }
     })
   }
