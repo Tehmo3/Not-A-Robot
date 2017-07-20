@@ -1,5 +1,7 @@
 const fs = require("fs");
-
+const mongoose = require("mongoose")
+const channelSchema = require('./schemas/channel.js');
+const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message) {
 	console.log("reading messages");
@@ -11,7 +13,7 @@ logMessages = function(message) {
 function fetchMoreMessages(channel, messageLast, data) {
 	if (data) {
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data))
+		.then(messages => insertMessages(messages, data, channel))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
 	}
@@ -22,20 +24,21 @@ function fetchMoreMessages(channel, messageLast, data) {
 	}
 }
 
-function saveFile(data) {
-	const json = JSON.stringify(data);
-	fs.writeFile('data.json', json, 'utf8', function(err) {
-		if (err) {
-			console.log("Error!:", err);
-		}
-		else {
-			console.log("File Written!");
-		}
-	})
-
+function saveFile(data, channel) {
+  var newChannel = new Channel({
+    channelID: channel.id,
+    admins: [process.env.admin],
+    channels: ['general'],
+    blacklist: 'Normies',
+    messages: data
+  });
+  newChannel.save(function (err) {
+    if (err) throw err;
+    console.log("data saved for channel", channel.id);
+  })
 }
 
-function insertMessages(messages, data) {
+function insertMessages(messages, data,channel) {
 	const pattern = /^((http|https|ftp):\/\/)/;
 	let messageArray = [];
 	messages.forEach(function (message) {
@@ -61,7 +64,7 @@ function insertMessages(messages, data) {
 		last = message;
 	});
 	if (messages.array().length == 0) {
-		saveFile(data)
+		saveFile(data, channel)
 		return [last, null];
 	}
 	return [last, data];

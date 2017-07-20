@@ -2,6 +2,7 @@ const	Discord = require("discord.js"),
   express = require("express"),
   path = require("path"),
 	fs = require("fs"),
+  mongoose = require('mongoose'),
 	logMessages = require("./helpers/!log.js"),
 	sendText = require("./helpers/!text.js").sendText,
 	sendSong = require("./helpers/!song.js"),
@@ -11,13 +12,15 @@ const	Discord = require("discord.js"),
   checkAnswer = require('./helpers/quiz.js').checkAnswer;
 
 
-
+// Routes/Express stuff
 let app = express();
 app.use(express.static(__dirname + '/public'));
 app.get("/", function(req, res) {
   res.sendFile( path.join( __dirname, "public" , '/home.html' ));
 });
 
+//MongoDB/Mongoose stuff
+mongoose.connect(process.env.MONGODB_URI);
 
 const client = new Discord.Client();
 client.login(process.env.token, output);
