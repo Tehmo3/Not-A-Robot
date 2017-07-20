@@ -4,6 +4,6 @@ const Schema = mongoose.Schema;
 module.exports = new Schema({
   channelID: String,
   channels: [String],
-  blacklist: String,
+  blacklist: [String],
   messages: Schema.Types.Mixed
 });
