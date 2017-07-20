@@ -78,6 +78,7 @@ client.on('message', message => {
           return;
         }
         else if(channel.channels.indexOf(message.channel.name) === -1) {
+          message.channel.sendMessage("```Sorry, the bot is in another channel right now!");
           console.log("not a valid channel")
           return;
         }
