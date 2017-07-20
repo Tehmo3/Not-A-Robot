@@ -1,6 +1,6 @@
 const fs = require("fs");
 const mongoose = require("mongoose")
-const channelSchema = require('./schemas/channel.js');
+const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message) {
