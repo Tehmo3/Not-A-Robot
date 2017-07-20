@@ -14,7 +14,7 @@ function fetchMoreMessages(message, messageLast, data) {
 	if (data) {
 		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, message.guild.id))
-		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
+		.then(array => fetchMoreMessages(message, array[0].id, array[1]))
 		.catch(console.error)
 	}
 	else {
