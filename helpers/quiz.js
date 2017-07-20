@@ -1,16 +1,42 @@
 const fs = require("fs"),
     Text = require('markov-chains-text').default,
     makeChain = require('./!text.js').makeChain;
+const mongoose = require("mongoose");
+const channelSchema = require('../schemas/channel.js');
+const Channel = mongoose.model("Channel", channelSchema);
 
-function startQuiz(client, type, obj) {
-  let currentQuiz = null;
+function startQuiz(client, type, obj, id) {
+  let quiz = null;
   if (type === 'text') {
-    currentQuiz = textQuiz(client, obj.messageObject);
+    quiz = textQuiz(client, obj.messageObject);
+    const query = {channelID: id};
+    Channel.findOne(query, function(err, channel) {
+      if (err) { throw err };
+      if (!channel) {}
+      else {
+        channel.textQuiz = quiz;
+        channel.save(function(err) {
+          if (err) throw err;
+          console.log("quiz updated");
+        })
+      }
+    })
   }
   else if (type === 'link') {
-    currentQuiz = linkQuiz(client, obj.linkObject);
+    quiz = linkQuiz(client, obj.linkObject);
+    const query = {channelID: id};
+    Channel.findOne(query, function(err, channel) {
+      if (err) { throw err };
+      if (!channel) { return }
+      else {
+        channel.linkQuiz = quiz;
+        channel.save(function(err) {
+          if (err) throw err;
+          console.log("quiz updated");
+        })
+      }
+    })
   }
-  return currentQuiz;
 }
 
 function textQuiz(client, obj) {
@@ -41,14 +67,26 @@ function linkQuiz(client, obj) {
   }
 }
 
-function checkAnswer(currQuiz, guess, channel) {
-  if (guess === currQuiz.answer && currQuiz !== null) {
-    channel.sendMessage("```CORRECT!```");
-    return null;
-  }
-  else {
-    return currQuiz;
-  }
+function checkAnswer(currQuiz, guess, channel, id) {
+  const query = {channelID: id};
+  Channel.findOne(query, function(err, databaseChannel) {
+    if (err) { throw err }
+    if (!databaseChannel) { return }
+    else {
+      if (guess === databaseChannel.textQuiz.answer) {
+        channel.sendMessage("```CORRECT! (who said that)```");
+        databaseChannel.textQuiz = null;
+      }
+      else if (guess === databaseChannel.linkQuiz.answer) {
+        channel.sendMessage("```CORRECT! (who linked that)```");
+        databaseChannel.songQuiz = null;
+      }
+      databaseChannel.save(function(err) {
+        if (err) throw err;
+        console.log("Quiz updated");
+      })
+    }
+  })
 }
 
 

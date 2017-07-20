@@ -119,18 +119,18 @@ client.on('message', message => {
           adminCommands.switchChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
-          currQuiz = startQuiz(client, 'text', channel.messages);
+          currQuiz = startQuiz(client, 'text', channel.messages, message.guild.id);
           console.log(currQuiz);
           message.channel.sendMessage(currQuiz.question);
         }
         if(messageArray[0] === "!wholinkedthat") {
-          currQuiz = startQuiz(client, 'link', channel.messages);
+          startQuiz(client, 'link', channel.messages,message.guild.id);
           console.log(currQuiz);
           message.channel.sendMessage(currQuiz.question);
         }
         else if (currQuiz !== null && messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
-          currQuiz = checkAnswer(currQuiz, sliced.join(" "), message.channel);
+          checkAnswer(currQuiz, sliced.join(" "), message.channel,message.guild.id);
         }
       }
     })
