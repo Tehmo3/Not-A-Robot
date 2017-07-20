@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
-function disallowRole(channel, roleName) {
-  const query = {channelID: channel.id};
+function disallowRole(guildChannel, roleName) {
+  const query = {channelID: guildChannel.id};
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
-      channel.sendMessage("```Please !log first```");
+      guildChannel.sendMessage("```Please !log first```");
     }
     else {
       if (channel.channels.indexOf(roleName) === -1) {
@@ -15,19 +15,19 @@ function disallowRole(channel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
-        channel.sendMessage("```Role does not have permission to use bot.```");
+        guildChannel.sendMessage("```Role does not have permission to use bot.```");
         console.log("Role denied!");
       })
     }
   })
 }
 
-function allowRole(channel, roleName) {
-  const query = {channelID: channel.id};
+function allowRole(guildChannel, roleName) {
+  const query = {channelID: guildChannel.id};
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
-      channel.sendMessage("```Please !log first```");
+      guildChannel.sendMessage("```Please !log first```");
     }
     else {
       const index = channel.channels.indexOf(roleName);
@@ -36,7 +36,7 @@ function allowRole(channel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
-        channel.sendMessage("```Role has permission to use bot.```");
+        guildChannel.sendMessage("```Role has permission to use bot.```");
         console.log("Role allowed!!");
       })
     }
