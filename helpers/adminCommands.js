@@ -65,6 +65,5 @@ function switchChannel(guildChannel, roleName) {
 module.exports = {
   allowRole,
   disallowRole,
-  allowChannel,
-  disallowChannel,
+  switchChannel,
 }
