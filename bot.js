@@ -56,11 +56,9 @@ client.on('message', message => {
 	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
 	if (messageArray[0][0] == '!') {
-    console.log(Channel);
     const query = {channelID: message.channel.id}
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
-      if (!channel) { return }
       if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
         message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
         console.log("That user does not have permission for that");
