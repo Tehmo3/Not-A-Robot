@@ -1,4 +1,6 @@
 const	Discord = require("discord.js"),
+  express = require("express"),
+  path = require("path"),
 	config = require("./config.json"),
 	fs = require("fs"),
 	logMessages = require("./helpers/!log.js"),
@@ -8,6 +10,15 @@ const	Discord = require("discord.js"),
   sendAdvice = require("./helpers/!advice.js"),
   startQuiz = require('./helpers/quiz.js').startQuiz,
   checkAnswer = require('./helpers/quiz.js').checkAnswer;
+
+
+
+let app = express();
+app.use(express.static(__dirname + '/public'));
+app.get("/", function(req, res) {
+  res.sendFile( path.join( __dirname, "public" , '/home.html' ));
+});
+
 
 const client = new Discord.Client();
 client.login(config.token, output);
