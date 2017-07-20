@@ -117,8 +117,11 @@ client.on('message', message => {
         if (messageArray[0] === "!allowRole") {
           adminCommands.allowRole(message, messageArray.slice(1));
         }
-        if (messageArray[0] === "!switchChannel") {
-          adminCommands.switchChannel(message, messageArray.slice(1));
+        if (messageArray[0] === "!allowChannel") {
+          adminCommands.allowChannel(message, messageArray.slice(1));
+        }
+        if (messageArray[0] === "!disallowChannel") {
+          adminCommands.disallowChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
           startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
