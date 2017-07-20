@@ -68,7 +68,7 @@ client.on('message', message => {
         });
         newChannel.save(function (err) {
           if (err) throw err;
-          console.log("data saved for channel", channel.id);
+          console.log("data saved for channel", message.channel.id);
           message.channel.send("```Sorry about that.. Call !log now please!```");
         })
       }
