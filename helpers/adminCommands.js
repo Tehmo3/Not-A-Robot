@@ -56,7 +56,7 @@ function allowChannel(guildChannel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
-        guildChannel.channel.sendMessage("```Role does not have permission to use bot.```");
+        guildChannel.channel.sendMessage("```Channel may now use the bot!```");
         console.log("Role denied!");
       })
     }
@@ -77,7 +77,7 @@ function disallowChannel(guildChannel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
-        guildChannel.channel.sendMessage("```Role has permission to use bot.```");
+        guildChannel.channel.sendMessage("```Channel may no longer use the bot!```");
         console.log("Role allowed!!");
       })
     }
