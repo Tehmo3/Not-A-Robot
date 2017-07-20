@@ -6,6 +6,6 @@ module.exports = new Schema({
   channels: [String],
   blacklist: [String],
   messages: Schema.Types.Mixed,
-  textQuiz = Schema.Types.Mixed,
-  linkQuiz = Schema.Types.Mixed
+  textQuiz: Schema.Types.Mixed,
+  linkQuiz: Schema.Types.Mixed
 });
