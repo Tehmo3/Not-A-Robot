@@ -13,16 +13,12 @@ logMessages = function(message) {
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     fetchMoreMessages(message, null, data, true, function(outputData) {
       overallData[message.channel.id] = outputData;
-      total++;
+      processed++;
       if (processed === total) {
         saveFile(overallData, message.guild.id);
       }
     }); //Lets read some messages!
   });
-}
-
-function testIfFinish(element, index, array) {
-
 }
 
 
