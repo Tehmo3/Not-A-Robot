@@ -24,6 +24,9 @@ app.listen(port);
 
 //MongoDB/Mongoose stuff
 mongoose.connect(process.env.MONGODB_URI);
+mongoose.connection.on('error', function(err) {
+    console.error('MongoDB error: %s', err);
+});
 var channelSchema = require('./schemas/channel.js');
 var Channel = mongoose.model("Channel", channelSchema);
 
