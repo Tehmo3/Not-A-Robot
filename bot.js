@@ -1,7 +1,6 @@
 const	Discord = require("discord.js"),
   express = require("express"),
   path = require("path"),
-	config = require("./config.json"),
 	fs = require("fs"),
 	logMessages = require("./helpers/!log.js"),
 	sendText = require("./helpers/!text.js").sendText,
@@ -21,7 +20,7 @@ app.get("/", function(req, res) {
 
 
 const client = new Discord.Client();
-client.login(config.token, output);
+client.login(process.env.token, output);
 let currQuiz = null;
 
 function output(error, token) {
@@ -36,19 +35,19 @@ function output(error, token) {
 
 
 client.on('message', message => {
-	const validChannels = config.channel.split(" ");
+	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
 	if (validChannels.indexOf(message.channel.name) === -1) {
 		console.log("not a valid channel")
 		return;
 	}
-	if (messageArray[0][0] == '!' && message.member.roles.exists("name",config.blacklist)) {
+	if (messageArray[0][0] == '!' && message.member.roles.exists("name",process.env.blacklist)) {
 		message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 		console.log("That user does not have permission for that")
 		return;
 	}
 	if (messageArray[0] === '!log') {
-		const admins = config.admins.split(" ")
+		const admins = process.env.admin.split(" ")
 		if (admins.indexOf(message.author.id) === -1) {
 			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
 			console.log("That user does not have permission for that")
