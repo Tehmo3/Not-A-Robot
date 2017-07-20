@@ -26,12 +26,17 @@ function sendText(client, channel, username) {
 }
 
 function makeChain(user, obj) {
+  const settings = {
+    tries: 200,
+    maxOverlapRatio: 1,
+    maxOverlapTotal: 150000
+  }
   let randomSentence = '';
 	if (user && obj) {
 		user = '<@' + user + '>'
 		const text = obj[user].join(" ");
 		const fakeSentenceGenerator = new Text(text);
-		randomSentence = fakeSentenceGenerator.makeSentence();
+		randomSentence = fakeSentenceGenerator.makeSentence(options);
 	}
     return randomSentence
 }
