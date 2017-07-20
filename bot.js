@@ -57,7 +57,7 @@ client.on('message', message => {
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
       if (!channel) { return }
-      if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1) {
+      if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
         message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
         console.log("That user does not have permission for that");
         return;
