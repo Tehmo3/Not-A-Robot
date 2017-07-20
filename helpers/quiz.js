@@ -63,6 +63,9 @@ function linkQuiz(client, obj) {
   const user = client.users.find(user => user.id == userID.slice(2,-1))
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
+  if (!text) {
+    linkQuiz(client, obj);
+  }
   try {
     return {answer: user.username, question: text, solved: false};
   }
@@ -77,11 +80,11 @@ function checkAnswer(currQuiz, guess, channel, id) {
     if (err) { throw err }
     if (!databaseChannel) { return }
     else {
-      if (guess === databaseChannel.textQuiz.answer) {
+      if (databaseChannel.textQuiz.answer && guess === databaseChannel.textQuiz.answer) {
         channel.sendMessage("```CORRECT! (who said that)```");
         databaseChannel.textQuiz = null;
       }
-      else if (guess === databaseChannel.linkQuiz.answer) {
+      else if (databaseChannel.linkQuiz.answer && guess === databaseChannel.linkQuiz.answer) {
         channel.sendMessage("```CORRECT! (who linked that)```");
         databaseChannel.songQuiz = null;
       }
