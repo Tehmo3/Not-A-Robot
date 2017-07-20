@@ -86,7 +86,7 @@ client.on('message', message => {
         message.channel.sendMessage(helpMessage())
       }
       if (messageArray[0] === "!whosaidthat") {
-        currQuiz = startQuiz(client, 'text');
+        currQuiz = startQuiz(client, 'text', channel.messages);
         console.log(currQuiz);
         message.channel.sendMessage(currQuiz.question);
       }
