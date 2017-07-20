@@ -104,10 +104,12 @@ client.on('message', message => {
           sendAdvice(message.channel);
         }
         if (messageArray[0] === "!help") {
-          message.channel.sendMessage(helpMessage())
+          message.author.sendMessage(helpMessage());
+          message.delete();
         }
         if (messageArray[0] === "!adminCommands") {
-          message.channel.sendMessage(adminHelp())
+          message.author.sendMessage(adminHelp());
+          message.delete();
         }
         if (messageArray[0] === "!disallowRole") {
           adminCommands.disallowRole(message, messageArray.slice(1));
