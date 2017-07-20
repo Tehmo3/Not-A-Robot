@@ -60,7 +60,7 @@ client.on('message', message => {
       if (err) { throw err }
       if (!channel) {
         var newChannel = new Channel({
-          channelID: message.channel.id,
+          channelID: message.guild.id,
           channels: [message.channel.name],
           blacklist: ['Normies'],
           messages: null

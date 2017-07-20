@@ -6,14 +6,14 @@ const Channel = mongoose.model("Channel", channelSchema);
 logMessages = function(message) {
 	console.log("reading messages");
 	let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-	fetchMoreMessages(message.channel, message.id, data); //Lets read some messages!
+	fetchMoreMessages(message, message.id, data); //Lets read some messages!
 }
 
 
 function fetchMoreMessages(channel, messageLast, data) {
 	if (data) {
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data, channel))
+		.then(messages => insertMessages(messages, data, channel.guild.id))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
 	}
@@ -24,13 +24,13 @@ function fetchMoreMessages(channel, messageLast, data) {
 	}
 }
 
-function saveFile(data, channel) {
+function saveFile(data, id) {
   const query = {channelID: channel.id};
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
       var newChannel = new Channel({
-        channelID: channel.id,
+        channelID: id,
         channels: ['general'],
         blacklist: ['Normies'],
         messages: data
