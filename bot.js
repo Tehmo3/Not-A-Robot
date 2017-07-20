@@ -47,7 +47,6 @@ function output(error, token) {
 
 function getIfAdmin(userID, guild) {
   const members = guild.members.find(member => member.id === userID)
-  console.log(members);
   return members.hasPermission('MANAGE_MESSAGES');
 }
 
@@ -112,6 +111,12 @@ client.on('message', message => {
         }
         if (messageArray[0] === "!allowRole") {
           adminCommands.allowRole(message.channel, messageArray.slice(1));
+        }
+        if (messageArray[0] === "!disallowChannel") {
+          adminCommands.disallowChannel(message.channel, messageArray.slice(1));
+        }
+        if (messageArray[0] === "!allowChannel") {
+          adminCommands.allowChannel(message.channel, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
           currQuiz = startQuiz(client, 'text', channel.messages);
