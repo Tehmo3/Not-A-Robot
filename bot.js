@@ -56,7 +56,7 @@ client.on('message', message => {
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
       if (!channel) { return }
-      if (!getIfAdmin(message.author.id, message.guild)) {
+      if (message.member.roles.exists("name",channel.blacklist)) {
         message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
         console.log("That user does not have permission for that");
         return;
@@ -66,8 +66,7 @@ client.on('message', message => {
         return;
       }
       if (messageArray[0] === '!log') {
-        const admins = channel.admins
-        if (admins.indexOf(message.author.id) === -1) {
+        if (!getIfAdmin(message.author.id, message.guild)) {
           message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
           console.log("That user does not have permission for that")
           return;
