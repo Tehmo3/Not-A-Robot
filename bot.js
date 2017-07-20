@@ -118,9 +118,19 @@ client.on('message', message => {
           adminCommands.allowRole(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!allowChannel") {
+          if (!getIfAdmin(message.author.id, message.guild)) {
+            message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+            console.log("That user does not have permission for that")
+            return;
+          }
           adminCommands.allowChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!disallowChannel") {
+          if (!getIfAdmin(message.author.id, message.guild)) {
+            message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+            console.log("That user does not have permission for that")
+            return;
+          }
           adminCommands.disallowChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
