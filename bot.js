@@ -51,8 +51,9 @@ function getIfAdmin(userID, guild) {
 }
 
 client.on('guildCreate', guild => {
-  guild.defaultChannel.sendMessage()
+  guild.defaultChannel.sendMessage(newServerMessage())
 });
+
 client.on('message', message => {
 	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
