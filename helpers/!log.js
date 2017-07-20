@@ -33,7 +33,7 @@ function saveFile(data, channel) {
       var newChannel = new Channel({
         channelID: channel.id,
         channels: ['general'],
-        blacklist: 'Normies',
+        blacklist: ['Normies'],
         messages: data
       });
       newChannel.save(function (err) {
