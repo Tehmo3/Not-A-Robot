@@ -15,6 +15,7 @@ function disallowRole(channel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
+        channel.sendMessage("```Role does not have permission to use bot.```");
         console.log("Role denied!");
       })
     }
@@ -35,6 +36,7 @@ function allowRole(channel, roleName) {
       }
       channel.save(function(err) {
         if (err) throw err;
+        channel.sendMessage("```Role has permission to use bot.```");
         console.log("Role allowed!!");
       })
     }

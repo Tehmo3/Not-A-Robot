@@ -10,6 +10,7 @@ const	Discord = require("discord.js"),
   sendAdvice = require("./helpers/!advice.js"),
   startQuiz = require('./helpers/quiz.js').startQuiz,
   checkAnswer = require('./helpers/quiz.js').checkAnswer,
+  adminCommands = require('./helpers/adminCommands.js'),
   port = process.env.PORT || 5000;
 
 
