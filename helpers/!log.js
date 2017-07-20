@@ -12,7 +12,7 @@ logMessages = function(message) {
 
 function fetchMoreMessages(channel, messageLast, data) {
 	if (data) {
-		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+		channel.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, channel.guild.id))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
 		.catch(console.error)
