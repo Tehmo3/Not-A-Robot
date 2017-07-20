@@ -9,7 +9,8 @@ const	Discord = require("discord.js"),
 	sendLink = require("./helpers/!link.js"),
   sendAdvice = require("./helpers/!advice.js"),
   startQuiz = require('./helpers/quiz.js').startQuiz,
-  checkAnswer = require('./helpers/quiz.js').checkAnswer;
+  checkAnswer = require('./helpers/quiz.js').checkAnswer,
+  port = process.env.PORT || 5000;
 
 
 // Routes/Express stuff
@@ -18,6 +19,7 @@ app.use(express.static(__dirname + '/public'));
 app.get("/", function(req, res) {
   res.sendFile( path.join( __dirname, "public" , '/home.html' ));
 });
+app.listen(port);
 
 //MongoDB/Mongoose stuff
 mongoose.connect(process.env.MONGODB_URI);
