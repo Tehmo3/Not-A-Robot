@@ -25,14 +25,3 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 1. Go to https://not-a-robot-discord.herokuapp.com/
 2. Press 'ADD YOUR SERVER', log in, select your server from the drop down and press 'Authorize'.
 3. Thats it! Now the bot is in your Discord server!
-
-### Sample config.js
-```
-{
-    "token": "DISCORD_TOKEN_HERE", //Your discord app bot user token
-    "channel": "general other_channel_here", //Channels to accept calls from
-    "admins": "admin1ID admin2ID", //ID's of users allowed to use !log command. For instructions see
-    "blacklist": "Normies" //A role that will not be allowed to use the bot
-}
-```
-note: to find User ID see [HERE](https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
