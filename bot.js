@@ -143,5 +143,5 @@ function helpMessage() {
 }
 
 function adminHelp() {
-  return "```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!disallowRole <role> - Disallow all users with the role <role> from using the bot\n !allowRole <role> - Allows all users with the role <role> to use the bot. (Note this will only doing anything if the role has previously been excluded via !disallowRole)\n, !switchChannel <channel> - move the bot to another text channel, where it can then be used to !log again and use the text from that channel```"
+  return "```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!disallowRole <role> - Disallow all users with the role <role> from using the bot\n!allowRole <role> - Allows all users with the role <role> to use the bot. (Note this will only doing anything if the role has previously been excluded via !disallowRole)\n!switchChannel <channel> - move the bot to another text channel, where it can then be used to !log again and use the text from that channel```"
 }
