@@ -61,7 +61,7 @@ client.on('message', message => {
       if (!channel) {
         var newChannel = new Channel({
           channelID: message.channel.id,
-          channels: ['general'],
+          channels: [message.channel.name],
           blacklist: ['Normies'],
           messages: null
         });
@@ -112,11 +112,8 @@ client.on('message', message => {
         if (messageArray[0] === "!allowRole") {
           adminCommands.allowRole(message.channel, messageArray.slice(1));
         }
-        if (messageArray[0] === "!disallowChannel") {
-          adminCommands.disallowChannel(message.channel, messageArray.slice(1));
-        }
-        if (messageArray[0] === "!allowChannel") {
-          adminCommands.allowChannel(message.channel, messageArray.slice(1));
+        if (messageArray[0] === "!switchChannel") {
+          adminCommands.switchChannel(message.channel, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
           currQuiz = startQuiz(client, 'text', channel.messages);

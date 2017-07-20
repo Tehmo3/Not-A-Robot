@@ -43,7 +43,7 @@ function allowRole(guildChannel, roleName) {
   })
 }
 
-function allowChannel(guildChannel, roleName) {
+function switchChannel(guildChannel, roleName) {
   const query = {channelID: guildChannel.id};
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
@@ -51,9 +51,7 @@ function allowChannel(guildChannel, roleName) {
       guildChannel.sendMessage("```Please !log first```");
     }
     else {
-      if (channel.channels.indexOf(roleName) === -1) {
-        channel.channels.push(roleName);
-      }
+      channel.channels = [roleName];
       channel.save(function(err) {
         if (err) throw err;
         guildChannel.sendMessage("```The channel now has permission to use the bot.```");
@@ -63,26 +61,6 @@ function allowChannel(guildChannel, roleName) {
   })
 }
 
-function disallowChannel(guildChannel, roleName) {
-  const query = {channelID: guildChannel.id};
-  Channel.findOne(query, function (err, channel) {
-    if (err) { throw err }
-    if (!channel) {
-      guildChannel.sendMessage("```Please !log first```");
-    }
-    else {
-      const index = channel.channels.indexOf(roleName);
-      if (index > -1 && channel.channels.length > 1) {
-        channel.channels.splice(index, 1);
-      }
-      channel.save(function(err) {
-        if (err) throw err;
-        guildChannel.sendMessage("```The channel does not have permission to use the bot.```");
-        console.log("Channel denied!!");
-      })
-    }
-  })
-}
 
 module.exports = {
   allowRole,
