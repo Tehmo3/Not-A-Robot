@@ -124,7 +124,7 @@ client.on('message', message => {
         if(messageArray[0] === "!wholinkedthat") {
           startQuiz(client, 'link', channel.messages,message.guild.id, message.channel);
         }
-        else if (currQuiz !== null && messageArray[0] === '!answer'){
+        else if (messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
           checkAnswer(currQuiz, sliced.join(" "), message.channel,message.guild.id);
         }
