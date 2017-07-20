@@ -23,6 +23,9 @@ app.listen(port);
 
 //MongoDB/Mongoose stuff
 mongoose.connect(process.env.MONGODB_URI);
+var channelSchema = require('./schemas/channel.js');
+var Channel = mongoose.model("Channel", channelSchema);
+
 
 const client = new Discord.Client();
 client.login(process.env.token, output);
@@ -42,54 +45,61 @@ function output(error, token) {
 client.on('message', message => {
 	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
-	if (validChannels.indexOf(message.channel.name) === -1) {
-		console.log("not a valid channel")
-		return;
-	}
-	if (messageArray[0][0] == '!' && message.member.roles.exists("name",process.env.blacklist)) {
-		message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-		console.log("That user does not have permission for that")
-		return;
-	}
-	if (messageArray[0] === '!log') {
-		const admins = process.env.admin.split(" ")
-		if (admins.indexOf(message.author.id) === -1) {
-			message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
-			console.log("That user does not have permission for that")
-			return;
-		}
-		message.channel.sendMessage("```Logging messages, this may take a while. ```");
-    	logMessages(message)
-	}
-	if (messageArray[0] === "!text") {
-		sendText(client, message.channel, messageArray.slice(1).join(" "));
-	}
-	if (messageArray[0] === "!link") {
-		sendLink(client, message.channel, messageArray.slice(1).join(" "));
-	}
-	if (messageArray[0] === "!song") {
-		sendSong(message.channel);
-	}
-  if (messageArray[0] === "!advice") {
-    sendAdvice(message.channel);
-  }
-	if (messageArray[0] === "!help") {
-		console.log("SOMEONE NEEDS MY HELP!");
-		message.channel.sendMessage(helpMessage())
-	}
-  if (messageArray[0] === "!whosaidthat") {
-    currQuiz = startQuiz(client, 'text');
-    console.log(currQuiz);
-    message.channel.sendMessage(currQuiz.question);
-  }
-  if(messageArray[0] === "!wholinkedthat") {
-    currQuiz = startQuiz(client, 'link');
-    console.log(currQuiz);
-    message.channel.sendMessage(currQuiz.question);
-  }
-  else if (currQuiz !== null){
-    currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
-  }
+	if (messageArray[0][0] == '!') {
+    const query = {channelID: message.channel.id}
+    Channel.findOne(query, function(err, channel) {
+      if (err) { throw err }
+      if (!channel) { return }
+      if (message.member.roles.exists("name",channel.blacklist)) {
+        message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+        console.log("That user does not have permission for that");
+        return;
+      }
+      else if(channel.channels.indexOf(message.channel.name) === -1) {
+        console.log("not a valid channel")
+        return;
+      }
+      if (messageArray[0] === '!log') {
+        const admins = channel.admins
+        if (admins.indexOf(message.author.id) === -1) {
+          message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+          console.log("That user does not have permission for that")
+          return;
+        }
+        message.channel.sendMessage("```Logging messages, this may take a while. ```");
+        logMessages(message)
+      }
+      if (messageArray[0] === "!text") {
+        sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
+      }
+      if (messageArray[0] === "!link") {
+        sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
+      }
+      if (messageArray[0] === "!song") {
+        sendSong(message.channel, channel.messages.songObject);
+      }
+      if (messageArray[0] === "!advice") {
+        sendAdvice(message.channel);
+      }
+      if (messageArray[0] === "!help") {
+        console.log("SOMEONE NEEDS MY HELP!");
+        message.channel.sendMessage(helpMessage())
+      }
+      if (messageArray[0] === "!whosaidthat") {
+        currQuiz = startQuiz(client, 'text');
+        console.log(currQuiz);
+        message.channel.sendMessage(currQuiz.question);
+      }
+      if(messageArray[0] === "!wholinkedthat") {
+        currQuiz = startQuiz(client, 'link');
+        console.log(currQuiz);
+        message.channel.sendMessage(currQuiz.question);
+      }
+      else if (currQuiz !== null){
+        currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
+      }
+    }
+    })
 })
 
 
