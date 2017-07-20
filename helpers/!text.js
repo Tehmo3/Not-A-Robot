@@ -36,7 +36,7 @@ function makeChain(user, obj) {
 		user = '<@' + user + '>'
 		const text = obj[user].join(" ");
 		const fakeSentenceGenerator = new Text(text);
-		randomSentence = fakeSentenceGenerator.makeSentence(null, options);
+		randomSentence = fakeSentenceGenerator.makeSentence(null, settings);
 	}
     return randomSentence
 }
