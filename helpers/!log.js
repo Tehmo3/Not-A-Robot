@@ -18,6 +18,7 @@ logMessages = function(message) {
     fetchMoreMessages(channel, null, data, true, function(outputData) {
       overallData[channel.id] = outputData;
       processed++;
+      console.log(processed, channel.id, channel.name);
       if (processed === total) {
         saveFile(overallData, message.guild.id);
         message.channel.sendMessage("```MESSAGES LOGGED ```");
@@ -72,7 +73,7 @@ function insertMessages(messages, data,channel) {
   let last = '';
 	messages.forEach(function (message) {
 		data.num_messages++;
-		console.log(data.num_messages);
+		// console.log(data.num_messages);
 		if (!data.messageObject[message.author]) { data.messageObject[message.author] = [] }
 		if (!data.linkObject[message.author]) { data.linkObject[message.author] = [] }
 		if (!message.content.startsWith("!")) {
