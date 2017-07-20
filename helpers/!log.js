@@ -9,7 +9,10 @@ logMessages = function(message) {
   let processed = 0;
   const total = message.guild.channels.array().length;
   message.guild.channels.forEach(function(channel) {
-    if (channel.type !== "text") { return }
+    if (channel.type !== "text") {
+      processed++;
+      return ;
+    }
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     fetchMoreMessages(channel, null, data, true, function(outputData) {
