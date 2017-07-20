@@ -2,19 +2,18 @@ const fs = require("fs"),
     Text = require('markov-chains-text').default,
     makeChain = require('./!text.js').makeChain;
 
-function startQuiz(client, type) {
+function startQuiz(client, type, obj) {
   let currentQuiz = null;
   if (type === 'text') {
-    currentQuiz = textQuiz(client);
+    currentQuiz = textQuiz(client, obj.messageObject);
   }
   else if (type === 'link') {
-    currentQuiz = linkQuiz(client);
+    currentQuiz = linkQuiz(client, obj.linkObject);
   }
   return currentQuiz;
 }
 
-function textQuiz(client) {
-  const obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['messageObject'];
+function textQuiz(client, obj) {
   const userID = fetchRandom(obj).slice(2,-1);
   const user = client.users.find(user => user.id == userID);
   const text = makeChain(userID, obj);
@@ -22,12 +21,11 @@ function textQuiz(client) {
     return {answer: user.username, question: text, solved: false};
   }
   catch (e) {
-    return textQuiz(client);
+    return textQuiz(client, obj);
   }
 }
 
-function linkQuiz(client) {
-  const obj =  JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
+function linkQuiz(client, obj) {
   const userID = fetchRandom(obj);
   const user = client.users.find(user => user.id == userID.slice(2,-1))
   const newObj = obj[userID];
@@ -36,7 +34,7 @@ function linkQuiz(client) {
     return {answer: user.username, question: text, solved: false};
   }
   catch (e) {
-    return textQuiz(client);
+    return textQuiz(client, obj);
   }
 }
 

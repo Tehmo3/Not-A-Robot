@@ -1,43 +1,59 @@
 const fs = require("fs");
-
+const mongoose = require("mongoose")
+const channelSchema = require('../schemas/channel.js');
+const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message) {
 	console.log("reading messages");
 	let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-	fetchMoreMessages(message.channel, message.id, data); //Lets read some messages!
+	fetchMoreMessages(message, message.id, data); //Lets read some messages!
 }
 
 
-function fetchMoreMessages(channel, messageLast, data) {
+function fetchMoreMessages(message, messageLast, data) {
 	if (data) {
-		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data))
-		.then(array => fetchMoreMessages(channel, array[0].id, array[1]))
+		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+		.then(messages => insertMessages(messages, data, message.guild.id))
+		.then(array => fetchMoreMessages(message, array[0].id, array[1]))
 		.catch(console.error)
 	}
 	else {
-		channel.sendMessage("```MESSAGES LOGGED ```");
+		message.channel.sendMessage("```MESSAGES LOGGED ```");
 		console.log("All messages read")
 		return
 	}
 }
 
-function saveFile(data) {
-	const json = JSON.stringify(data);
-	fs.writeFile('data.json', json, 'utf8', function(err) {
-		if (err) {
-			console.log("Error!:", err);
-		}
-		else {
-			console.log("File Written!");
-		}
-	})
-
+function saveFile(data, id) {
+  const query = {channelID: id};
+  Channel.findOne(query, function (err, channel) {
+    if (err) { throw err }
+    if (!channel) {
+      var newChannel = new Channel({
+        channelID: id,
+        channels: ['general'],
+        blacklist: ['Normies'],
+        messages: data
+      });
+      newChannel.save(function (err) {
+        if (err) throw err;
+        console.log("data saved for channel", channel.id);
+      })
+    }
+    else {
+      channel.messages = data;
+      channel.save(function(err) {
+        if (err) throw err;
+        console.log("Messages updated");
+      })
+    }
+  })
 }
 
-function insertMessages(messages, data) {
+function insertMessages(messages, data,channel) {
 	const pattern = /^((http|https|ftp):\/\/)/;
 	let messageArray = [];
+  let last = '';
 	messages.forEach(function (message) {
 		data.num_messages++;
 		console.log(data.num_messages);
@@ -61,7 +77,7 @@ function insertMessages(messages, data) {
 		last = message;
 	});
 	if (messages.array().length == 0) {
-		saveFile(data)
+		saveFile(data, channel)
 		return [last, null];
 	}
 	return [last, data];

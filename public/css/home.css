@@ -1,0 +1,143 @@
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select:focus,
+textarea {
+  font-size: 16px;
+}
+
+body {
+  background: #6d8acc;
+background: -moz-linear-gradient(top,  #6d8acc 0%, #5670ab 100%);
+background: -webkit-linear-gradient(top,  #6d8acc 0%,#5670ab 100%);
+background: linear-gradient(to bottom,  #6d8acc 0%,#5670ab 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d8acc', endColorstr='#5670ab',GradientType=0 );
+
+}
+
+#Connected {
+  display: none;
+}
+
+
+ul {
+  list-style-type: none;
+  color: #fff;
+  padding-left: 1vw;
+}
+
+#home {
+  opacity: 1;
+  transition: opacity 1s;
+}
+.channelName {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s;
+  max-width: 250px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.searchResults {
+  margin-top: 0;
+  overflow: scroll;
+  height: 0;
+  display: none;
+}
+.queue {
+  margin-top: 0;
+  overflow: scroll;
+}
+
+#logo {
+  height: 40vh;
+}
+
+.queue h1 {
+  font-size: 1.3em;
+  text-align: left;
+}
+.queue p {
+  text-align: left;
+  color: #868686;
+}
+
+.searchResults h1 {
+  font-size: 1.3em;
+  text-align: left;
+}
+.searchResults p {
+  text-align: left;
+  color: #868686;
+}
+#roomButton {
+  margin-top: 1vh;
+}
+
+.title {
+  color: #fff;
+}
+.buttonRow {
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  transition: opacity 1s;
+}
+
+.noChannel {
+  display: none;
+  color: #ff3f3f;
+}
+
+.topMargin {
+  margin-top: 5vh;
+}
+
+.noRow {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.headerRow {
+  margin-top: 0vh;
+}
+
+.btn {
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  padding: 18px 48px 16px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border-width: 0;
+  letter-spacing: 2px;
+  min-width: 240px;
+  max-width: 250px;
+  min-height: 62px;
+  max-height: 62px;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.btn-grey {
+  color: #fff;
+  background-color: #282828;
+}
+
+.marginTop {
+  color: white;
+  font-size: 3vh;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+}

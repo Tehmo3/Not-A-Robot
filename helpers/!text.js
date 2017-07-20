@@ -1,10 +1,9 @@
 const fs = require("fs"),
     Text = require('markov-chains-text').default;
 
-function sendText(client, channel, username) {
+function sendText(client, channel, username, obj) {
     const date = new Date(),
-    userID = 0,
-    obj = JSON.parse(fs.readFileSync('data.json', 'utf8'))['messageObject'];
+    userID = 0;
 
     if (!username) {
         channel.sendMessage("```Please specify a user. ```");

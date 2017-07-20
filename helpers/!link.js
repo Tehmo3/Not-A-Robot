@@ -1,9 +1,8 @@
 const	fs = require("fs");
 
-function sendLink(client, channel, username) {
+function sendLink(client, channel, username, obj) {
     const date = new Date(),
-    userID = 0,
-    obj = JSON.parse(fs.readFileSync('data.json', 'utf8'))['linkObject'];
+    userID = 0;
 
     if (!username) {
         channel.sendMessage("```Please specify a user. ```");
