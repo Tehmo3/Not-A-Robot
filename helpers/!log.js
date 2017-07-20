@@ -41,6 +41,7 @@ function saveFile(data, channel) {
 function insertMessages(messages, data,channel) {
 	const pattern = /^((http|https|ftp):\/\/)/;
 	let messageArray = [];
+  let last = '';
 	messages.forEach(function (message) {
 		data.num_messages++;
 		console.log(data.num_messages);
