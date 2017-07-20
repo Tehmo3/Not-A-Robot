@@ -91,12 +91,13 @@ client.on('message', message => {
         message.channel.sendMessage(currQuiz.question);
       }
       if(messageArray[0] === "!wholinkedthat") {
-        currQuiz = startQuiz(client, 'link');
+        currQuiz = startQuiz(client, 'link', channel.messages);
         console.log(currQuiz);
         message.channel.sendMessage(currQuiz.question);
       }
-      else if (currQuiz !== null){
-        currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
+      else if (currQuiz !== null && messageArray[0] === '!answer'){
+        let sliced = messageArray.slice(1)
+        currQuiz = checkAnswer(currQuiz, slice.join(" "), message.channel);
       }
     })
   }
