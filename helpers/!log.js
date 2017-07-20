@@ -9,25 +9,26 @@ logMessages = function(message) {
   message.guild.channels.forEach(function(channel) {
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    data = fetchMoreMessages(message, null, data, true); //Lets read some messages!
-    console.log(data);
-    overallData[message.channel.id] = data;
+    fetchMoreMessages(message, null, data, true, function(data) {
+      console.log(data);
+      overallData[message.channel.id] = data;
+    }); //Lets read some messages!
   });
   saveFile(overallData, message.guild.id);
 }
 
 
-function fetchMoreMessages(message, messageLast, data, cont) {
+function fetchMoreMessages(message, messageLast, data, cont, callback) {
 	if (cont) {
 		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, message.guild.id))
-		.then(array => fetchMoreMessages(message, array[0].id, array[2], array[1]))
+		.then(array => fetchMoreMessages(message, array[0].id, array[2], array[1], callback))
 		.catch(console.error)
 	}
 	else {
 		// message.channel.sendMessage("```MESSAGES LOGGED ```");
 		// console.log("All messages read")
-		return data;
+		callback();
 	}
 }
 
