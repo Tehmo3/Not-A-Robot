@@ -105,11 +105,9 @@ client.on('message', message => {
         }
         if (messageArray[0] === "!help") {
           message.author.sendMessage(helpMessage());
-          message.delete();
         }
         if (messageArray[0] === "!adminCommands") {
           message.author.sendMessage(adminHelp());
-          message.delete();
         }
         if (messageArray[0] === "!disallowRole") {
           adminCommands.disallowRole(message, messageArray.slice(1));
