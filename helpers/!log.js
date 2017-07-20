@@ -25,16 +25,29 @@ function fetchMoreMessages(channel, messageLast, data) {
 }
 
 function saveFile(data, channel) {
-  var newChannel = new Channel({
-    channelID: channel.id,
-    admins: [process.env.admin],
-    channels: ['general'],
-    blacklist: 'Normies',
-    messages: data
-  });
-  newChannel.save(function (err) {
-    if (err) throw err;
-    console.log("data saved for channel", channel.id);
+  const query = {channelID: channel.id};
+  Channel.findOne(query, function (err, channel) {
+    if (err) { throw err }
+    if (!channel) {
+      var newChannel = new Channel({
+        channelID: channel.id,
+        admins: [process.env.admin],
+        channels: ['general'],
+        blacklist: 'Normies',
+        messages: data
+      });
+      newChannel.save(function (err) {
+        if (err) throw err;
+        console.log("data saved for channel", channel.id);
+      })
+    }
+    else {
+      channel.messages = data;
+      channel.save(function(err) {
+        if (err) throw err;
+        console.log("Messages updated");
+      })
+    }
   })
 }
 
