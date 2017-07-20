@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"),
+const mongoose = require("mongoose");
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
