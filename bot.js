@@ -53,6 +53,7 @@ client.on('message', message => {
 	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
 	if (messageArray[0][0] == '!') {
+    console.log("TEST");
     const query = {channelID: message.channel.id}
     Channel.findOne(query, function(err, channel) {
       if (err) { throw err }
