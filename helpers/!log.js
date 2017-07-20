@@ -9,9 +9,9 @@ logMessages = function(message) {
   message.guild.channels.forEach(function(channel) {
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    fetchMoreMessages(message, null, data, true, function(data) {
-      console.log(data);
-      overallData[message.channel.id] = data;
+    fetchMoreMessages(message, null, data, true, function(outputData) {
+      console.log(outputData);
+      overallData[message.channel.id] = outputData;
     }); //Lets read some messages!
   });
   saveFile(overallData, message.guild.id);
@@ -28,7 +28,7 @@ function fetchMoreMessages(message, messageLast, data, cont, callback) {
 	else {
 		// message.channel.sendMessage("```MESSAGES LOGGED ```");
 		// console.log("All messages read")
-		callback();
+		callback(data);
 	}
 }
 
