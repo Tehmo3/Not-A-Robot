@@ -16,7 +16,7 @@ logMessages = function(message) {
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     fetchMoreMessages(channel, null, data, true, function(outputData) {
-      overallData[message.channel.id] = outputData;
+      overallData[channel.id] = outputData;
       processed++;
       if (processed === total) {
         saveFile(overallData, message.guild.id);
