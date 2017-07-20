@@ -63,7 +63,7 @@ function allowChannel(guildChannel, roleName) {
   })
 }
 
-function disallowRole(guildChannel, roleName) {
+function disallowChannel(guildChannel, roleName) {
   const query = {channelID: guildChannel.guild.id};
   Channel.findOne(query, function (err, channel) {
     if (err) { throw err }
@@ -72,7 +72,7 @@ function disallowRole(guildChannel, roleName) {
     }
     else {
       const index = channel.channels.indexOf(roleName);
-      if (index > -1) {
+      if (index > -1 && channel.channels.length > 1) {
         channel.channels.splice(index, 1);
       }
       channel.save(function(err) {
