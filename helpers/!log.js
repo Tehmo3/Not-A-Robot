@@ -4,23 +4,28 @@ const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message) {
+  let overallData = {};
 	console.log("reading messages");
-	let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-	fetchMoreMessages(message, message.id, data); //Lets read some messages!
+  message.guild.channels.forEach(function(channel) {
+  let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+  data = fetchMoreMessages(message, message.id, data, true); //Lets read some messages!
+  overallData[message.channel.id] = data;
+  });
+  saveFile(overallData, message.guild.id);
 }
 
 
-function fetchMoreMessages(message, messageLast, data) {
-	if (data) {
-		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+function fetchMoreMessages(message, messageLast, data, cont) {
+	if (cont) {
+		message.channel.fetchMessages({limit: 100, before:null}) //Read the next 100
 		.then(messages => insertMessages(messages, data, message.guild.id))
-		.then(array => fetchMoreMessages(message, array[0].id, array[1]))
+		.then(array => fetchMoreMessages(message, array[0].id, array[2], array[1]))
 		.catch(console.error)
 	}
 	else {
-		message.channel.sendMessage("```MESSAGES LOGGED ```");
-		console.log("All messages read")
-		return
+		// message.channel.sendMessage("```MESSAGES LOGGED ```");
+		// console.log("All messages read")
+		return data;
 	}
 }
 
@@ -77,10 +82,9 @@ function insertMessages(messages, data,channel) {
 		last = message;
 	});
 	if (messages.array().length == 0) {
-		saveFile(data, channel)
-		return [last, null];
+		return [last, false, data];
 	}
-	return [last, data];
+	return [last, true, data];
 }
 
 module.exports = logMessages;

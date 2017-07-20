@@ -55,7 +55,6 @@ client.on('guildCreate', guild => {
 });
 
 client.on('message', message => {
-	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
 	if (messageArray[0][0] == '!') {
     const query = {channelID: message.guild.id}
@@ -95,13 +94,13 @@ client.on('message', message => {
           logMessages(message)
         }
         if (messageArray[0] === "!text") {
-          sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
+          sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
         }
         if (messageArray[0] === "!link") {
-          sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
+          sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
         }
         if (messageArray[0] === "!song") {
-          sendSong(message.channel, channel.messages.songObject);
+          sendSong(message.channel, channel.messages[message.channel.id].songObject);
         }
         if (messageArray[0] === "!advice") {
           sendAdvice(message.channel);
@@ -122,10 +121,10 @@ client.on('message', message => {
           adminCommands.switchChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
-          startQuiz(client, 'text', channel.messages, message.guild.id, message.channel);
+          startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
         }
         if(messageArray[0] === "!wholinkedthat") {
-          startQuiz(client, 'link', channel.messages,message.guild.id, message.channel);
+          startQuiz(client, 'link', channel.messages[message.channel.id],message.guild.id, message.channel);
         }
         else if (messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
