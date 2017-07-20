@@ -6,15 +6,23 @@ const Channel = mongoose.model("Channel", channelSchema);
 logMessages = function(message) {
   let overallData = {};
 	console.log("reading messages");
+  let processed = 0;
+  const total = message.guild.channels.array().length;
   message.guild.channels.forEach(function(channel) {
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     fetchMoreMessages(message, null, data, true, function(outputData) {
       overallData[message.channel.id] = outputData;
+      total++;
+      if (processed === total) {
+        saveFile(overallData, message.guild.id);
+      }
     }); //Lets read some messages!
   });
-  console.log(overallData);
-  saveFile(overallData, message.guild.id);
+}
+
+function testIfFinish(element, index, array) {
+
 }
 
 
