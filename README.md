@@ -8,13 +8,17 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 ### What commands does it have?
 ```
 !help - Sends a message in the chat explaining what the bot is and what commands you can call.
-!log - Reads through your entire chat logs and saves a file called textLogs.json used to store the messages.
 !text <username> - Sends a message using messages from <username>s past.
 !link <username> - Sends a link that <username> has sent in the past.
 !song - Links a song from Soundcloud or Spotify that was previously linked in the chat.
 !whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!
 !wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it!
 !advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me
+!adminCommands - Are you an admin? Have a look at what you can do using this command!
+!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS)
+!disallowRole <role> - Disallow all users with the role <role> from using the bot
+!allowRole <role> - Allows all users with the role <role> to use the bot. (Note this will only doing anything if the role has previously been excluded via !disallowRole)
+!switchChannel <channel> - move the bot to another text channel, where it can then be used to !log again and use the text from that channel
 ```
 
 # How do I install the bot?
