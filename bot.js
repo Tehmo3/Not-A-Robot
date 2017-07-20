@@ -97,7 +97,7 @@ client.on('message', message => {
       }
       else if (currQuiz !== null && messageArray[0] === '!answer'){
         let sliced = messageArray.slice(1)
-        currQuiz = checkAnswer(currQuiz, slice.join(" "), message.channel);
+        currQuiz = checkAnswer(currQuiz, sliced.join(" "), message.channel);
       }
     })
   }
