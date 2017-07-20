@@ -104,8 +104,10 @@ client.on('message', message => {
           sendAdvice(message.channel);
         }
         if (messageArray[0] === "!help") {
-          console.log("SOMEONE NEEDS MY HELP!");
           message.channel.sendMessage(helpMessage())
+        }
+        if (messageArray[0] === "!adminCommands") {
+          message.channel.sendMessage(adminHelp())
         }
         if (messageArray[0] === "!disallowRole") {
           adminCommands.disallowRole(message, messageArray.slice(1));
