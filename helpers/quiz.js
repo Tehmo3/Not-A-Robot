@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
-function startQuiz(client, type, obj, id) {
+function startQuiz(client, type, obj, id, textChannel) {
   let quiz = null;
   if (type === 'text') {
     quiz = textQuiz(client, obj.messageObject);
@@ -18,6 +18,8 @@ function startQuiz(client, type, obj, id) {
         channel.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
+          console.log(currQuiz);
+          textChannel.sendMessage(quiz.question);
         })
       }
     })
@@ -33,6 +35,8 @@ function startQuiz(client, type, obj, id) {
         channel.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
+          console.log(currQuiz);
+          textChannel.sendMessage(quiz.question);
         })
       }
     })
