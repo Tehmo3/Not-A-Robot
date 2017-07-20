@@ -18,7 +18,7 @@ function startQuiz(client, type, obj, id, textChannel) {
         channel.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
-          console.log(currQuiz);
+          console.log(quiz);
           textChannel.sendMessage(quiz.question);
         })
       }
@@ -35,7 +35,7 @@ function startQuiz(client, type, obj, id, textChannel) {
         channel.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
-          console.log(currQuiz);
+          console.log(quiz);
           textChannel.sendMessage(quiz.question);
         })
       }
