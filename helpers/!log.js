@@ -8,7 +8,7 @@ logMessages = function(message) {
 	console.log("reading messages");
   message.guild.channels.forEach(function(channel) {
   let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-  data = fetchMoreMessages(message, message.id, data, true); //Lets read some messages!
+  data = fetchMoreMessages(message, null, data, true); //Lets read some messages!
   overallData[message.channel.id] = data;
   });
   saveFile(overallData, message.guild.id);
@@ -17,7 +17,7 @@ logMessages = function(message) {
 
 function fetchMoreMessages(message, messageLast, data, cont) {
 	if (cont) {
-		message.channel.fetchMessages({limit: 100, before:null}) //Read the next 100
+		message.channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, message.guild.id))
 		.then(array => fetchMoreMessages(message, array[0].id, array[2], array[1]))
 		.catch(console.error)
