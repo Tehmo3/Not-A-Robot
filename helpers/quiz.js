@@ -16,7 +16,10 @@ function startQuiz(client, type, obj) {
 function textQuiz(client, obj) {
   const userID = fetchRandom(obj).slice(2,-1);
   const user = client.users.find(user => user.id == userID);
-  const text = makeChain(userID, obj);
+  let text = makeChain(userID, obj);
+  if (text instanceof Error) {
+    textQuiz(client, obj);
+  }
   try {
     return {answer: user.username, question: text, solved: false};
   }
