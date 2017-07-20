@@ -98,8 +98,8 @@ client.on('message', message => {
       else if (currQuiz !== null){
         currQuiz = checkAnswer(currQuiz, messageArray.join(" "), message.channel);
       }
-    }
     })
+  }
 })
 
 
