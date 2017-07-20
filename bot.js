@@ -90,6 +90,12 @@ client.on('message', message => {
         console.log("SOMEONE NEEDS MY HELP!");
         message.channel.sendMessage(helpMessage())
       }
+      if (messageArray[0] === "!disallowRole") {
+        adminCommands.disallowRole(message.channel, messageArray.slice(1));
+      }
+      if (messageArray[0] === "!allowRole") {
+        adminCommands.allowRole(message.channel, messageArray.slice(1));
+      }
       if (messageArray[0] === "!whosaidthat") {
         currQuiz = startQuiz(client, 'text', channel.messages);
         console.log(currQuiz);
