@@ -14,6 +14,7 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 !song - Links a song from Soundcloud or Spotify that was previously linked in the chat.
 !whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!
 !wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it!
+!advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me
 ```
 
 # How do I install the bot?
