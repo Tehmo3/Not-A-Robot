@@ -50,7 +50,9 @@ function getIfAdmin(userID, guild) {
   return members.hasPermission('MANAGE_MESSAGES');
 }
 
-
+client.on('guildCreate', guild => {
+  guild.defaultChannel.sendMessage()
+});
 client.on('message', message => {
 	const validChannels = [process.env.channel];
 	const messageArray = message.content.split(" ");
@@ -133,9 +135,12 @@ client.on('message', message => {
   }
 })
 
+function newServerMessage() {
+  return 'Hmmm, somewhere new!' + helpMessage
+}
 
 function helpMessage() {
-	return " ```!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past\n!song links a song from spotify or soundcloud that was previously sent in the discord!\n!whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!\n!wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it! \n!answer <answer> guesses an answer to the ongoing quiz! \n!advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me \n!adminCommands - Are you an admin? Have a look at what you can do using this command! ```"
+	return " ```!text <username> - randomly generate a sentence that <username> would say\n!link <username> - Sends a link that user has sent in the past\n!song links a song from spotify or soundcloud that was previously sent in the discord!\n!whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!\n!wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it! \n!answer <answer> guesses an answer to the ongoing quiz! \n!advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me \n!adminCommands - Are you an admin? Have a look at what you can do using this command! \n```"
 }
 
 function adminHelp() {
