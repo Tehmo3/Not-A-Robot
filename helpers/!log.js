@@ -7,9 +7,11 @@ logMessages = function(message) {
   let overallData = {};
 	console.log("reading messages");
   message.guild.channels.forEach(function(channel) {
-  let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-  data = fetchMoreMessages(message, null, data, true); //Lets read some messages!
-  overallData[message.channel.id] = data;
+    console.log("New Channel");
+    let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+    data = fetchMoreMessages(message, null, data, true); //Lets read some messages!
+    console.log(data);
+    overallData[message.channel.id] = data;
   });
   saveFile(overallData, message.guild.id);
 }
