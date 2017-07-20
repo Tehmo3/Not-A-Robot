@@ -72,7 +72,7 @@ function disallowChannel(guildChannel, roleName) {
     }
     else {
       const index = channel.channels.indexOf(roleName);
-      if (index > -1) {
+      if (index > -1 && channel.channels.length > 1) {
         channel.channels.splice(index, 1);
       }
       channel.save(function(err) {
@@ -87,4 +87,6 @@ function disallowChannel(guildChannel, roleName) {
 module.exports = {
   allowRole,
   disallowRole,
+  allowChannel,
+  disallowChannel,
 }
