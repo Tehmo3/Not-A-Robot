@@ -137,7 +137,7 @@ client.on('message', message => {
 })
 
 function newServerMessage() {
-  return 'Hmmm, somewhere new!' + helpMessage
+  return 'Hmmm, somewhere new!\n' + helpMessage()
 }
 
 function helpMessage() {
