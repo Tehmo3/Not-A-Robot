@@ -27,8 +27,8 @@ function getID(client, channel, username) {
   if (!id) {
     id = channel.guild.members.find(member => member.displayName === username);
     if (!id) {
-      return null;
       channel.sendMessage("```User not found.```");
+      return null;
     }
     else {
       id = id.id;
