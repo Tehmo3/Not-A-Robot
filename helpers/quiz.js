@@ -1,7 +1,7 @@
 const fs = require("fs"),
     Text = require('markov-chains-text').default,
     makeChain = require('./!text.js').makeChain,
-    getID = require('./text.js').getID;
+    getID = require('./!text.js').getID;
 const mongoose = require("mongoose");
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
