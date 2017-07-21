@@ -74,18 +74,18 @@ function linkQuiz(client, obj) {
   }
 }
 
-function checkAnswer(currQuiz, guess, channel, id) {
+function checkAnswer(currQuiz, guess, channel, id, author) {
   const query = {channelID: id};
   Channel.findOne(query, function(err, databaseChannel) {
     if (err) { throw err }
     if (!databaseChannel) { return }
     else {
       if (databaseChannel.textQuiz && guess === databaseChannel.textQuiz.answer) {
-        channel.sendMessage("```CORRECT! (who said that)```");
+        channel.sendMessage(`CORRECT! Congratulations ${author}`);
         databaseChannel.textQuiz = null;
       }
       else if (databaseChannel.linkQuiz && guess === databaseChannel.linkQuiz.answer) {
-        channel.sendMessage("```CORRECT! (who linked that)```");
+        channel.sendMessage(`CORRECT! Congratulations ${author}`);
         databaseChannel.songQuiz = null;
       }
       databaseChannel.save(function(err) {
