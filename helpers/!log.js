@@ -36,10 +36,14 @@ logMessages = function(message) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	if (cont) {
-		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-		.then(messages => insertMessages(messages, data, channel.guild.id))
-		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
-		.catch(callback('error'))
+    try {
+      channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+      .then(messages => insertMessages(messages, data, channel.guild.id))
+      .then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
+    }
+    catch(e) {
+      callback('error');
+    }
 	}
 	else {
 		callback(data);
