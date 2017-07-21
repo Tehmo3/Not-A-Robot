@@ -9,5 +9,5 @@ module.exports = new Schema({
   textQuiz: Schema.Types.Mixed,
   linkQuiz: Schema.Types.Mixed,
   refreshRate: Number,
-  lastRefresh: Schema.types.Mixed
+  lastRefresh: Schema.Types.Mixed
 });
