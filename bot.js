@@ -140,7 +140,7 @@ client.on('message', message => {
         }
         else if (messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
-          checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.author.username)
+          checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.member.displayName)
         }
       }
     })
