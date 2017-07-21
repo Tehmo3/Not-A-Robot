@@ -97,7 +97,8 @@ client.on('message', message => {
             logMessages(message)
           }
           else {
-            message.channel.sendMessage("```Sorry. It hasn't been one week since your last !log. ```");
+            var time = msToTime(Math.abs(now.getTime() - channel.lastRefresh.getTime()));
+            message.channel.sendMessage(`````Sorry. It hasn't been one week since your last !log. You can log again in ${time}. `````);
             console.log("Cant log too quick!")
           }
         }
@@ -155,6 +156,18 @@ client.on('message', message => {
     })
   }
 })
+
+function msToTime(ms) {
+  var x = ms/1000;
+  var seconds = Math.floor(x%60);
+  x /= 60;
+  var minutes = Math.floor(x%60);
+  x /=60;
+  var hours = Math.floor(x%24)
+  x /=24;
+  var days = Math.floor(x);
+  return days + " Days, " + hours + " Hours, " + minutes + " Minutes."
+}
 
 function newServerMessage() {
   return 'Hmmm, somewhere new!\n' + helpMessage()
