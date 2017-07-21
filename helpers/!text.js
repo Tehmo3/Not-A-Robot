@@ -11,6 +11,9 @@ function sendText(client, channel, username, obj) {
     }
 
     const id = getID(client, channel, username);
+    if (id === null) {
+      return;
+    }
 
     const randomSentence = makeChain(id, obj)
 
@@ -24,6 +27,7 @@ function getID(client, channel, username) {
   if (!id) {
     id = channel.guild.members.find(member => member.displayName === username);
     if (!id) {
+      return null;
       channel.sendMessage("```User not found.```");
     }
     else {

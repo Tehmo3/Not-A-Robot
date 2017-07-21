@@ -11,6 +11,9 @@ function sendLink(client, channel, username, obj) {
     }
 
     let id = getID(client, channel, username);
+    if (id === null) {
+      return;
+    }
 
     const randomLink = getLink(id, obj)
 

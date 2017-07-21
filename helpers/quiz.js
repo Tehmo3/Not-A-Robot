@@ -78,6 +78,9 @@ function linkQuiz(client, obj) {
 function checkAnswer(client, guess, channel, id, author) {
   const query = {channelID: id};
   let guessID = getID(client, channel, guess);
+  if (guessID === null) {
+    return;
+  }
   Channel.findOne(query, function(err, databaseChannel) {
     if (err) { throw err }
     if (!databaseChannel) { return }
