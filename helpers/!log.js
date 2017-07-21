@@ -13,7 +13,7 @@ logMessages = function(message, client) {
       processed++;
       return;
     }
-    console.log(channel, channel instanceof GuildChannel)
+    console.log(channel)
     if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES)'])) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
