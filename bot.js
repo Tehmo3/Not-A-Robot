@@ -159,15 +159,15 @@ client.on('message', message => {
 })
 
 function msToTime(ms) {
-  var x = ms/1000;
-  var seconds = Math.floor(x%60);
-  x /= 60;
-  var minutes = Math.floor(x%60);
-  x /=60;
-  var hours = Math.floor(x%24)
-  x /=24;
-  var days = Math.floor(x);
-  return days + " Days, " + hours + " Hours, " + minutes + " Minutes."
+  var d, h, m, s;
+  s = Math.floor(ms / 1000);
+  m = Math.floor(s / 60);
+  s = s % 60;
+  h = Math.floor(m / 60);
+  m = m % 60;
+  d = Math.floor(h / 24);
+  h = h % 24;
+  return d + " Days, " + h + " Hours, " + m + " Minutes."
 }
 
 function newServerMessage() {
