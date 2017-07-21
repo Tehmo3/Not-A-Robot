@@ -65,7 +65,7 @@ function linkQuiz(client, obj) {
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
   if (!text) {
-    linkQuiz(client, obj);
+    return linkQuiz(client, obj);
   }
   try {
     return {answer: user.id, question: text, solved: false};
