@@ -104,13 +104,28 @@ client.on('message', message => {
           }
         }
         if (messageArray[0] === "!text") {
-          sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
+          try {
+            sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
+          }
+          catch (e) {
+            message.channel.sendMessage(`There's no data for this channel!`);
+          }
         }
         if (messageArray[0] === "!link") {
-          sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
+          try {
+            sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
+          }
+          catch (e) {
+            message.channel.sendMessage(`There's no data for this channel!`);
+          }
         }
         if (messageArray[0] === "!song") {
-          sendSong(message.channel, channel.messages[message.channel.id].songObject);
+          try {
+            sendSong(message.channel, channel.messages[message.channel.id].songObject);
+          }
+          catch (e) {
+            message.channel.sendMessage(`There's no data for this channel!`);
+          }
         }
         if (messageArray[0] === "!advice") {
           sendAdvice(message.channel);
