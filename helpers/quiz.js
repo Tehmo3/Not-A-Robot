@@ -45,11 +45,11 @@ function startQuiz(client, type, obj, id, textChannel) {
 }
 
 function textQuiz(client, obj) {
-  console.log("infinite loop here?");
   const userID = fetchRandom(obj).slice(2,-1);
   const id = client.users.find(user => user.id == userID);
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
+    console.log("infinite loop here?");
     textQuiz(client, obj);
   }
   try {
