@@ -159,10 +159,20 @@ client.on('message', message => {
           adminCommands.disallowChannel(message, messageArray.slice(1));
         }
         if (messageArray[0] === "!whosaidthat") {
-          startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
+          try {
+            startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
+          }
+          catch (e) {
+            message.channel.sendMessage(`There's no data for this channel!`);
+          }
         }
         if(messageArray[0] === "!wholinkedthat") {
-          startQuiz(client, 'link', channel.messages[message.channel.id],message.guild.id, message.channel);
+          try {
+            startQuiz(client, 'link', channel.messages[message.channel.id], message.guild.id, message.channel);
+          }
+          catch (e) {
+            message.channel.sendMessage(`There's no data for this channel!`);
+          }
         }
         else if (messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
