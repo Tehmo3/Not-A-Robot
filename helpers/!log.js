@@ -15,8 +15,8 @@ logMessages = function(message) {
     }
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    try {
-      fetchMoreMessages(channel, null, data, true, function(outputData) {
+    fetchMoreMessages(channel, null, data, true, function(outputData) {
+      if (outputData !== 'error') {
         overallData[channel.id] = outputData;
         processed++;
         console.log(processed, channel.id, channel.name);
@@ -25,11 +25,11 @@ logMessages = function(message) {
           message.channel.sendMessage("```MESSAGES LOGGED ```");
           console.log("All messages read")
         }
-      }); //Lets read some messages!
-    }
-    catch (e) {
-      console.log("No perms for that channel!");
-    }
+      }
+      else {
+        processed++;
+      }
+    }); //Lets read some messages!
   });
 }
 
@@ -39,7 +39,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, channel.guild.id))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
-		.catch(console.error)
+		.catch(callback('error'))
 	}
 	else {
 		callback(data);
