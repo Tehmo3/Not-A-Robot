@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
-logMessages = function(message) {
+logMessages = function(message, client) {
   let overallData = {};
 	console.log("reading messages");
   let processed = 0;

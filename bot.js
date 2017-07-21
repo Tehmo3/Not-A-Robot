@@ -94,7 +94,7 @@ client.on('message', message => {
           let now = new Date();
           if (!channel.lastRefresh || Math.abs(now.getTime() - channel.lastRefresh.getTime()) > channel.refreshRate) {
             message.channel.sendMessage("```Logging messages, this may take a while. ```");
-            logMessages(message)
+            logMessages(message, client)
           }
           else {
             console.log(channel.refreshRate, Math.abs(now.getTime() - channel.lastRefresh.getTime()))
