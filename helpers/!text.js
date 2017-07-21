@@ -44,7 +44,8 @@ function makeChain(user, obj) {
   const settings = {
     tries: 200,
     maxOverlapRatio: 1,
-    maxOverlapTotal: 150000
+    maxOverlapTotal: 150000,
+    maxChars: 1999
   }
   let randomSentence = '';
 	if (user && obj) {
