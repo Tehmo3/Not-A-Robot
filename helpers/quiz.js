@@ -55,7 +55,6 @@ function textQuiz(client, obj) {
     return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
-    console.log(e);
     return textQuiz(client, obj);
   }
 }

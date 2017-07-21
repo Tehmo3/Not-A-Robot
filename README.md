@@ -7,12 +7,12 @@
 Not A Robot is a discord bot that reads through your chat logs and then uses markov chains to generate sentences from messages sent prior in your server.
 ### What commands does it have?
 ```
-!help - Sends a message in the chat explaining what the bot is and what commands you can call.
-!text <username> - Sends a message using messages from <username>s past.
-!link <username> - Sends a link that <username> has sent in the past.
-!song - Links a song from Soundcloud or Spotify that was previously linked in the chat.
+!text <username/nickname> - randomly generate a sentence that <username> would say
+!link <username/nickname> - Sends a link that user has sent in the past
+!song links a song from spotify or soundcloud that was previously sent in the discord!
 !whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!
 !wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it!
+!answer <username/nickname> guesses an answer to the ongoing quiz! This will count towards both quizzes if both are going!
 !advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me
 !adminCommands - Are you an admin? Have a look at what you can do using this command!
 !log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS).
