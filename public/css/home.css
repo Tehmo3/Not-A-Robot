@@ -26,6 +26,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d8acc', end
 
 }
 
+#paypal {
+  position: fixed;
+  top: 1vh;
+  right: 0;
+}
 #Connected {
   display: none;
 }
