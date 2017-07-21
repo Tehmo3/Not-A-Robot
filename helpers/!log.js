@@ -11,12 +11,12 @@ logMessages = function(message) {
   message.guild.channels.forEach(function(channel) {
     if (channel.type !== "text") {
       processed++;
-      return ;
+      return;
     }
-    console.log("New Channel");
-    let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    fetchMoreMessages(channel, null, data, true, function(outputData) {
-      if (outputData !== 'error') {
+    if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES)'])) {
+      console.log("New Channel");
+      let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+      fetchMoreMessages(channel, null, data, true, function(outputData) {
         overallData[channel.id] = outputData;
         processed++;
         console.log(processed, channel.id, channel.name);
@@ -25,25 +25,22 @@ logMessages = function(message) {
           message.channel.sendMessage("```MESSAGES LOGGED ```");
           console.log("All messages read")
         }
-      }
-      else {
-        processed++;
-      }
-    }); //Lets read some messages!
+      }); //Lets read some messages!
+    }
+    else {
+      processed++;
+      return;
+    }
   });
 }
 
 
 function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	if (cont) {
-    try {
-      channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
-      .then(messages => insertMessages(messages, data, channel.guild.id))
-      .then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
-    }
-    catch(e) {
-      callback('error');
-    }
+		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
+		.then(messages => insertMessages(messages, data, channel.guild.id))
+		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
+		.catch(console.error)
 	}
 	else {
 		callback(data);
