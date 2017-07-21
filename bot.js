@@ -165,5 +165,5 @@ return " ```!text <username/nickname> - randomly generate a sentence that <usern
 }
 
 function adminHelp() {
-  return "```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS) \n!disallowRole <role> - Disallow all users with the role <role> from using the bot\n!allowRole <role> - Allows all users with the role <role> to use the bot. (Note this will only doing anything if the role has previously been excluded via !disallowRole)\n!allowChannel <channel> - allow <channel> to call the bot.\n!disallowChannel <channel> - disallow <channel> to call the bot.```"
+  return "```!log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS). Note: this command can only be used once per week \n!disallowRole <role> - Disallow all users with the role <role> from using the bot\n!allowRole <role> - Allows all users with the role <role> to use the bot. (Note this will only doing anything if the role has previously been excluded via !disallowRole)\n!allowChannel <channel> - allow <channel> to call the bot.\n!disallowChannel <channel> - disallow <channel> to call the bot.```"
 }
