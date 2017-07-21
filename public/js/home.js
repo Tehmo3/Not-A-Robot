@@ -1,7 +1,7 @@
 
 function main() {
   $('#addServer').click(function() {
-    window.location.href = "https://discordapp.com/api/oauth2/authorize?client_id=286465720701943819&scope=bot&permissions=8";
+    window.location.href = "https://discordapp.com/api/oauth2/authorize?client_id=337942390608232448&scope=bot&permissions=3072";
   })
   $('#viewGithub').click(function() {
     window.location.href = "https://github.com/Tehmo3/Not-A-Robot";
