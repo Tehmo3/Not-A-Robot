@@ -14,7 +14,7 @@ logMessages = function(message, client) {
       return;
     }
     console.log(channel)
-    if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES)'])) {
+    if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES'])) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
