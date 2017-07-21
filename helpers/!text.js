@@ -10,18 +10,30 @@ function sendText(client, channel, username, obj) {
         return;
     }
 
-    let id = client.users.find(user => user.username === username);
-
-    if (!id) {
-        channel.sendMessage("```User not found.```")
-        return;
-    } else { id = id.id}
+    const id = getID(client, channel, username);
 
     const randomSentence = makeChain(id, obj)
 
     channel.sendMessage(randomSentence+ " - " + username + " "+ date.getFullYear())
     .then(message => console.log(`Sent message: ${message.content}`))
     .catch(console.error);
+}
+
+function getID(client, channel, username) {
+  let id = client.users.find(user => user.username === username);
+  if (!id) {
+    id = channel.guild.members.find(member => member.displayName === username);
+    if (!id) {
+      channel.sendMessage("```User not found.```");
+    }
+    else {
+      id = id.id;
+    }
+  }
+  else {
+    id = id.id;
+  }
+  return id;
 }
 
 function makeChain(user, obj) {
@@ -43,4 +55,5 @@ function makeChain(user, obj) {
 module.exports = {
   sendText,
   makeChain,
+  getID,
 }

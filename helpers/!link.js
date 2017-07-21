@@ -1,4 +1,5 @@
 const	fs = require("fs");
+const getID = require("./!text.js").getID;
 
 function sendLink(client, channel, username, obj) {
     const date = new Date(),
@@ -9,12 +10,7 @@ function sendLink(client, channel, username, obj) {
         return;
     }
 
-    let id = client.users.find(user => user.username === username);
-
-    if (!id) {
-        channel.sendMessage("```User not found.```")
-        return;
-    } else { id = id.id}
+    let id = getID(client, channel, username);
 
     const randomLink = getLink(id, obj)
 

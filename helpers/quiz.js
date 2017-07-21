@@ -1,6 +1,7 @@
 const fs = require("fs"),
     Text = require('markov-chains-text').default,
-    makeChain = require('./!text.js').makeChain;
+    makeChain = require('./!text.js').makeChain,
+    getID = require('./text.js').getID;
 const mongoose = require("mongoose");
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
@@ -45,13 +46,13 @@ function startQuiz(client, type, obj, id, textChannel) {
 
 function textQuiz(client, obj) {
   const userID = fetchRandom(obj).slice(2,-1);
-  const user = client.users.find(user => user.id == userID);
+  const id = client.users.find(user => user.id == userID);
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
     textQuiz(client, obj);
   }
   try {
-    return {answer: user.username, question: text, solved: false};
+    return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
     return textQuiz(client, obj);
@@ -67,24 +68,25 @@ function linkQuiz(client, obj) {
     linkQuiz(client, obj);
   }
   try {
-    return {answer: user.username, question: text, solved: false};
+    return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
     return textQuiz(client, obj);
   }
 }
 
-function checkAnswer(currQuiz, guess, channel, id, author) {
+function checkAnswer(client, guess, channel, id, author) {
   const query = {channelID: id};
+  let guessID = getID(client, channel, guess);
   Channel.findOne(query, function(err, databaseChannel) {
     if (err) { throw err }
     if (!databaseChannel) { return }
     else {
-      if (databaseChannel.textQuiz && guess === databaseChannel.textQuiz.answer) {
+      if (databaseChannel.textQuiz && guessID === databaseChannel.textQuiz.answer) {
         channel.sendMessage(`CORRECT! Congratulations ${author}`);
         databaseChannel.textQuiz = null;
       }
-      else if (databaseChannel.linkQuiz && guess === databaseChannel.linkQuiz.answer) {
+      else if (databaseChannel.linkQuiz && guessID === databaseChannel.linkQuiz.answer) {
         channel.sendMessage(`CORRECT! Congratulations ${author}`);
         databaseChannel.songQuiz = null;
       }

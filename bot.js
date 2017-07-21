@@ -33,7 +33,6 @@ var Channel = mongoose.model("Channel", channelSchema);
 
 const client = new Discord.Client();
 client.login(process.env.token, output);
-let currQuiz = null;
 
 function output(error, token) {
 	if (error) {
@@ -141,7 +140,7 @@ client.on('message', message => {
         }
         else if (messageArray[0] === '!answer'){
           let sliced = messageArray.slice(1)
-          checkAnswer(currQuiz, sliced.join(" "), message.channel, message.guild.id, message.author.username)
+          checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.author.username)
         }
       }
     })
