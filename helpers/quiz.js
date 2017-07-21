@@ -49,13 +49,13 @@ function textQuiz(client, obj) {
   const id = client.users.find(user => user.id == userID);
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
-    console.log("infinite loop here?");
     textQuiz(client, obj);
   }
   try {
     return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
+    console.log(e);
     return textQuiz(client, obj);
   }
 }
