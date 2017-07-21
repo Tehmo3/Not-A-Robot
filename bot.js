@@ -98,7 +98,7 @@ client.on('message', message => {
           }
           else {
             var time = msToTime(Math.abs(now.getTime() - channel.lastRefresh.getTime()));
-            message.channel.sendMessage(`````Sorry. It hasn't been one week since your last !log. You can log again in ${time}. `````);
+            message.channel.sendMessage(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
             console.log("Cant log too quick!")
           }
         }
