@@ -15,16 +15,21 @@ logMessages = function(message) {
     }
     console.log("New Channel");
     let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-    fetchMoreMessages(channel, null, data, true, function(outputData) {
-      overallData[channel.id] = outputData;
-      processed++;
-      console.log(processed, channel.id, channel.name);
-      if (processed === total) {
-        saveFile(overallData, message.guild.id);
-        message.channel.sendMessage("```MESSAGES LOGGED ```");
-        console.log("All messages read")
-      }
-    }); //Lets read some messages!
+    try {
+      fetchMoreMessages(channel, null, data, true, function(outputData) {
+        overallData[channel.id] = outputData;
+        processed++;
+        console.log(processed, channel.id, channel.name);
+        if (processed === total) {
+          saveFile(overallData, message.guild.id);
+          message.channel.sendMessage("```MESSAGES LOGGED ```");
+          console.log("All messages read")
+        }
+      }); //Lets read some messages!
+    }
+    catch (e) {
+      console.log("No perms for that channel!");
+    }
   });
 }
 
@@ -61,7 +66,7 @@ function saveFile(data, id) {
     }
     else {
       channel.messages = data;
-      channel.lastRefresh = new Date(); 
+      channel.lastRefresh = new Date();
       channel.save(function(err) {
         if (err) throw err;
         console.log("Messages updated");
