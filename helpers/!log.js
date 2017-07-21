@@ -50,7 +50,9 @@ function saveFile(data, id) {
         channelID: id,
         channels: ['general'],
         blacklist: ['Normies'],
-        messages: data
+        messages: data,
+        refreshRate: 600000000,
+        lastRefresh: new Date()
       });
       newChannel.save(function (err) {
         if (err) throw err;
@@ -59,6 +61,7 @@ function saveFile(data, id) {
     }
     else {
       channel.messages = data;
+      channel.lastRefresh = new Date(); 
       channel.save(function(err) {
         if (err) throw err;
         console.log("Messages updated");

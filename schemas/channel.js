@@ -7,5 +7,7 @@ module.exports = new Schema({
   blacklist: [String],
   messages: Schema.Types.Mixed,
   textQuiz: Schema.Types.Mixed,
-  linkQuiz: Schema.Types.Mixed
+  linkQuiz: Schema.Types.Mixed,
+  refreshRate: Number,
+  lastRefresh: Schema.types.Mixed
 });

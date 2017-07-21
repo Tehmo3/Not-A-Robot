@@ -64,7 +64,9 @@ client.on('message', message => {
           channelID: message.guild.id,
           channels: [message.channel.name],
           blacklist: ['Normies'],
-          messages: null
+          messages: null,
+          refreshRate: 600000000,
+          lastRefresh: null
         });
         newChannel.save(function (err) {
           if (err) throw err;
@@ -89,8 +91,15 @@ client.on('message', message => {
             console.log("That user does not have permission for that")
             return;
           }
-          message.channel.sendMessage("```Logging messages, this may take a while. ```");
-          logMessages(message)
+          let now = new Date();
+          if (channel.lastRefresh && Math.abs(now.getTime() - channel.lastRefresh.gettime()) < channel.refreshRate) {
+            message.channel.sendMessage("```Logging messages, this may take a while. ```");
+            logMessages(message)
+          }
+          else {
+            message.channel.sendMessage("```Sorry. It hasn't been one week since your last !log. ```");
+            console.log("Cant log too quick!")
+          }
         }
         if (messageArray[0] === "!text") {
           sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
