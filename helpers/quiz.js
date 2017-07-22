@@ -20,7 +20,7 @@ function startQuiz(client, type, obj, id, textChannel) {
           if (err) throw err;
           console.log("quiz updated");
           console.log(quiz);
-          textChannel.sendMessage(quiz.question);
+          textChannel.send(quiz.question);
         })
       }
     })
@@ -37,7 +37,7 @@ function startQuiz(client, type, obj, id, textChannel) {
           if (err) throw err;
           console.log("quiz updated");
           console.log(quiz);
-          textChannel.sendMessage(quiz.question);
+          textChannel.send(quiz.question);
         })
       }
     })
@@ -86,11 +86,11 @@ function checkAnswer(client, guess, channel, id, author) {
     if (!databaseChannel) { return }
     else {
       if (databaseChannel.textQuiz && guessID === databaseChannel.textQuiz.answer) {
-        channel.sendMessage(`CORRECT! Congratulations ${author}`);
+        channel.send(`CORRECT! Congratulations ${author}`);
         databaseChannel.textQuiz = null;
       }
       else if (databaseChannel.linkQuiz && guessID === databaseChannel.linkQuiz.answer) {
-        channel.sendMessage(`CORRECT! Congratulations ${author}`);
+        channel.send(`CORRECT! Congratulations ${author}`);
         databaseChannel.songQuiz = null;
       }
       databaseChannel.save(function(err) {

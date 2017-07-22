@@ -60,7 +60,7 @@ function start() {
   }
 
   client.on('guildCreate', guild => {
-    guild.defaultChannel.sendMessage(newServerMessage())
+    guild.defaultChannel.send(newServerMessage())
   });
 
   client.on('message', message => {
@@ -92,30 +92,30 @@ function start() {
         }
         else {
           if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
-            message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+            message.channel.send("```Sorry. You don't have permission to do that. ```");
             console.log("That user does not have permission for that");
             return;
           }
           else if(channel.channels.indexOf(message.channel.name) === -1) {
-            message.channel.sendMessage("```Sorry, this channel does not have permission to use the bot!```");
+            message.channel.send("```Sorry, this channel does not have permission to use the bot!```");
             console.log("not a valid channel")
             return;
           }
           if (messageArray[0] === '!log') {
             if (!getIfAdmin(message.author.id, message.guild)) {
-              message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+              message.channel.send("```Sorry. You don't have permission to do that. ```");
               console.log("That user does not have permission for that")
               return;
             }
             let now = new Date();
             if (!channel.lastRefresh || Math.abs(now.getTime() - channel.lastRefresh.getTime()) > channel.refreshRate) {
-              message.channel.sendMessage("```Logging messages, this may take a while. ```");
+              message.channel.send("```Logging messages, this may take a while. ```");
               logMessages(message, client)
             }
             else {
               console.log(channel.refreshRate, Math.abs(now.getTime() - channel.lastRefresh.getTime()))
               var time = msToTime(channel.refreshRate - Math.abs(now.getTime() - channel.lastRefresh.getTime()));
-              message.channel.sendMessage(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
+              message.channel.send(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
               console.log("Cant log too quick!")
             }
           }
@@ -124,7 +124,7 @@ function start() {
               sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
             }
             catch (e) {
-              message.channel.sendMessage(`There's no data for this channel!`);
+              message.channel.send(`There's no data for this channel!`);
             }
           }
           if (messageArray[0] === "!link") {
@@ -132,7 +132,7 @@ function start() {
               sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
             }
             catch (e) {
-              message.channel.sendMessage(`There's no data for this channel!`);
+              message.channel.send(`There's no data for this channel!`);
             }
           }
           if (messageArray[0] === "!song") {
@@ -140,17 +140,17 @@ function start() {
               sendSong(message.channel, channel.messages[message.channel.id].songObject);
             }
             catch (e) {
-              message.channel.sendMessage(`There's no data for this channel!`);
+              message.channel.send(`There's no data for this channel!`);
             }
           }
           if (messageArray[0] === "!advice") {
             sendAdvice(message.channel);
           }
           if (messageArray[0] === "!help") {
-            message.author.sendMessage(helpMessage());
+            message.author.send(helpMessage());
           }
           if (messageArray[0] === "!adminCommands") {
-            message.author.sendMessage(adminHelp());
+            message.author.send(adminHelp());
           }
           if (messageArray[0] === "!disallowRole") {
             adminCommands.disallowRole(message, messageArray.slice(1));
@@ -160,7 +160,7 @@ function start() {
           }
           if (messageArray[0] === "!allowChannel") {
             if (!getIfAdmin(message.author.id, message.guild)) {
-              message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+              message.channel.send("```Sorry. You don't have permission to do that. ```");
               console.log("That user does not have permission for that")
               return;
             }
@@ -168,7 +168,7 @@ function start() {
           }
           if (messageArray[0] === "!disallowChannel") {
             if (!getIfAdmin(message.author.id, message.guild)) {
-              message.channel.sendMessage("```Sorry. You don't have permission to do that. ```");
+              message.channel.send("```Sorry. You don't have permission to do that. ```");
               console.log("That user does not have permission for that")
               return;
             }
@@ -179,7 +179,7 @@ function start() {
               startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
             }
             catch (e) {
-              message.channel.sendMessage(`There's no data for this channel!`);
+              message.channel.send(`There's no data for this channel!`);
             }
           }
           if(messageArray[0] === "!wholinkedthat") {
@@ -187,7 +187,7 @@ function start() {
               startQuiz(client, 'link', channel.messages[message.channel.id], message.guild.id, message.channel);
             }
             catch (e) {
-              message.channel.sendMessage(`There's no data for this channel!`);
+              message.channel.send(`There's no data for this channel!`);
             }
           }
           else if (messageArray[0] === '!answer'){

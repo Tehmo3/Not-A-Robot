@@ -6,7 +6,7 @@ function sendText(client, channel, username, obj) {
     userID = 0;
 
     if (!username) {
-        channel.sendMessage("```Please specify a user. ```");
+        channel.send("```Please specify a user. ```");
         return;
     }
 
@@ -17,7 +17,7 @@ function sendText(client, channel, username, obj) {
 
     const randomSentence = makeChain(id, obj)
 
-    channel.sendMessage(randomSentence+ " - " + username + " "+ date.getFullYear())
+    channel.send(randomSentence+ " - " + username + " "+ date.getFullYear())
     .then(message => console.log(`Sent message: ${message.content}`))
     .catch(console.error);
 }
@@ -27,7 +27,7 @@ function getID(client, channel, username) {
   if (!id) {
     id = channel.guild.members.find(member => member.displayName === username);
     if (!id) {
-      channel.sendMessage("```User not found.```");
+      channel.send("```User not found.```");
       return null;
     }
     else {

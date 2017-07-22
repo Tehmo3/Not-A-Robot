@@ -6,7 +6,7 @@ function sendLink(client, channel, username, obj) {
     userID = 0;
 
     if (!username) {
-        channel.sendMessage("```Please specify a user. ```");
+        channel.send("```Please specify a user. ```");
         return;
     }
 
@@ -17,7 +17,7 @@ function sendLink(client, channel, username, obj) {
 
     const randomLink = getLink(id, obj)
 
-    channel.sendMessage(randomLink+ " - " + username + " "+ date.getFullYear())
+    channel.send(randomLink+ " - " + username + " "+ date.getFullYear())
     .then(message => console.log(`Sent message: ${message.content}`))
     .catch(console.error);
 }
