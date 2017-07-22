@@ -52,9 +52,14 @@ function textQuiz(client, obj) {
     user = client.users.find(user => user.id === userID);
   }
   let text = makeChain(userID, obj);
-  if (text instanceof Error) {
-    console.log("HEY!");
-    textQuiz(client, obj);
+  while (text instanceof Error) {
+    userID = fetchRandom(obj).slice(2,-1);
+    user = client.users.find(user => user.id === userID);
+    while (!user) {
+      userID = fetchRandom(obj).slice(2,-1);
+      user = client.users.find(user => user.id === userID);
+    }
+    text = makeChain(userID, obj);
   }
   try {
     return {answer: user.id, question: text, solved: false};
