@@ -67,7 +67,7 @@ function linkQuiz(client, obj) {
   console.log(text)
   if (!text) {
     console.log("RECURSE!");
-    return linkQuiz(client, obj);
+    linkQuiz(client, obj);
   }
   try {
     return {answer: user.id, question: text, solved: false};
