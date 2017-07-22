@@ -4,7 +4,6 @@ const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message, client) {
-  let overallData = {};
 	console.log("reading messages");
   let processed = 0;
   const total = message.guild.channels.array().length;
@@ -17,11 +16,10 @@ logMessages = function(message, client) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
-        overallData[channel.id] = outputData;
         processed++;
+        saveFile(outputData);
         console.log(processed, channel.id, channel.name);
         if (processed === total) {
-          saveFile(overallData, message.guild.id);
           message.channel.send("```MESSAGES LOGGED ```");
           console.log("All messages read")
         }
@@ -48,9 +46,9 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	}
 }
 
-function saveFile(data, id) {
+function saveData(data, id) {
   const query = {channelID: id};
-  Channel.findOne(query, {"channelID":1}, function (err, channel) {
+  Channel.findOne(query, {"channelID":1, "messages": 1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
       var newChannel = new Channel({
@@ -67,7 +65,8 @@ function saveFile(data, id) {
       })
     }
     else {
-      channel.messages = data;
+      if (!channel.messages) { channel.messages = {} }
+      channel.messages[channel.id] = data;
       channel.lastRefresh = new Date();
       channel.save(function(err) {
         if (err) throw err;
