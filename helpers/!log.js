@@ -17,7 +17,7 @@ logMessages = function(message, client) {
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
         processed++;
-        saveFile(outputData);
+        saveData(outputData, message.guild.id);
         console.log(processed, channel.id, channel.name);
         if (processed === total) {
           message.channel.send("```MESSAGES LOGGED ```");
