@@ -46,7 +46,7 @@ function startQuiz(client, type, obj, id, textChannel) {
 
 function textQuiz(client, obj) {
   const userID = fetchRandom(obj).slice(2,-1);
-  const user = client.users.find(user => user.id == userID);
+  const user = client.users.find(user => user.id === userID);
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
     textQuiz(client, obj);
@@ -55,13 +55,14 @@ function textQuiz(client, obj) {
     return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
+    console.log(e);
     return textQuiz(client, obj);
   }
 }
 
 function linkQuiz(client, obj) {
-  const userID = fetchRandom(obj);
-  const user = client.users.find(user => user.id == userID.slice(2,-1))
+  const userID = fetchRandom(obj).slice(2,-1);
+  const user = client.users.find(user => user.id === userID)
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
   if (!text) {
