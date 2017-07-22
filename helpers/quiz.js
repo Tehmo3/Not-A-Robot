@@ -26,6 +26,7 @@ function startQuiz(client, type, obj, id, textChannel) {
     })
   }
   else if (type === 'link') {
+    console.log(obj.linkObject);
     quiz = linkQuiz(client, obj.linkObject);
     const query = {channelID: id};
     Channel.findOne(query, {"channelID":1}, function(err, channel) {
