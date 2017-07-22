@@ -28,7 +28,7 @@ logMessages = function(message, client) {
       }); //Lets read some messages!
     }
     else {
-      console.log("No perms for", channel.id, channel.id)
+      console.log("No perms for", channel.id, channel.name)
       processed++;
       return;
     }
