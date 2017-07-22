@@ -50,7 +50,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 
 function saveFile(data, id) {
   const query = {channelID: id};
-  Channel.findOne(query, function (err, channel) {
+  Channel.findOne(query, {"channelID":1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
       var newChannel = new Channel({
