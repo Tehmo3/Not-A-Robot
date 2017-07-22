@@ -53,7 +53,6 @@ function textQuiz(client, obj) {
   }
   let text = makeChain(userID, obj);
   while (text instanceof Error) {
-    console.log("Hey!");
     userID = fetchRandom(obj).slice(2,-1);
     user = client.users.find(user => user.id === userID);
     while (!user) {
@@ -62,13 +61,7 @@ function textQuiz(client, obj) {
     }
     text = makeChain(userID, obj);
   }
-  try {
-    return {answer: user.id, question: text, solved: false};
-  }
-  catch (e) {
-    console.log(e);
-    return textQuiz(client, obj);
-  }
+  return {answer: user.id, question: text, solved: false};
 }
 
 function linkQuiz(client, obj) {
@@ -79,9 +72,15 @@ function linkQuiz(client, obj) {
     user = client.users.find(user => user.id === userID);
   }
   const newObj = obj[userID];
-  const text = newObj[Math.floor(Math.random() * newObj.length)];
-  if (text === undefined || text === null) {
-    linkQuiz(client, obj);
+  let text = newObj[Math.floor(Math.random() * newObj.length)];
+  while (text === undefined || text === null) {
+    userID = fetchRandom(obj).slice(2,-1);
+    user = client.users.find(user => user.id === userID);
+    while (!user) {
+      userID = fetchRandom(obj).slice(2,-1);
+      user = client.users.find(user => user.id === userID);
+    }
+    text = newObj[Math.floor(Math.random() * newObj.length)];
   }
   try {
     return {answer: user.id, question: text, solved: false};
