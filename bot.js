@@ -64,6 +64,9 @@ function start() {
   });
 
   client.on('message', message => {
+    if (!message || !message.guild) {
+      return;
+    }
     const messageArray = message.content.split(" ");
     if (messageArray[0][0] == '!') {
       const query = {channelID: message.guild.id}
