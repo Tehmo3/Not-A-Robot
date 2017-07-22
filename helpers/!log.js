@@ -17,7 +17,7 @@ logMessages = function(message, client) {
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
         processed++;
-        saveData(outputData, message.guild.id);
+        saveData(outputData, message.guild.id, message.channel.id);
         console.log(processed, channel.id, channel.name);
         if (processed === total) {
           message.channel.send("```MESSAGES LOGGED ```");
@@ -46,7 +46,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	}
 }
 
-function saveData(data, id) {
+function saveData(data, id, channelID) {
   const query = {channelID: id};
   Channel.findOne(query, {"channelID":1, "messages": 1}, function (err, channel) {
     if (err) { throw err }
@@ -65,8 +65,7 @@ function saveData(data, id) {
       })
     }
     else {
-      if (!channel.messages) { channel.messages = {} }
-      channel.messages[channel.id] = data;
+      channel.messages[channelID] = data;
       channel.lastRefresh = new Date();
       channel.save(function(err) {
         if (err) throw err;
