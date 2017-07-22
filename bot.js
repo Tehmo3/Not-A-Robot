@@ -131,6 +131,7 @@ function start() {
               sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
             }
             catch (e) {
+              console.log(e);
               message.channel.sendMessage(`There's no data for this channel!`);
             }
           }
