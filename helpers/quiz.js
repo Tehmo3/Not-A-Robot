@@ -11,7 +11,7 @@ function startQuiz(client, type, obj, id, textChannel) {
   if (type === 'text') {
     quiz = textQuiz(client, obj.messageObject);
     const query = {channelID: id};
-    Channel.findOne(query, function(err, channel) {
+    Channel.findOne(query, {"channelID":1}, function(err, channel) {
       if (err) { throw err };
       if (!channel) {}
       else {
