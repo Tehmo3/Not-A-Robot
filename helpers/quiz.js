@@ -73,7 +73,7 @@ function linkQuiz(client, obj) {
     return {answer: user.id, question: text, solved: false};
   }
   catch (e) {
-    return textQuiz(client, obj);
+    return linkQuiz(client, obj);
   }
 }
 
