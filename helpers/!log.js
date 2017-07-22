@@ -66,6 +66,7 @@ function saveData(data, id, channelID) {
     }
     else {
       channel.messages[channelID] = data;
+      console.log(channel.messages);
       channel.lastRefresh = new Date();
       channel.save(function(err) {
         if (err) throw err;
