@@ -73,7 +73,6 @@ function start() {
       const messagesString = "messages."+message.channel.id
       let whatFields = {"channelID":1, "channels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1}
       whatFields[messagesString] = 1;
-      console.log(whatFields);
       Channel.findOne(query, whatFields, function(err, channel) {
         if (err) { throw err }
         if (!channel) {
@@ -133,7 +132,6 @@ function start() {
               sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
             }
             catch (e) {
-              console.log(e);
               message.channel.sendMessage(`There's no data for this channel!`);
             }
           }
