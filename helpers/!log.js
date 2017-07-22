@@ -103,7 +103,7 @@ function insertMessages(messages, data,channel) {
 		}
 		last = message;
 	});
-	if (messages.array().length == 0) {
+	if (messages.array().length == 0 || data.numMessages >= process.env.maxMessages) {
 		return [last, false, data];
 	}
 	return [last, true, data];
