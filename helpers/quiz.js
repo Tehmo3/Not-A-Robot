@@ -26,7 +26,6 @@ function startQuiz(client, type, obj, id, textChannel) {
     })
   }
   else if (type === 'link') {
-    console.log(obj.linkObject);
     quiz = linkQuiz(client, obj.linkObject);
     const query = {channelID: id};
     Channel.findOne(query, {"channelID":1}, function(err, channel) {
@@ -65,7 +64,9 @@ function linkQuiz(client, obj) {
   const user = client.users.find(user => user.id == userID.slice(2,-1))
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
+  console.log(text)
   if (!text) {
+    console.log("RECURSE!");
     return linkQuiz(client, obj);
   }
   try {
