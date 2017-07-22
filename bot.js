@@ -70,7 +70,7 @@ function start() {
     const messageArray = message.content.split(" ");
     if (messageArray[0][0] == '!') {
       const query = {channelID: message.guild.id}
-      const messagesString = "channel.messages."+message.channel.id
+      const messagesString = "messages."+message.channel.id
       const whatFields = {"channelID":1, "channels":1,"blacklist":1,messagesString:1,textQuiz:1,linkQuiz:1,lastRefresh:1}
       Channel.findOne(query, whatFields, function(err, channel) {
         if (err) { throw err }
