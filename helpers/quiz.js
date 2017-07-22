@@ -45,8 +45,12 @@ function startQuiz(client, type, obj, id, textChannel) {
 }
 
 function textQuiz(client, obj) {
-  const userID = fetchRandom(obj).slice(2,-1);
-  const user = client.users.find(user => user.id === userID);
+  let userID = fetchRandom(obj).slice(2,-1);
+  let user = client.users.find(user => user.id === userID);
+  while (!user) {
+    userID = fetchRandom(obj).slice(2,-1);
+    user = client.users.find(user => user.id === userID);
+  }
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
     textQuiz(client, obj);
