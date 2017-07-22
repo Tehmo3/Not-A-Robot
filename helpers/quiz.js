@@ -81,7 +81,7 @@ function checkAnswer(client, guess, channel, id, author) {
   if (guessID === null) {
     return;
   }
-  Channel.findOne(query, function(err, databaseChannel) {
+  Channel.findOne(query, {'textQuiz': 1, 'linkQuiz': 1}, function(err, databaseChannel) {
     if (err) { throw err }
     if (!databaseChannel) { return }
     else {
