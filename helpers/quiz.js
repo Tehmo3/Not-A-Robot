@@ -53,6 +53,7 @@ function textQuiz(client, obj) {
   }
   let text = makeChain(userID, obj);
   while (text instanceof Error) {
+    console.log("Hey!");
     userID = fetchRandom(obj).slice(2,-1);
     user = client.users.find(user => user.id === userID);
     while (!user) {
