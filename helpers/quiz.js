@@ -64,9 +64,7 @@ function linkQuiz(client, obj) {
   const user = client.users.find(user => user.id == userID.slice(2,-1))
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
-  console.log(text)
   if (!text) {
-    console.log("RECURSE!");
     linkQuiz(client, obj);
   }
   try {
