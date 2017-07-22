@@ -45,7 +45,7 @@ function allowRole(guildChannel, roleName) {
 
 function allowChannel(guildChannel, roleName) {
   const query = {channelID: guildChannel.guild.id};
-  Channel.findOne(query, {'channels': 1} function (err, channel) {
+  Channel.findOne(query, {'channels': 1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
       guildChannel.channel.sendMessage("```Please !log first```");
