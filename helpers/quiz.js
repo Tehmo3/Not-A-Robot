@@ -53,6 +53,7 @@ function textQuiz(client, obj) {
   }
   let text = makeChain(userID, obj);
   if (text instanceof Error) {
+    console.log("HEY!");
     textQuiz(client, obj);
   }
   try {
@@ -65,11 +66,15 @@ function textQuiz(client, obj) {
 }
 
 function linkQuiz(client, obj) {
-  const userID = fetchRandom(obj).slice(2,-1);
-  const user = client.users.find(user => user.id === userID)
+  let userID = fetchRandom(obj).slice(2,-1);
+  let user = client.users.find(user => user.id === userID);
+  while (!user) {
+    userID = fetchRandom(obj).slice(2,-1);
+    user = client.users.find(user => user.id === userID);
+  }
   const newObj = obj[userID];
   const text = newObj[Math.floor(Math.random() * newObj.length)];
-  if (!text) {
+  if (text === undefined || text === null) {
     linkQuiz(client, obj);
   }
   try {
