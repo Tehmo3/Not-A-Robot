@@ -1,10 +1,12 @@
 const fs = require("fs");
 const mongoose = require("mongoose")
+const guildSchema = require('../schemas/guild.js');
+const Guild = mongoose.model("Guild", guildSchema);
+
 const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
 logMessages = function(message, client) {
-  let overallData = {};
 	console.log("reading messages");
   let processed = 0;
   const total = message.guild.channels.array().length;
@@ -17,11 +19,10 @@ logMessages = function(message, client) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
-        overallData[channel.id] = outputData;
         processed++;
         console.log(processed, channel.id, channel.name);
+        saveFile(outputData, message.guild.id, channel.id);
         if (processed === total) {
-          saveFile(overallData, message.guild.id);
           message.channel.send("```MESSAGES LOGGED ```");
           console.log("All messages read")
         }
@@ -48,29 +49,49 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	}
 }
 
-function saveFile(data, id) {
-  const query = {channelID: id};
-  Channel.findOne(query, {"channelID":1}, function (err, channel) {
-    if (err) { throw err }
+function saveFile(data, guildID, channelID) {
+  const query = {guildID, channelID};
+  Channel.findOne(query, {"guildID":1}, function (err, channel) {
+    if (err) throw err
     if (!channel) {
-      var newChannel = new Channel({
-        channelID: id,
-        channels: ['general'],
-        blacklist: ['Normies'],
-        messages: data,
-        refreshRate: 600000000,
-        lastRefresh: new Date()
-      });
-      newChannel.save(function (err) {
+      let newChannel = new Channel({
+        guildID,
+        channelID,
+        messages: data
+      })
+      newChannel.save(function(err) {
         if (err) throw err;
-        console.log("data saved for channel", channel.id);
+        Guild.findOne({guildID}, {"guildID":1,"channels":1}, function (err, guild) {
+          if (err) throw err
+          if (!guild) {
+            throw new Error("No Guild!!!");
+          }
+          guild.channels.push(channelID);
+          guild.lastRefresh = new Date();
+          guild.save(function(err) {
+            if (err) throw err
+            console.log("Guild data updated");
+          })
+        })
+        console.log("Data saved for channel", channelID);
       })
     }
     else {
       channel.messages = data;
-      channel.lastRefresh = new Date();
       channel.save(function(err) {
         if (err) throw err;
+        Guild.findOne({guildID}, {"guildID":1,"channels":1}, function (err, guild) {
+          if (err) throw err
+          if (!guild) {
+            throw new Error("No Guild!!!");
+          }
+          guild.channels.push(channelID);
+          guild.lastRefresh = new Date();
+          guild.save(function(err) {
+            if (err) throw err
+            console.log("Guild data updated");
+          })
+        })
         console.log("Messages updated");
       })
     }
@@ -103,7 +124,7 @@ function insertMessages(messages, data,channel) {
 		}
 		last = message;
 	});
-	if (messages.array().length == 0 || data.numMessages >= process.env.maxMessages) {
+	if (messages.array().length == 0) {
 		return [last, false, data];
 	}
 	return [last, true, data];
