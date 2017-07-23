@@ -79,7 +79,7 @@ function saveFile(data, guildID, channelID) {
     else {
       channel.messages = data;
       channel.save(function(err) {
-        if err throw err;
+        if (err) throw err;
         Guild.findOne({guildID}, {"guildID":1,"channels":1}, function (err, guild) {
           if (err) throw err
           if (!guild) {
