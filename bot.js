@@ -159,19 +159,19 @@ function start() {
               if (!channel) {
                 message.channel.send(`There's no data for this channel!`);
               }
-              if (messageArray[0] === "!text") {
+              else if (messageArray[0] === "!text") {
                 sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
               }
-              if (messageArray[0] === "!link") {
+              else if (messageArray[0] === "!link") {
                 sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
               }
-              if (messageArray[0] === "!song") {
+              else if (messageArray[0] === "!song") {
                 sendSong(message.channel, channel.messages.songObject);
               }
-              if (messageArray[0] === "!whosaidthat") {
+              else if (messageArray[0] === "!whosaidthat") {
                 startQuiz(client, 'text', channel.messages, message.guild.id, message.channel);
               }
-              if(messageArray[0] === "!wholinkedthat") {
+              else if(messageArray[0] === "!wholinkedthat") {
                 startQuiz(client, 'link', channel.messages, message.guild.id, message.channel);
               }
             })
