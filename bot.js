@@ -81,7 +81,6 @@ function start() {
             allowedChannels: [message.channel.name],
             channels: [null],
             blacklist: ['Normies'],
-            messages: {num_messages: 0},
             refreshRate: 0,
             lastRefresh: null
           });
