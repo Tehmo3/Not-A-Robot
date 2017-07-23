@@ -41,7 +41,7 @@ function start() {
   const guildSchema = require('./schemas/guild.js');
   const Guild = mongoose.model("Guild", guildSchema);
 
-  const channelSchema = require('../schemas/channel.js');
+  const channelSchema = require('./schemas/channel.js');
   const Channel = mongoose.model("Channel", channelSchema);
 
 
