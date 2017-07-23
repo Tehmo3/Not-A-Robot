@@ -37,8 +37,12 @@ function start() {
   mongoose.connection.on('error', function(err) {
     console.error('MongoDB error: %s', err);
   });
-  var guildSchema = require('./schemas/guild.js');
-  var Guild = mongoose.model("Guild", guildSchema);
+
+  const guildSchema = require('./schemas/guild.js');
+  const Guild = mongoose.model("Guild", guildSchema);
+
+  const channelSchema = require('../schemas/channel.js');
+  const Channel = mongoose.model("Channel", channelSchema);
 
 
   const client = new Discord.Client();
@@ -52,11 +56,6 @@ function start() {
     else {
       console.log("Logged in!");
     }
-  }
-
-  function getIfAdmin(userID, guild) {
-    const members = guild.members.find(member => member.id === userID)
-    return members.hasPermission('MANAGE_MESSAGES');
   }
 
   client.on('guildCreate', guild => {
@@ -91,12 +90,12 @@ function start() {
           })
         }
         else {
-          if (message.member.roles.find(role => guild.blacklist.indexOf(role.name) !== -1)) {
+          if (message.member.roles.find(role => guild.blacklist.indexOf(role.name) !== -1)) { //Check if user has a blacklisted role
             message.channel.send("```Sorry. You don't have permission to do that. ```");
             console.log("That user does not have permission for that");
             return;
           }
-          else if(guild.allowedChannels.indexOf(message.channel.name) === -1) {
+          else if(guild.allowedChannels.indexOf(message.channel.name) === -1) { //Check if the channel is allowed
             message.channel.send("```Sorry, this channel does not have permission to use the bot!```");
             console.log("not a valid channel")
             return;
@@ -117,30 +116,6 @@ function start() {
               var time = msToTime(guild.refreshRate - Math.abs(now.getTime() - guild.lastRefresh.getTime()));
               message.channel.send(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
               console.log("Cant log too quick!")
-            }
-          }
-          if (messageArray[0] === "!text") {
-            try {
-              sendText(client, message.channel, messageArray.slice(1).join(" "), guild.messages[message.channel.id].messageObject);
-            }
-            catch (e) {
-              message.channel.send(`There's no data for this channel!`);
-            }
-          }
-          if (messageArray[0] === "!link") {
-            try {
-              sendLink(client, message.channel, messageArray.slice(1).join(" "), guild.messages[message.channel.id].linkObject);
-            }
-            catch (e) {
-              message.channel.send(`There's no data for this channel!`);
-            }
-          }
-          if (messageArray[0] === "!song") {
-            try {
-              sendSong(message.channel, guild.messages[message.channel.id].songObject);
-            }
-            catch (e) {
-              message.channel.send(`There's no data for this channel!`);
             }
           }
           if (messageArray[0] === "!advice") {
@@ -174,30 +149,40 @@ function start() {
             }
             adminCommands.disallowChannel(message, messageArray.slice(1));
           }
-          if (messageArray[0] === "!whosaidthat") {
-            try {
-              startQuiz(client, 'text', guild.messages[message.channel.id], message.guild.id, message.channel);
-            }
-            catch (e) {
-              message.channel.send(`There's no data for this channel!`);
-            }
-          }
-          if(messageArray[0] === "!wholinkedthat") {
-            try {
-              startQuiz(client, 'link', guild.messages[message.channel.id], message.guild.id, message.channel);
-            }
-            catch (e) {
-              message.channel.send(`There's no data for this channel!`);
-            }
-          }
-          else if (messageArray[0] === '!answer'){
+          if (messageArray[0] === '!answer'){
             let sliced = messageArray.slice(1)
             checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.member.displayName)
           }
+          Channel.findOne({guildID: message.guild.id, channelID: message.channel.id}, function(err, channel) {
+            if (err) throw err;
+            if (!channel) {
+              message.channel.send(`There's no data for this channel!`);
+            }
+            if (messageArray[0] === "!text") {
+              sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
+            }
+            if (messageArray[0] === "!link") {
+              sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages.linkObject);
+            }
+            if (messageArray[0] === "!song") {
+              sendSong(message.channel, channel.messages.songObject);
+            }
+            if (messageArray[0] === "!whosaidthat") {
+              startQuiz(client, 'text', channel.messages, message.guild.id, message.channel);
+            }
+            if(messageArray[0] === "!wholinkedthat") {
+              startQuiz(client, 'link', channel.messages, message.guild.id, message.channel);
+            }
+          })
         }
       })
     }
   })
+
+  function getIfAdmin(userID, guild) {
+    const members = guild.members.find(member => member.id === userID)
+    return members.hasPermission('MANAGE_MESSAGES');
+  }
 
   function msToTime(ms) {
     var d, h, m, s;
