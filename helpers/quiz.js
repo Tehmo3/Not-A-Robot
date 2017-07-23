@@ -10,8 +10,8 @@ function startQuiz(client, type, obj, id, textChannel) {
   let quiz = null;
   if (type === 'text') {
     quiz = textQuiz(client, obj.messageObject);
-    const query = {channelID: id};
-    Channel.findOne(query, {"channelID":1}, function(err, channel) {
+    const query = {guildID: id};
+    Channel.findOne(query, {"guildID":1}, function(err, channel) {
       if (err) { throw err };
       if (!channel) {}
       else {
@@ -27,8 +27,8 @@ function startQuiz(client, type, obj, id, textChannel) {
   }
   else if (type === 'link') {
     quiz = linkQuiz(client, obj.linkObject);
-    const query = {channelID: id};
-    Channel.findOne(query, {"channelID":1}, function(err, channel) {
+    const query = {guildID: id};
+    Channel.findOne(query, {"guildID":1}, function(err, channel) {
       if (err) { throw err };
       if (!channel) { return }
       else {
@@ -91,7 +91,7 @@ function linkQuiz(client, obj) {
 }
 
 function checkAnswer(client, guess, channel, id, author) {
-  const query = {channelID: id};
+  const query = {guildID: id};
   let guessID = getID(client, channel, guess);
   if (guessID === null) {
     return;

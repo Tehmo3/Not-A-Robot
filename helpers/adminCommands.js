@@ -3,7 +3,7 @@ const channelSchema = require('../schemas/channel.js');
 const Channel = mongoose.model("Channel", channelSchema);
 
 function disallowRole(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
+  const query = {guildID: guildChannel.guild.id};
   Channel.findOne(query, {'blacklist': 1} ,function (err, channel) {
     if (err) { throw err }
     if (!channel) {
@@ -23,7 +23,7 @@ function disallowRole(guildChannel, roleName) {
 }
 
 function allowRole(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
+  const query = {guildID: guildChannel.guild.id};
   Channel.findOne(query, {'blacklist': 1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
@@ -44,7 +44,7 @@ function allowRole(guildChannel, roleName) {
 }
 
 function allowChannel(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
+  const query = {guildID: guildChannel.guild.id};
   Channel.findOne(query, {'channels': 1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {
@@ -64,7 +64,7 @@ function allowChannel(guildChannel, roleName) {
 }
 
 function disallowChannel(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
+  const query = {guildID: guildChannel.guild.id};
   Channel.findOne(query, {'channels': 1}, function (err, channel) {
     if (err) { throw err }
     if (!channel) {

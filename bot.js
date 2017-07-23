@@ -69,15 +69,15 @@ function start() {
     }
     const messageArray = message.content.split(" ");
     if (messageArray[0][0] == '!') {
-      const query = {channelID: message.guild.id}
+      const query = {guildID: message.guild.id}
       const messagesString = "messages."+message.channel.id
-      let whatFields = {"channelID":1, "channels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1,refreshRate:1}
+      let whatFields = {"guildID":1, "channels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1,refreshRate:1}
       whatFields[messagesString] = 1;
       Channel.findOne(query, whatFields, function(err, channel) {
         if (err) { throw err }
         if (!channel) {
           var newChannel = new Channel({
-            channelID: message.guild.id,
+            guildID: message.guild.id,
             channels: [message.channel.name],
             blacklist: ['Normies'],
             messages: {num_messages: 0},
