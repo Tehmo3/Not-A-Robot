@@ -58,7 +58,7 @@ function saveFile(data, id) {
         channels: ['general'],
         blacklist: ['Normies'],
         messages: data,
-        refreshRate: 600000000,
+        refreshRate: 0,
         lastRefresh: new Date()
       });
       newChannel.save(function (err) {

@@ -81,7 +81,7 @@ function start() {
             channels: [message.channel.name],
             blacklist: ['Normies'],
             messages: {num_messages: 0},
-            refreshRate: 600000000,
+            refreshRate: 0,
             lastRefresh: null
           });
           newChannel.save(function (err) {
