@@ -37,8 +37,8 @@ function start() {
   mongoose.connection.on('error', function(err) {
     console.error('MongoDB error: %s', err);
   });
-  var channelSchema = require('./schemas/channel.js');
-  var Channel = mongoose.model("Channel", channelSchema);
+  var guildSchema = require('./schemas/guild.js');
+  var Guild = mongoose.model("Guild", guildSchema);
 
 
   const client = new Discord.Client();
@@ -71,32 +71,32 @@ function start() {
     if (messageArray[0][0] == '!') {
       const query = {guildID: message.guild.id}
       const messagesString = "messages."+message.channel.id
-      let whatFields = {"guildID":1, "channels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1,refreshRate:1}
+      let whatFields = {"guildID":1, "allowedChannels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1,refreshRate:1}
       whatFields[messagesString] = 1;
-      Channel.findOne(query, whatFields, function(err, channel) {
+      Guild.findOne(query, whatFields, function(err, guild) {
         if (err) { throw err }
-        if (!channel) {
-          var newChannel = new Channel({
+        if (!guild) {
+          var newGuild = new Guild({
             guildID: message.guild.id,
-            channels: [message.channel.name],
+            allowedChannels: [message.channel.name],
             blacklist: ['Normies'],
             messages: {num_messages: 0},
             refreshRate: 0,
             lastRefresh: null
           });
-          newChannel.save(function (err) {
+          newGuild.save(function (err) {
             if (err) throw err;
-            console.log("data saved for channel", message.guild.id);
+            console.log("data saved for Guild", message.guild.id);
             message.channel.send("```Sorry about that.. Call !log now please!```");
           })
         }
         else {
-          if (message.member.roles.find(role => channel.blacklist.indexOf(role.name) !== -1)) {
+          if (message.member.roles.find(role => guild.blacklist.indexOf(role.name) !== -1)) {
             message.channel.send("```Sorry. You don't have permission to do that. ```");
             console.log("That user does not have permission for that");
             return;
           }
-          else if(channel.channels.indexOf(message.channel.name) === -1) {
+          else if(guild.allowedChannels.indexOf(message.channel.name) === -1) {
             message.channel.send("```Sorry, this channel does not have permission to use the bot!```");
             console.log("not a valid channel")
             return;
@@ -108,20 +108,20 @@ function start() {
               return;
             }
             let now = new Date();
-            if (!channel.lastRefresh || Math.abs(now.getTime() - channel.lastRefresh.getTime()) > channel.refreshRate) {
+            if (!guild.lastRefresh || Math.abs(now.getTime() - guild.lastRefresh.getTime()) > guild.refreshRate) {
               message.channel.send("```Logging messages, this may take a while. ```");
               logMessages(message, client)
             }
             else {
-              console.log(channel.refreshRate, Math.abs(now.getTime() - channel.lastRefresh.getTime()))
-              var time = msToTime(channel.refreshRate - Math.abs(now.getTime() - channel.lastRefresh.getTime()));
+              console.log(guild.refreshRate, Math.abs(now.getTime() - guild.lastRefresh.getTime()))
+              var time = msToTime(guild.refreshRate - Math.abs(now.getTime() - guild.lastRefresh.getTime()));
               message.channel.send(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
               console.log("Cant log too quick!")
             }
           }
           if (messageArray[0] === "!text") {
             try {
-              sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].messageObject);
+              sendText(client, message.channel, messageArray.slice(1).join(" "), guild.messages[message.channel.id].messageObject);
             }
             catch (e) {
               message.channel.send(`There's no data for this channel!`);
@@ -129,7 +129,7 @@ function start() {
           }
           if (messageArray[0] === "!link") {
             try {
-              sendLink(client, message.channel, messageArray.slice(1).join(" "), channel.messages[message.channel.id].linkObject);
+              sendLink(client, message.channel, messageArray.slice(1).join(" "), guild.messages[message.channel.id].linkObject);
             }
             catch (e) {
               message.channel.send(`There's no data for this channel!`);
@@ -137,7 +137,7 @@ function start() {
           }
           if (messageArray[0] === "!song") {
             try {
-              sendSong(message.channel, channel.messages[message.channel.id].songObject);
+              sendSong(message.channel, guild.messages[message.channel.id].songObject);
             }
             catch (e) {
               message.channel.send(`There's no data for this channel!`);
@@ -176,7 +176,7 @@ function start() {
           }
           if (messageArray[0] === "!whosaidthat") {
             try {
-              startQuiz(client, 'text', channel.messages[message.channel.id], message.guild.id, message.channel);
+              startQuiz(client, 'text', guild.messages[message.channel.id], message.guild.id, message.channel);
             }
             catch (e) {
               message.channel.send(`There's no data for this channel!`);
@@ -184,7 +184,7 @@ function start() {
           }
           if(messageArray[0] === "!wholinkedthat") {
             try {
-              startQuiz(client, 'link', channel.messages[message.channel.id], message.guild.id, message.channel);
+              startQuiz(client, 'link', guild.messages[message.channel.id], message.guild.id, message.channel);
             }
             catch (e) {
               message.channel.send(`There's no data for this channel!`);

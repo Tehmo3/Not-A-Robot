@@ -1,7 +1,7 @@
 const fs = require("fs");
 const mongoose = require("mongoose")
-const channelSchema = require('../schemas/channel.js');
-const Channel = mongoose.model("Channel", channelSchema);
+const guildSchema = require('../schemas/guild.js');
+const Guild = mongoose.model("Guild", guildSchema);
 
 logMessages = function(message, client) {
   let overallData = {};
@@ -50,26 +50,15 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 
 function saveFile(data, id) {
   const query = {guildID: id};
-  Channel.findOne(query, {"guildID":1}, function (err, channel) {
+  Guild.findOne(query, {"guildID":1}, function (err, guild) {
     if (err) { throw err }
-    if (!channel) {
-      var newChannel = new Channel({
-        guildID: id,
-        channels: ['general'],
-        blacklist: ['Normies'],
-        messages: data,
-        refreshRate: 0,
-        lastRefresh: new Date()
-      });
-      newChannel.save(function (err) {
-        if (err) throw err;
-        console.log("data saved for channel", channel.id);
-      })
+    if (!guild) {
+      throw new Error("No channel to save to!");
     }
     else {
-      channel.messages = data;
-      channel.lastRefresh = new Date();
-      channel.save(function(err) {
+      guild.messages = data;
+      guild.lastRefresh = new Date();
+      guild.save(function(err) {
         if (err) throw err;
         console.log("Messages updated");
       })

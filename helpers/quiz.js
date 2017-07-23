@@ -3,20 +3,20 @@ const fs = require("fs"),
     makeChain = require('./!text.js').makeChain,
     getID = require('./!text.js').getID;
 const mongoose = require("mongoose");
-const channelSchema = require('../schemas/channel.js');
-const Channel = mongoose.model("Channel", channelSchema);
+const guildSchema = require('../schemas/guild.js');
+const Guild = mongoose.model("Guild", guildSchema);
 
 function startQuiz(client, type, obj, id, textChannel) {
   let quiz = null;
   if (type === 'text') {
     quiz = textQuiz(client, obj.messageObject);
     const query = {guildID: id};
-    Channel.findOne(query, {"guildID":1}, function(err, channel) {
+    guild.findOne(query, {"guildID":1}, function(err, guild) {
       if (err) { throw err };
-      if (!channel) {}
+      if (!guild) {}
       else {
-        channel.textQuiz = quiz;
-        channel.save(function(err) {
+        guild.textQuiz = quiz;
+        guild.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
           console.log(quiz);
@@ -28,12 +28,12 @@ function startQuiz(client, type, obj, id, textChannel) {
   else if (type === 'link') {
     quiz = linkQuiz(client, obj.linkObject);
     const query = {guildID: id};
-    Channel.findOne(query, {"guildID":1}, function(err, channel) {
+    guild.findOne(query, {"guildID":1}, function(err, guild) {
       if (err) { throw err };
-      if (!channel) { return }
+      if (!guild) { return }
       else {
-        channel.linkQuiz = quiz;
-        channel.save(function(err) {
+        guild.linkQuiz = quiz;
+        guild.save(function(err) {
           if (err) throw err;
           console.log("quiz updated");
           console.log(quiz);
@@ -96,19 +96,19 @@ function checkAnswer(client, guess, channel, id, author) {
   if (guessID === null) {
     return;
   }
-  Channel.findOne(query, {'textQuiz': 1, 'linkQuiz': 1}, function(err, databaseChannel) {
+  guild.findOne(query, {'textQuiz': 1, 'linkQuiz': 1}, function(err, guild) {
     if (err) { throw err }
-    if (!databaseChannel) { return }
+    if (!guild) { return }
     else {
-      if (databaseChannel.textQuiz && guessID === databaseChannel.textQuiz.answer) {
+      if (guild.textQuiz && guessID === guild.textQuiz.answer) {
         channel.send(`CORRECT! Congratulations ${author}`);
-        databaseChannel.textQuiz = null;
+        guild.textQuiz = null;
       }
-      else if (databaseChannel.linkQuiz && guessID === databaseChannel.linkQuiz.answer) {
+      else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
         channel.send(`CORRECT! Congratulations ${author}`);
-        databaseChannel.songQuiz = null;
+        guild.songQuiz = null;
       }
-      databaseChannel.save(function(err) {
+      guild.save(function(err) {
         if (err) throw err;
         console.log("Quiz updated");
       })
