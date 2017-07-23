@@ -21,7 +21,7 @@ logMessages = function(message, client) {
       fetchMoreMessages(channel, null, data, true, function(outputData) {
         processed++;
         console.log(processed, channel.id, channel.name);
-        saveFile(overallData, message.guild.id, channel.id);
+        saveFile(outputData, message.guild.id, channel.id);
         if (processed === total) {
           message.channel.send("```MESSAGES LOGGED ```");
           console.log("All messages read")
