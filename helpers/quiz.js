@@ -65,6 +65,7 @@ function textQuiz(client, obj) {
 }
 
 function linkQuiz(client, obj) {
+  console.log(obj);
   let userID = fetchRandom(obj).slice(2,-1);
   let user = client.users.find(user => user.id === userID);
   while (!user) {
