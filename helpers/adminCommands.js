@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
-const channelSchema = require('../schemas/channel.js');
-const Channel = mongoose.model("Channel", channelSchema);
+const guildSchema = require('../schemas/guild.js');
+const Guild = mongoose.model("Guild", guildSchema);
 
 function disallowRole(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
-  Channel.findOne(query, {'blacklist': 1} ,function (err, channel) {
+  const query = {guildID: guildChannel.guild.id};
+  Guild.findOne(query, {'blacklist': 1} ,function (err, guild) {
     if (err) { throw err }
-    if (!channel) {
+    if (!guild) {
       guildChannel.channel.send("```Please !log first```");
     }
     else {
-      if (channel.blacklist.indexOf(roleName) === -1) {
-        channel.blacklist.push(roleName);
+      if (guild.blacklist.indexOf(roleName) === -1) {
+        guild.blacklist.push(roleName);
       }
-      channel.save(function(err) {
+      guild.save(function(err) {
         if (err) throw err;
         guildChannel.channel.send("```Role does not have permission to use bot.```");
         console.log("Role denied!");
@@ -23,18 +23,18 @@ function disallowRole(guildChannel, roleName) {
 }
 
 function allowRole(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
-  Channel.findOne(query, {'blacklist': 1}, function (err, channel) {
+  const query = {guildID: guildChannel.guild.id};
+  Guild.findOne(query, {'blacklist': 1}, function (err, guild) {
     if (err) { throw err }
-    if (!channel) {
+    if (!guild) {
       guildChannel.channel.send("```Please !log first```");
     }
     else {
-      const index = channel.blacklist.indexOf(roleName);
+      const index = guild.blacklist.indexOf(roleName);
       if (index > -1) {
-        channel.blacklist.splice(index, 1);
+        guild.blacklist.splice(index, 1);
       }
-      channel.save(function(err) {
+      guild.save(function(err) {
         if (err) throw err;
         guildChannel.channel.send("```Role has permission to use bot.```");
         console.log("Role allowed!!");
@@ -44,17 +44,17 @@ function allowRole(guildChannel, roleName) {
 }
 
 function allowChannel(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
-  Channel.findOne(query, {'channels': 1}, function (err, channel) {
+  const query = {guildID: guildChannel.guild.id};
+  Guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
     if (err) { throw err }
-    if (!channel) {
+    if (!guild) {
       guildChannel.channel.send("```Please !log first```");
     }
     else {
-      if (channel.channels.indexOf(roleName) === -1) {
-        channel.channels.push(roleName);
+      if (guild.allowedChannels.indexOf(roleName) === -1) {
+        guild.allowedChannels.push(roleName);
       }
-      channel.save(function(err) {
+      guild.save(function(err) {
         if (err) throw err;
         guildChannel.channel.send("```Channel may now use the bot!```");
         console.log("Channel allowed");
@@ -64,18 +64,18 @@ function allowChannel(guildChannel, roleName) {
 }
 
 function disallowChannel(guildChannel, roleName) {
-  const query = {channelID: guildChannel.guild.id};
-  Channel.findOne(query, {'channels': 1}, function (err, channel) {
+  const query = {guildID: guildChannel.guild.id};
+  Guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
     if (err) { throw err }
-    if (!channel) {
+    if (!guild) {
       guildChannel.channel.send("```Please !log first```");
     }
     else {
-      const index = channel.channels.indexOf(roleName);
-      if (index > -1 && channel.channels.length > 1) {
-        channel.channels.splice(index, 1);
+      const index = guild.allowedChannels.indexOf(roleName);
+      if (index > -1 && guild.allowedChannels.length > 1) {
+        guild.allowedChannels.splice(index, 1);
       }
-      channel.save(function(err) {
+      guild.save(function(err) {
         if (err) throw err;
         guildChannel.channel.send("```Channel may no longer use the bot!```");
         console.log("Channel disallowed");
