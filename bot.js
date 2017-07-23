@@ -80,7 +80,7 @@ function start() {
             allowedChannels: [message.channel.name],
             channels: [null],
             blacklist: [null],
-            refreshRate: 0,
+            refreshRate: 600000000,
             lastRefresh: null
           });
           newGuild.save(function (err) {
