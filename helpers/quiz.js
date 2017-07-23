@@ -11,7 +11,7 @@ function startQuiz(client, type, obj, id, textChannel) {
   if (type === 'text') {
     quiz = textQuiz(client, obj.messageObject);
     const query = {guildID: id};
-    guild.findOne(query, {"guildID":1}, function(err, guild) {
+    Guild.findOne(query, {"guildID":1}, function(err, guild) {
       if (err) { throw err };
       if (!guild) {}
       else {
@@ -28,7 +28,7 @@ function startQuiz(client, type, obj, id, textChannel) {
   else if (type === 'link') {
     quiz = linkQuiz(client, obj.linkObject);
     const query = {guildID: id};
-    guild.findOne(query, {"guildID":1}, function(err, guild) {
+    Guild.findOne(query, {"guildID":1}, function(err, guild) {
       if (err) { throw err };
       if (!guild) { return }
       else {
@@ -96,7 +96,7 @@ function checkAnswer(client, guess, channel, id, author) {
   if (guessID === null) {
     return;
   }
-  guild.findOne(query, {'textQuiz': 1, 'linkQuiz': 1}, function(err, guild) {
+  Guild.findOne(query, {'textQuiz': 1, 'linkQuiz': 1}, function(err, guild) {
     if (err) { throw err }
     if (!guild) { return }
     else {
