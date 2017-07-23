@@ -65,12 +65,11 @@ function textQuiz(client, obj) {
 }
 
 function linkQuiz(client, obj) {
-  console.log(obj);
-  let userID = fetchRandom(obj).slice(2,-1);
-  let user = client.users.find(user => user.id === userID);
+  let userID = fetchRandom(obj);
+  let user = client.users.find(user => user.id === userID.slice(2,-1));
   while (!user) {
-    userID = fetchRandom(obj).slice(2,-1);
-    user = client.users.find(user => user.id === userID);
+    userID = fetchRandom(obj);
+    user = client.users.find(user => user.id === userID.slice(2,-1));
   }
   const newObj = obj[userID];
   let text = newObj[Math.floor(Math.random() * newObj.length)];
