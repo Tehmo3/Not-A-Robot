@@ -52,7 +52,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 function saveFile(data, guildID, channelID) {
   const query = {guildID, channelID};
   Channel.findOne(query, {"guildID":1}, function (err, channel) {
-    if (err) { throw err }
+    if (err) throw err
     if (!channel) {
       let newChannel = new Channel({
         guildID,
@@ -61,13 +61,37 @@ function saveFile(data, guildID, channelID) {
       })
       newChannel.save(function(err) {
         if (err) throw err;
+        Guild.findOne({guildID}, {"guildID":1,"channels":1}, function (err, guild) {
+          if (err) throw err
+          if (!guild) {
+            throw new Error("No Guild!!!");
+          }
+          guild.channels.push(channelID);
+          guild.lastRefresh = new Date();
+          guild.save(function(err) {
+            if (err) throw err
+            console.log("Guild data updated");
+          })
+        })
         console.log("Data saved for channel", channelID);
       })
     }
     else {
       channel.messages = data;
       channel.save(function(err) {
-        if (err) throw err;
+        if err throw err;
+        Guild.findOne({guildID}, {"guildID":1,"channels":1}, function (err, guild) {
+          if (err) throw err
+          if (!guild) {
+            throw new Error("No Guild!!!");
+          }
+          guild.channels.push(channelID);
+          guild.lastRefresh = new Date();
+          guild.save(function(err) {
+            if (err) throw err
+            console.log("Guild data updated");
+          })
+        })
         console.log("Messages updated");
       })
     }
