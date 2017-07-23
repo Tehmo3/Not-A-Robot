@@ -80,7 +80,7 @@ function start() {
             guildID: message.guild.id,
             allowedChannels: [message.channel.name],
             channels: [null],
-            blacklist: ['Normies'],
+            blacklist: [null],
             refreshRate: 0,
             lastRefresh: null
           });
