@@ -3,8 +3,10 @@ const mongoose = require("mongoose")
 const guildSchema = require('../schemas/guild.js');
 const Guild = mongoose.model("Guild", guildSchema);
 
+const channelSchema = require('../schemas/channel.js');
+const Channel = mongoose.model("Channel", channelSchema);
+
 logMessages = function(message, client) {
-  let overallData = {};
 	console.log("reading messages");
   let processed = 0;
   const total = message.guild.channels.array().length;
@@ -17,11 +19,10 @@ logMessages = function(message, client) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       fetchMoreMessages(channel, null, data, true, function(outputData) {
-        overallData[channel.id] = outputData;
         processed++;
         console.log(processed, channel.id, channel.name);
+        saveFile(overallData, message.guild.id, channel.id);
         if (processed === total) {
-          saveFile(overallData, message.guild.id);
           message.channel.send("```MESSAGES LOGGED ```");
           console.log("All messages read")
         }
@@ -48,17 +49,24 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	}
 }
 
-function saveFile(data, id) {
-  const query = {guildID: id};
-  Guild.findOne(query, {"guildID":1}, function (err, guild) {
+function saveFile(data, guildID, channelID) {
+  const query = {guildID, channelID};
+  Channel.findOne(query, {"guildID":1}, function (err, channel) {
     if (err) { throw err }
-    if (!guild) {
-      throw new Error("No channel to save to!");
+    if (!channel) {
+      let newChannel = new Channel({
+        guildID,
+        channelID,
+        messages: data
+      })
+      newChannel.save(function(err) {
+        if (err) throw err;
+        console.log("Data saved for channel", channelID);
+      })
     }
     else {
-      guild.messages = data;
-      guild.lastRefresh = new Date();
-      guild.save(function(err) {
+      channel.messages = data;
+      channel.save(function(err) {
         if (err) throw err;
         console.log("Messages updated");
       })

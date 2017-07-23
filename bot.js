@@ -79,6 +79,7 @@ function start() {
           var newGuild = new Guild({
             guildID: message.guild.id,
             allowedChannels: [message.channel.name],
+            channels: [null],
             blacklist: ['Normies'],
             messages: {num_messages: 0},
             refreshRate: 0,

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 module.exports = new Schema({
   guildID: String,
   allowedChannels: [String],
+  channels: [String],
   blacklist: [String],
   messages: Schema.Types.Mixed,
   textQuiz: Schema.Types.Mixed,
