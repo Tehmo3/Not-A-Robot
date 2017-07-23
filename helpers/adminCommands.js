@@ -4,7 +4,7 @@ const Guild = mongoose.model("Guild", guildSchema);
 
 function disallowRole(guildChannel, roleName) {
   const query = {guildID: guildChannel.guild.id};
-  guild.findOne(query, {'blacklist': 1} ,function (err, guild) {
+  Guild.findOne(query, {'blacklist': 1} ,function (err, guild) {
     if (err) { throw err }
     if (!guild) {
       guildChannel.channel.send("```Please !log first```");
@@ -24,7 +24,7 @@ function disallowRole(guildChannel, roleName) {
 
 function allowRole(guildChannel, roleName) {
   const query = {guildID: guildChannel.guild.id};
-  guild.findOne(query, {'blacklist': 1}, function (err, guild) {
+  Guild.findOne(query, {'blacklist': 1}, function (err, guild) {
     if (err) { throw err }
     if (!guild) {
       guildChannel.channel.send("```Please !log first```");
@@ -45,7 +45,7 @@ function allowRole(guildChannel, roleName) {
 
 function allowChannel(guildChannel, roleName) {
   const query = {guildID: guildChannel.guild.id};
-  guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
+  Guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
     if (err) { throw err }
     if (!guild) {
       guildChannel.channel.send("```Please !log first```");
@@ -65,7 +65,7 @@ function allowChannel(guildChannel, roleName) {
 
 function disallowChannel(guildChannel, roleName) {
   const query = {guildID: guildChannel.guild.id};
-  guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
+  Guild.findOne(query, {'allowedChannels': 1}, function (err, guild) {
     if (err) { throw err }
     if (!guild) {
       guildChannel.channel.send("```Please !log first```");
