@@ -17,7 +17,7 @@ function sendText(client, channel, username, obj) {
 
     const randomSentence = makeChain(id, obj);
     if (randomSentence instanceof Error) {
-      channel.send(randomSentence)
+      channel.send("No data for that user in this channel")
       .then(message => console.log(`Sent error. No data for user`))
       .catch(console.error);
       return;
