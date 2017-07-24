@@ -15,7 +15,13 @@ function sendText(client, channel, username, obj) {
       return;
     }
 
-    const randomSentence = makeChain(id, obj)
+    const randomSentence = makeChain(id, obj);
+    if (randomSentence instanceof Error) {
+      channel.send(randomSentence)
+      .then(message => console.log(`Sent error. No data for user`))
+      .catch(console.error);
+      return;
+    }
 
     channel.send(randomSentence+ " - " + username + " "+ date.getFullYear())
     .then(message => console.log(`Sent message: ${message.content}`))
@@ -50,9 +56,14 @@ function makeChain(user, obj) {
   let randomSentence = '';
 	if (user && obj) {
 		user = '<@' + user + '>'
-		const text = obj[user].join(" ");
-		const fakeSentenceGenerator = new Text(text);
-		randomSentence = fakeSentenceGenerator.makeSentence(null, settings);
+    if (obj[user]) {
+      const text = obj[user].join(" ");
+      const fakeSentenceGenerator = new Text(text);
+      randomSentence = fakeSentenceGenerator.makeSentence(null, settings);
+    }
+    else {
+      return new Error("No data in this channel for that user");
+    }
 	}
     return randomSentence
 }
