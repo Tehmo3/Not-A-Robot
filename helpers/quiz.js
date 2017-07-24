@@ -71,8 +71,7 @@ function linkQuiz(client, obj) {
     userID = fetchRandom(obj);
     user = client.users.find(user => user.id === userID.slice(2,-1));
   }
-  let newObj = obj[userID];
-  let text = newObj[Math.floor(Math.random() * newObj.length)];
+  let text = obj[userID][Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
     userID = fetchRandom(obj);
     user = client.users.find(user => user.id === userID.slice(2,-1));
@@ -81,8 +80,7 @@ function linkQuiz(client, obj) {
       console.log(userID, userID.slice(2,-1));
       user = client.users.find(user => user.id === userID.slice(2,-1));
     }
-    newObj = obj[userID];
-    text = newObj[Math.floor(Math.random() * newObj.length)];
+    text = obj[userID][Math.floor(Math.random() * newObj.length)];
   }
   return {answer: user.id, question: text, solved: false};
 }
