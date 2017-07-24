@@ -74,11 +74,11 @@ function linkQuiz(client, obj) {
   const newObj = obj[userID];
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
-    console.log("Is it looping here?");
     userID = fetchRandom(obj);
     user = client.users.find(user => user.id === userID.slice(2,-1));
     while (!user) {
       userID = fetchRandom(obj);
+      console.log(userID, userID.slice(2,-1));
       user = client.users.find(user => user.id === userID.slice(2,-1));
     }
     text = newObj[Math.floor(Math.random() * newObj.length)];
