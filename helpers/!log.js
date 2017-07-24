@@ -39,7 +39,7 @@ logMessages = function(message, client) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	if (cont) {
-    if (roughSizeOfObject(data) > 15500000) {
+    if (roughSizeOfObject(data) > 15500000) { //Temporary fix!
       callback(data, 'messageLimit');
     }
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
