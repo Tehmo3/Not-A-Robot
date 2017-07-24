@@ -74,6 +74,7 @@ function linkQuiz(client, obj) {
   const newObj = obj[userID];
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
+    console.log("Is it looping here?");
     userID = fetchRandom(obj).slice(2,-1);
     user = client.users.find(user => user.id === userID);
     while (!user) {
@@ -82,12 +83,7 @@ function linkQuiz(client, obj) {
     }
     text = newObj[Math.floor(Math.random() * newObj.length)];
   }
-  try {
-    return {answer: user.id, question: text, solved: false};
-  }
-  catch (e) {
-    return linkQuiz(client, obj);
-  }
+  return {answer: user.id, question: text, solved: false};
 }
 
 function checkAnswer(client, guess, channel, id, author) {
