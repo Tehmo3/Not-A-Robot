@@ -162,7 +162,6 @@ function start() {
                 return;
               }
               let channel = merge(channels[0], channels.shift());
-              console.log(channel);
               if (messageArray[0] === "!text") {
                 sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
               }
