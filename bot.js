@@ -71,9 +71,8 @@ function start() {
     if (messageArray[0][0] == '!') {
       const query = {guildID: message.guild.id}
       const messagesString = "messages."+message.channel.id
-      let whatFields = {"guildID":1, "allowedChannels":1,"blacklist":1,textQuiz:1,linkQuiz:1,lastRefresh:1,refreshRate:1}
       whatFields[messagesString] = 1;
-      Guild.findOne(query, whatFields, function(err, guild) {
+      Guild.findOne(query, function(err, guild) {
         if (err) { throw err }
         if (!guild) {
           var newGuild = new Guild({

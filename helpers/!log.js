@@ -113,7 +113,7 @@ function insertMessages(messages, data,channel) {
   let last = '';
 	messages.forEach(function (message) {
 		data.num_messages++;
-		console.log(data.num_messages);
+		// console.log(data.num_messages);
 		if (!data.messageObject[message.author]) { data.messageObject[message.author] = [] }
 		if (!data.linkObject[message.author]) { data.linkObject[message.author] = [] }
 		if (!message.content.startsWith("!")) {
