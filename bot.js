@@ -158,7 +158,7 @@ function start() {
             Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channels) {
               if (err) throw err;
               console.log(channels, channels.length);
-              if (typeof channels !== 'undefined' || channels.length === 0) {
+              if (typeof channels === 'undefined' || channels.length === 0) {
                 message.channel.send(`There's no data for this channel!`);
                 return;
               }
