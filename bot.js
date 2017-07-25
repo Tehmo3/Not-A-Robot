@@ -160,6 +160,7 @@ function start() {
               console.log(channels);
               if (typeof channels !== 'undefined' && channels.length > 0) {
                 message.channel.send(`There's no data for this channel!`);
+                return;
               }
               let channel = merge(channels[0], channels.shift());
               if (messageArray[0] === "!text") {
