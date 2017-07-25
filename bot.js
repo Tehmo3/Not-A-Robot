@@ -162,7 +162,7 @@ function start() {
                 message.channel.send(`There's no data for this channel!`);
               }
               let channel = merge(channels[0], channels.shift());
-              else if (messageArray[0] === "!text") {
+              if (messageArray[0] === "!text") {
                 sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
               }
               else if (messageArray[0] === "!link") {
