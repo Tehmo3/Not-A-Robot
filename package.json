@@ -10,6 +10,7 @@
     "email": "hello@jaspermiles.me"
   },
   "dependencies": {
+    "clone": "^2.1.1",
     "discord.js": "11.1.0",
     "express": "^4.15.3",
     "markov-chains-text": "1.0.0",

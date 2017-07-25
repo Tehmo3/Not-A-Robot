@@ -1,5 +1,6 @@
 const fs = require("fs");
 const mongoose = require("mongoose")
+const clone = require("clone");
 const guildSchema = require('../schemas/guild.js');
 const Guild = mongoose.model("Guild", guildSchema);
 
@@ -18,7 +19,8 @@ logMessages = function(message, client) {
     if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES'])) {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
-      fetchMoreMessages(channel, null, data, true, function(outputData, err) {
+      let index = 0;
+      fetchMoreMessages(channel, null, data, true, index, function(outputData, err) {
         processed++;
         console.log(processed, channel.id, channel.name);
         saveFile(outputData, message.guild.id, channel.id);
@@ -37,16 +39,16 @@ logMessages = function(message, client) {
 }
 
 
-function fetchMoreMessages(channel, messageLast, data, cont, callback) {
+function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
 	if (cont) {
-    // This might take too long....
-    // if (roughSizeOfObject(data) > 15500000) { //Temporary fix!
-    //   console.log("THATS BIG ENOUGH THANKS");
-    //   callback(data, 'messageLimit');
-    // }
+    if (data.num_messages > 50000) {
+      let tempData = clone(data);
+      saveFile(tempData, guildID, channelID, index);
+      data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
+    }
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, channel.guild.id))
-		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
+		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], index, callback))
 		.catch(console.error)
 	}
 	else {
@@ -54,15 +56,16 @@ function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	}
 }
 
-function saveFile(data, guildID, channelID) {
-  const query = {guildID, channelID};
+function saveFile(data, guildID, channelID, channelIndex) {
+  const query = {guildID, channelID, channelIndex};
   Channel.findOne(query, {"guildID":1}, function (err, channel) {
     if (err) throw err
     if (!channel) {
       let newChannel = new Channel({
         guildID,
         channelID,
-        messages: data
+        messages: data,
+        channelIndex
       })
       newChannel.save(function(err) {
         if (err) throw err;
@@ -133,40 +136,6 @@ function insertMessages(messages, data,channel) {
 		return [last, false, data];
 	}
 	return [last, true, data];
-}
-
-function roughSizeOfObject( object ) {
-
-    var objectList = [];
-    var stack = [ object ];
-    var bytes = 0;
-
-    while ( stack.length ) {
-        var value = stack.pop();
-
-        if ( typeof value === 'boolean' ) {
-            bytes += 4;
-        }
-        else if ( typeof value === 'string' ) {
-            bytes += value.length * 2;
-        }
-        else if ( typeof value === 'number' ) {
-            bytes += 8;
-        }
-        else if
-        (
-            typeof value === 'object'
-            && objectList.indexOf( value ) === -1
-        )
-        {
-            objectList.push( value );
-
-            for( var i in value ) {
-                stack.push( value[ i ] );
-            }
-        }
-    }
-    return bytes;
 }
 
 module.exports = logMessages;

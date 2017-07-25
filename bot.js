@@ -154,7 +154,8 @@ function start() {
             checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.member.displayName)
           }
           else {
-            Channel.findOne({guildID: message.guild.id, channelID: message.channel.id}, function(err, channel) {
+            Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channel) {
+              console.log(channel);
               if (err) throw err;
               if (!channel) {
                 message.channel.send(`There's no data for this channel!`);
