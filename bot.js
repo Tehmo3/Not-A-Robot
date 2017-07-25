@@ -158,7 +158,7 @@ function start() {
             Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channels) {
               if (err) throw err;
               console.log(channels);
-              if (!channels) {
+              if (!channels || channels.length === 0) {
                 message.channel.send(`There's no data for this channel!`);
               }
               let channel = merge(channels[0], channels.shift());
