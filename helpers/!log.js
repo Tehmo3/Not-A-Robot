@@ -41,7 +41,7 @@ logMessages = function(message, client) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
 	if (cont) {
-    if (data.num_messages > 50000) {
+    if (data.num_messages > 50) {
       let tempData = clone(data);
       saveFile(tempData, guildID, channelID, index);
       data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
