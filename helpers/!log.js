@@ -23,7 +23,7 @@ logMessages = function(message, client) {
       fetchMoreMessages(channel, null, data, true, index, function(outputData, err) {
         processed++;
         console.log(processed, channel.id, channel.name);
-        saveFile(outputData, message.guild.id, channel.id);
+        saveFile(outputData, message.guild.id, channel.id, index);
         if (processed === total) {
           message.channel.send("```MESSAGES LOGGED ```");
           console.log("All messages read")
@@ -43,7 +43,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
 	if (cont) {
     if (data.num_messages > 50) {
       let tempData = clone(data);
-      saveFile(tempData, guildID, channelID, index);
+      saveFile(tempData, channel.guild.id, channelID, index);
       index++;
       data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     }
