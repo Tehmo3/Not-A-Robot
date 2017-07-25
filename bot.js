@@ -157,12 +157,12 @@ function start() {
           else {
             Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channels) {
               if (err) throw err;
-              console.log(channels, channels.length);
               if (typeof channels === 'undefined' || channels.length === 0) {
                 message.channel.send(`There's no data for this channel!`);
                 return;
               }
               let channel = merge(channels[0], channels.shift());
+              console.log(channel);
               if (messageArray[0] === "!text") {
                 sendText(client, message.channel, messageArray.slice(1).join(" "), channel.messages.messageObject);
               }
