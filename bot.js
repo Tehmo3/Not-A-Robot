@@ -156,6 +156,7 @@ function start() {
           }
           else {
             Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channels) {
+              console.log(channels);
               let channel = merge(channels[0], channels.shift());
               if (err) throw err;
               if (!channel) {
