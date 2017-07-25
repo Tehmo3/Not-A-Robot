@@ -13,6 +13,7 @@ function start() {
   path = require("path"),
   fs = require("fs"),
   mongoose = require('mongoose'),
+  merge = require("lodash.merge"),
   logMessages = require("./helpers/!log.js"),
   sendText = require("./helpers/!text.js").sendText,
   sendSong = require("./helpers/!song.js"),
@@ -154,8 +155,13 @@ function start() {
             checkAnswer(client, sliced.join(" "), message.channel, message.guild.id, message.member.displayName)
           }
           else {
-            Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channel) {
-              console.log(channel);
+            Channel.find({guildID: message.guild.id, channelID: message.channel.id}, function(err, channels) {
+              if (channels.length === 1) {
+                let channel = channels;
+              }
+              else {
+                let channel = merge(channels[0], channels.shift());
+              }
               if (err) throw err;
               if (!channel) {
                 message.channel.send(`There's no data for this channel!`);
