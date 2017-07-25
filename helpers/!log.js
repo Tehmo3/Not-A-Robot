@@ -44,6 +44,7 @@ function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
     if (data.num_messages > 50) {
       let tempData = clone(data);
       saveFile(tempData, guildID, channelID, index);
+      index++;
       data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
     }
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
