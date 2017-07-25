@@ -39,10 +39,11 @@ logMessages = function(message, client) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, callback) {
 	if (cont) {
-    if (roughSizeOfObject(data) > 15500000) { //Temporary fix!
-      console.log("THATS BIG ENOUGH THANKS");
-      callback(data, 'messageLimit');
-    }
+    // This might take too long....
+    // if (roughSizeOfObject(data) > 15500000) { //Temporary fix!
+    //   console.log("THATS BIG ENOUGH THANKS");
+    //   callback(data, 'messageLimit');
+    // }
 		channel.fetchMessages({limit: 100, before:messageLast}) //Read the next 100
 		.then(messages => insertMessages(messages, data, channel.guild.id))
 		.then(array => fetchMoreMessages(channel, array[0].id, array[2], array[1], callback))
