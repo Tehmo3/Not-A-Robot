@@ -12,11 +12,7 @@ logMessages = function(message, client) {
   let processed = 0;
   const total = message.guild.channels.array().length;
   message.guild.channels.forEach(function(channel) {
-    if (channel.type !== "text") {
-      processed++;
-      return;
-    }
-    if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES'])) {
+    if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES']) && channel.type === "text") {
       console.log("New Channel");
       let data = {linkObject: {}, messageObject: {}, songObject: [], num_messages: 0}
       let index = 0;
