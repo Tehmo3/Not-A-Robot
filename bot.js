@@ -29,7 +29,15 @@ function start() {
   let app = express();
   app.use(express.static(__dirname + '/public'));
   app.get("/", function(req, res) {
-    res.sendFile( path.join( __dirname, "public" , '/home.html' ));
+    res.sendFile( path.join( __dirname, "public" , '/home.html' ), null, function(err) {
+      if (err) {
+        console.log(err);
+        res.status(err.status).end();
+      }
+      else {
+        console.log('Sent homepage');
+      }
+    });
   });
   app.listen(port);
 
