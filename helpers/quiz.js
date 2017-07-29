@@ -1,7 +1,7 @@
 const fs = require("fs"),
     Text = require('markov-chains-text').default,
-    makeChain = require('./!text.js').makeChain,
-    getID = require('./!text.js').getID;
+    makeChain = require('./text.js').makeChain,
+    getID = require('./text.js').getID;
 const mongoose = require("mongoose");
 const guildSchema = require('../schemas/guild.js');
 const Guild = mongoose.model("Guild", guildSchema);

@@ -13,7 +13,7 @@ Not A Robot is a discord bot that reads through your chat logs and then uses mar
 !whosaidthat - Starts a quiz! The bot will send a message and you have to try and guess who sent it!
 !wholinkedthat - Starts a quiz! The bot will send a link and you have to try and guess who sent it!
 !answer <username/nickname> guesses an answer to the ongoing quiz! This will count towards both quizzes if both are going!
-!advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me
+advice - Sends a piece of worthwile life advice! Generated via http://inspirobot.me
 !adminCommands - Are you an admin? Have a look at what you can do using this command!
 !log - to log the messages from the chat (REQUIRED BEFORE ANY OTHER COMMANDS). Note: this command can only be used once per week 
 !disallowRole <role> - Disallow all users with the role <role> from using the bot.

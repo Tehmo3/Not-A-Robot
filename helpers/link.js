@@ -1,5 +1,5 @@
 const	fs = require("fs");
-const getID = require("./!text.js").getID;
+const getID = require("./text.js").getID;
 
 function sendLink(client, channel, username, obj) {
     const date = new Date(),
