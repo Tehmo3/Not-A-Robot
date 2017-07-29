@@ -11,15 +11,7 @@ function findId(client, userID) {
 
 function fetchRandom(obj) {
   let tempKey = '';
-  const keys = [];
-  const objKeys = Object.keys(obj);
-  let i = 0;
-  for (i = 0; i < objKeys.length; i += 1) {
-    tempKey = objKeys[i];
-    if (Object.protype.hasOwnProperty.call(obj, tempKey)) {
-      keys.push(tempKey);
-    }
-  }
+  const keys = Object.keys(obj);
   return keys[Math.floor(Math.random() * keys.length)];
 }
 
