@@ -12,7 +12,7 @@ function findId(client, userID) {
 function fetchRandom(obj) {
   let tempKey = '';
   const keys = [];
-  const objKeys = obj.keys();
+  const objKeys = Object.keys(obj);
   let i = 0;
   for (i = 0; i < objKeys.length; i += 1) {
     tempKey = objKeys[i];
