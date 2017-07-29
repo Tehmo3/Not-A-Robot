@@ -10,6 +10,8 @@ module.exports = {
         "linebreak-style": ["error", "windows"],
         "no-console": "off",
         "no-lonely-if": "off",
-        "global-require": "off"
+        "global-require": "off",
+        "no-param-reassign": "off",
+        "no-use-before-define": "off"
     }
 };

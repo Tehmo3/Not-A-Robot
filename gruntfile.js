@@ -4,18 +4,18 @@ module.exports = function Main(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
+        files: ['**.js', 'helpers/**.js', 'schemas/**.js'],
         tasks: ['default'],
       },
     },
     jshint: {
-      all: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
+      all: ['**.js', 'helpers/**.js', 'schemas/**.js'],
       options: {
         esversion: 6,
       },
     },
     eslint: {
-      src: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
+      src: ['**.js', 'helpers/**.js', 'schemas/**.js'],
     },
   });
 
@@ -24,5 +24,5 @@ module.exports = function Main(grunt) {
   grunt.loadNpmTasks('gruntify-eslint');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'eslint', 'watch']);
+  grunt.registerTask('default', ['eslint', 'watch']);
 };

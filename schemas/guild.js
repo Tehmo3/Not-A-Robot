@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema;
 
 module.exports = new Schema({
@@ -9,5 +10,5 @@ module.exports = new Schema({
   textQuiz: Schema.Types.Mixed,
   linkQuiz: Schema.Types.Mixed,
   refreshRate: Number,
-  lastRefresh: Schema.Types.Mixed
+  lastRefresh: Schema.Types.Mixed,
 });
