@@ -4,18 +4,18 @@ module.exports = function Main(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['**.js'],
+        files: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
         tasks: ['default'],
       },
     },
     jshint: {
-      all: ['**.js'],
+      all: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
       options: {
         esversion: 6,
       },
     },
     eslint: {
-      src: ['**.js'],
+      src: ['**.js', 'helpers/**.js', 'public/js/**.js', 'schemas/**.js'],
     },
   });
 
