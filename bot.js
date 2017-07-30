@@ -134,7 +134,7 @@ function start() {
               return;
             }
             const now = new Date();
-            const timeDiff = Math.abs(now.getTime() - guild.lastRefresh.getTime());
+            const timeDiff = guild.lastRefresh ? Math.abs(now.getTime() - guild.lastRefresh.getTime()) : null;
             if (!guild.lastRefresh || timeDiff > guild.refreshRate) {
               message.channel.send('```Logging messages, this may take a while. ```');
               logMessages(message, client);
