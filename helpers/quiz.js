@@ -44,7 +44,7 @@ function linkQuiz(client, obj) {
     user = findId(client, userID.slice(2, -1));
   }
   let newObj = obj[userID];
-  console.log(user, newObj);
+  console.log(user, obj);
   return {answer: '111', question: 'hey', solved: false}
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
