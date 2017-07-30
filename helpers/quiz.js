@@ -37,24 +37,37 @@ function textQuiz(client, obj) {
 }
 
 function linkQuiz(client, obj) {
+  let i = 0;
   let userID = fetchRandom(obj);
   let user = findId(client, userID.slice(2, -1));
   while (!user) {
     userID = fetchRandom(obj);
     user = findId(client, userID.slice(2, -1));
+    i += 1;
+    if (i > 100) {
+      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+    }
   }
   let newObj = obj[userID];
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
+    if (i > 100) {
+      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+    }
     userID = fetchRandom(obj);
     user = findId(client, userID.slice(2, -1));
     while (!user) {
+      if (i > 100) {
+        return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+      }
       userID = fetchRandom(obj);
       console.log(userID, userID.slice(2, -1));
+      i += 1;
       user = findId(client, userID.slice(2, -1));
     }
     newObj = obj[userID];
     text = newObj[Math.floor(Math.random() * newObj.length)];
+    i += 1;
   }
   return { answer: user.id, question: text, solved: false };
 }
