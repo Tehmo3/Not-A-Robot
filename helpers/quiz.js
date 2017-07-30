@@ -45,6 +45,7 @@ function linkQuiz(client, obj) {
   }
   let newObj = obj[userID];
   console.log(user, newObj);
+  return {answer: '111', question: 'hey', solved: false}
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
     userID = fetchRandom(obj);
