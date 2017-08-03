@@ -35,7 +35,7 @@ function logMessages(message, client) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
   if (cont) {
-    if (data.num_messages > 50000) {
+    if (data.num_messages > 30000) {
       const tempData = clone(data);
       saveFile(tempData, channel.guild.id, channel.id, index);
       index += 1;
