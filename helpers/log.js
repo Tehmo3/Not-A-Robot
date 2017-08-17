@@ -13,7 +13,7 @@ function logMessages(message, client) {
   message.guild.channels.forEach((channel) => {
     if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES']) && channel.type === 'text') {
       console.log('New Channel');
-      const data = { linkObject: {}, messageObject: {}, songObject: [], num_messages: 0 };
+      const data = { linkObject: {}, messageObject: {}, songObject: [], num_messages: 0, numChars: 0 };
       const index = 0;
       fetchMoreMessages(channel, null, data, true, index, (outputData) => {
         processed += 1;
@@ -35,7 +35,7 @@ function logMessages(message, client) {
 
 function fetchMoreMessages(channel, messageLast, data, cont, index, callback) {
   if (cont) {
-    if (data.num_messages > 4000) {
+    if (data.numChars > 7050000) { // 8000000 characters = 16mb, just below that to be safe.
       const tempData = clone(data);
       saveFile(tempData, channel.guild.id, channel.id, index);
       index += 1;
@@ -111,6 +111,7 @@ function insertMessages(messages, data) {
     if (!data.messageObject[message.author]) { data.messageObject[message.author] = []; }
     if (!data.linkObject[message.author]) { data.linkObject[message.author] = []; }
     if (!message.content.startsWith('!')) {
+      data.numChars += message.content.length;
       messageArray = message.content.split(' ');
       messageArray.forEach((element) => {
         if (element.startsWith('<@') || element.startsWith('@')) {
