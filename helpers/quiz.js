@@ -121,8 +121,8 @@ function checkAnswer(client, guess, channel, id, author) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
       guild = updateLeaderboards(guild, authID, author, function(guild) {
-        console.log(guild)
         guild.save((error) => {
+          console.log(guild, guild.leaderboards)
           if (error) throw error;
           console.log('Quiz updated');
         })
