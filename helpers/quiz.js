@@ -121,6 +121,7 @@ function checkAnswer(client, guess, channel, id, author) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
       guild = updateLeaderboards(guild, authID, author);
+      guild.markModified('leaderboards');
       console.log(guild.leaderboards);
       guild.save((error) => {
         if (error) throw error;
@@ -132,6 +133,7 @@ function checkAnswer(client, guess, channel, id, author) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.songQuiz = null;
       guild = updateLeaderboards(guild, authID, author);
+      guild.markModified('leaderboards');
       console.log(guild.leaderboards);
       guild.save((error) => {
         if (error) throw error;
