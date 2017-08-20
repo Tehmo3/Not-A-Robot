@@ -191,7 +191,7 @@ function start() {
             checkAnswer(client, sliced.join(' '), message.channel, message.guild.id, message.member.displayName);
           }
           else if (messageArray[0] === "!leaderboards") {
-            sendLeaderboards(client, message.channel);
+            sendLeaderboards(client, message.channel, guild.leaderboards);
           }
           else {
             const channelQuery = { guildID: message.guild.id, channelID: message.channel.id };
