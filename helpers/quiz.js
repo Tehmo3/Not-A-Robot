@@ -124,6 +124,7 @@ function checkAnswer(client, guess, channel, id, author) {
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
+      console.log(updateLeaderboards(guild, authID, author))
       guild = updateLeaderboards(guild, authID, author);
       guild.songQuiz = null;
     }
@@ -165,7 +166,6 @@ function updateLeaderboards(guild, userID, username) {
       }
     }
   }
-  console.log(guild, guild.leaderboards)
   guild.leaderboards[userID] = {
     score: 1,
     pos: guild.leaderboards ? Object.keys(guild.leaderboards).length : 1,
