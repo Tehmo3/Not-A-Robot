@@ -110,6 +110,7 @@ function startQuiz(client, type, obj, id, textChannel) {
 function checkAnswer(client, guess, channel, id, author) {
   const query = { guildID: id };
   const guessID = getID(client, channel, guess);
+  const authID = getID(client, channel, author);
   if (guessID === null) {
     return;
   }
@@ -118,10 +119,12 @@ function checkAnswer(client, guess, channel, id, author) {
     if (!guild) { return; }
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
+      guild = updateLeaderboards(guild, userID, username);
       guild.textQuiz = null;
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
+      guild = updateLeaderboards(guild, userID, username);
       guild.songQuiz = null;
     }
     guild.save((error) => {
@@ -129,6 +132,44 @@ function checkAnswer(client, guess, channel, id, author) {
       console.log('Quiz updated');
     });
   });
+}
+
+sendLeaderboards(client, channel, leaderboards) {
+  for (var key in guild[leaderboards]) {
+    if (p.hasOwnProperty(key)) {
+      for (let i=1; i<=5; i++) {
+        if (guild[leaderboards][key][score] === i) {
+          channel.send(`${i}. ${guild[leaderboards][key][username]} - ${guild[leaderboards][key][score]} questions correct`);
+        }
+      }
+    }
+  }
+}
+
+updateLeaderboards(guild, userID, username) {
+  for (var key in guild[leaderboards]) {
+    if (p.hasOwnProperty(key)) {
+      if (key === userID) {
+        guild[leaderboards][key][score] += 1;
+        return guild;
+      }
+    }
+  }
+  for (key in guild[leaderboards]) {
+    if (p.hasOwnProperty(key)) {
+      if (guild[leaderboards][userID][score] > guild[leaderboards][key][score]) {
+        guild[leaderboards][userID][pos] += 1
+        guild[leaderboards][key][pos] -= 1
+        return guild;
+      }
+    }
+  }
+  guild[leaderboards][userID] = {
+    score: 1,
+    pos: Object.keys(guild[leaderboards]).length
+    username: username
+  }
+  return guild;
 }
 
 module.exports = {

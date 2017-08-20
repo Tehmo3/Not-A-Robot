@@ -109,6 +109,7 @@ function start() {
             blacklist: [null],
             refreshRate: 600000000,
             lastRefresh: null,
+            leaderboards: {}
           });
           newGuild.save((error) => {
             if (error) throw error;
@@ -180,6 +181,9 @@ function start() {
           else if (messageArray[0] === '!answer') {
             const sliced = messageArray.slice(1);
             checkAnswer(client, sliced.join(' '), message.channel, message.guild.id, message.member.displayName);
+          }
+          else if (messageArray[0] === "!leaderboards") {
+            sendLeaderboards(client, message.channel);
           }
           else {
             const channelQuery = { guildID: message.guild.id, channelID: message.channel.id };
