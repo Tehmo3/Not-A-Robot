@@ -85,7 +85,7 @@ function start() {
       console.log('There was an error!');
       return;
     }
-    console.log('Logged in!');
+    console.log('Logged in! (I hope this prints)');
   });
 
   client.on('guildCreate', (guild) => {
