@@ -129,9 +129,8 @@ function checkAnswer(client, guess, channel, id, author) {
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
-      console.log(updateLeaderboards(guild, authID, author))
       guild.songQuiz = null;
-      updateLeaderboards(guild, authID, author, function(guild) {
+      updateLeaderboards(guild, authID, author, function() {
         guild.save((error) => {
           if (error) throw error;
           console.log('Quiz updated');
