@@ -118,6 +118,13 @@ function start() {
             message.channel.send('```Sorry about that.. Call !log now please!```');
           });
         }
+        else if (!guild.leaderboards) {
+          guild.leaderboards = {};
+          guiguild.save((error) => {
+            if (error) throw error;
+            console.log('Quiz updated');
+          });
+        }
         else {
           // Check if user has a blacklisted role
           if (message.member.roles.find(role => guild.blacklist.indexOf(role.name) !== -1)) {
