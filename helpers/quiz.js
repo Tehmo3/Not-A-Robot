@@ -168,7 +168,7 @@ function updateLeaderboards(guild, userID, username) {
   }
   guild.leaderboards[userID] = {
     score: 1,
-    pos: guild.leaderboards ? Object.keys(guild.leaderboards).length : 1,
+    pos: Object.keys(guild.leaderboards).length+1,
     username: username
   }
   return guild;
