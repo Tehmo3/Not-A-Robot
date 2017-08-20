@@ -165,6 +165,7 @@ function updateLeaderboards(guild, userID, username) {
       }
     }
   }
+  console.log(guild, guild.leaderboards)
   guild.leaderboards[userID] = {
     score: 1,
     pos: guild.leaderboards ? Object.keys(guild.leaderboards).length : 1,
