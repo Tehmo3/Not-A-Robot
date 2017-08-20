@@ -135,7 +135,7 @@ function checkAnswer(client, guess, channel, id, author) {
 }
 
 function sendLeaderboards(client, channel, leaderboards) {
-  for (var key in guild[leaderboards]) {
+  for (var key in guild.leaderboards) {
     if (p.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
         if (guild.leaderboards.key.pos === i) {
@@ -156,7 +156,7 @@ function updateLeaderboards(guild, userID, username) {
       }
     }
   }
-  for (key in guild[leaderboards]) {
+  for (key in guild.leaderboards) {
     if (p.hasOwnProperty(key)) {
       if (guild.leaderboards.userID.score > guild.leaderboards[key].score) {
         guild.leaderboards[userID].pos += 1
