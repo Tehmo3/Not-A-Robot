@@ -120,7 +120,7 @@ function checkAnswer(client, guess, channel, id, author) {
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
-      guild = updateLeaderboards(guild, authID, author, function() {
+      guild = updateLeaderboards(guild, authID, author, function(guild) {
         guild.save((error) => {
           if (error) throw error;
           console.log('Quiz updated');
@@ -130,7 +130,7 @@ function checkAnswer(client, guess, channel, id, author) {
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.songQuiz = null;
-      updateLeaderboards(guild, authID, author, function() {
+      updateLeaderboards(guild, authID, author, function(guild) {
         guild.save((error) => {
           if (error) throw error;
           console.log('Quiz updated');
@@ -158,7 +158,8 @@ function updateLeaderboards(guild, userID, username, callback) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
         guild.leaderboards[key].score += 1;
-        callback();
+        console.log("callback HERE");
+        callback(guild);
       }
     }
   }
@@ -167,7 +168,8 @@ function updateLeaderboards(guild, userID, username, callback) {
       if (guild.leaderboards.userID.score > guild.leaderboards[key].score) {
         guild.leaderboards[userID].pos += 1
         guild.leaderboards[key].pos -= 1
-        callback();
+        console.log("callback HERE");
+        callback(guild);
       }
     }
   }
@@ -176,7 +178,8 @@ function updateLeaderboards(guild, userID, username, callback) {
     pos: Object.keys(guild.leaderboards).length+1,
     username: username
   }
-  callback();
+  console.log("callback HERE");
+  callback(guild);
 }
 
 module.exports = {
