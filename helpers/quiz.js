@@ -134,7 +134,7 @@ function checkAnswer(client, guess, channel, id, author) {
   });
 }
 
-sendLeaderboards(client, channel, leaderboards) {
+function sendLeaderboards(client, channel, leaderboards) {
   for (var key in guild[leaderboards]) {
     if (p.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
@@ -146,7 +146,7 @@ sendLeaderboards(client, channel, leaderboards) {
   }
 }
 
-updateLeaderboards(guild, userID, username) {
+function updateLeaderboards(guild, userID, username) {
   for (var key in guild[leaderboards]) {
     if (p.hasOwnProperty(key)) {
       if (key === userID) {
