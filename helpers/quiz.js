@@ -135,11 +135,11 @@ function checkAnswer(client, guess, channel, id, author) {
 }
 
 function sendLeaderboards(client, channel, leaderboards) {
-  for (var key in guild.leaderboards) {
+  for (var key in leaderboards) {
     if (p.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
-        if (guild.leaderboards.key.pos === i) {
-          channel.send(`${i}. ${guild[leaderboards][key][username]} - ${guild[leaderboards][key][score]} questions correct`);
+        if (leaderboards.key.pos === i) {
+          channel.send(`${i}. ${leaderboards[key].username} - ${leaderboards[key].score} questions correct`);
         }
       }
     }
