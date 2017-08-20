@@ -114,7 +114,7 @@ function checkAnswer(client, guess, channel, id, author) {
   if (guessID === null) {
     return;
   }
-  Guild.findOne(query, { textQuiz: 1, linkQuiz: 1 }, (err, guild) => {
+  Guild.findOne(query, { textQuiz: 1, linkQuiz: 1 , leaderboards: 1}, (err, guild) => {
     if (err) { throw err; }
     if (!guild) { return; }
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
