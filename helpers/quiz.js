@@ -119,12 +119,12 @@ function checkAnswer(client, guess, channel, id, author) {
     if (!guild) { return; }
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
-      guild = updateLeaderboards(guild, userID, username);
+      guild = updateLeaderboards(guild, authID, username);
       guild.textQuiz = null;
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
-      guild = updateLeaderboards(guild, userID, username);
+      guild = updateLeaderboards(guild, authID, username);
       guild.songQuiz = null;
     }
     guild.save((error) => {
