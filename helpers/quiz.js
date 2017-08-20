@@ -120,24 +120,24 @@ function checkAnswer(client, guess, channel, id, author) {
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
-      updateLeaderboards(guild, authID, author, function(updatedGuild) {
-        updatedGuild.save((error) => {
-          console.log(guild, guild.leaderboards)
-          if (error) throw error;
-          console.log('Quiz updated');
-        })
-      });
+      guild = updateLeaderboards(guild, authID, author);
+      console.log(guild.leaderboards);
+      guild.save((error) => {
+        if (error) throw error;
+        console.log(guild.leaderboards);
+        console.log('Quiz updated');
+      })
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
-      guild.linkQuiz = null;
-      updateLeaderboards(guild, authID, author, function(updatedGuild) {
-        console.log(guild)
-        updatedGuild.save((error) => {
-          if (error) throw error;
-          console.log('Quiz updated');
-        })
-      });
+      guild.songQuiz = null;
+      guild = updateLeaderboards(guild, authID, author);
+      console.log(guild.leaderboards);
+      guild.save((error) => {
+        if (error) throw error;
+        console.log(guild.leaderboards);
+        console.log('Quiz updated');
+      })
     };
   });
 }
@@ -155,13 +155,12 @@ function sendLeaderboards(client, channel, leaderboards) {
   console.log("Leaderboards sent");
 }
 
-function updateLeaderboards(guild, userID, username, callback) {
+function updateLeaderboards(guild, userID, username) {
   for (var key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
         guild.leaderboards[key].score += 1;
-        console.log("callback HERE");
-        callback(guild);
+        return guild;
       }
     }
   }
@@ -170,8 +169,7 @@ function updateLeaderboards(guild, userID, username, callback) {
       if (guild.leaderboards.userID.score > guild.leaderboards[key].score) {
         guild.leaderboards[userID].pos += 1
         guild.leaderboards[key].pos -= 1
-        console.log("callback HERE");
-        callback(guild);
+        return guild;
       }
     }
   }
@@ -180,8 +178,7 @@ function updateLeaderboards(guild, userID, username, callback) {
     pos: Object.keys(guild.leaderboards).length+1,
     username: username
   }
-  console.log("callback HERE");
-  callback(guild);
+  return guild;
 }
 
 module.exports = {
