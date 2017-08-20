@@ -138,7 +138,7 @@ function sendLeaderboards(client, channel, leaderboards) {
   for (var key in guild[leaderboards]) {
     if (p.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
-        if (guild[leaderboards][key][score] === i) {
+        if (guild.leaderboards.key.pos === i) {
           channel.send(`${i}. ${guild[leaderboards][key][username]} - ${guild[leaderboards][key][score]} questions correct`);
         }
       }
@@ -148,26 +148,26 @@ function sendLeaderboards(client, channel, leaderboards) {
 }
 
 function updateLeaderboards(guild, userID, username) {
-  for (var key in guild[leaderboards]) {
+  for (var key in guild.leaderboards) {
     if (p.hasOwnProperty(key)) {
       if (key === userID) {
-        guild[leaderboards][key][score] += 1;
+        guild.leaderboards[key].score += 1;
         return guild;
       }
     }
   }
   for (key in guild[leaderboards]) {
     if (p.hasOwnProperty(key)) {
-      if (guild[leaderboards][userID][score] > guild[leaderboards][key][score]) {
-        guild[leaderboards][userID][pos] += 1
-        guild[leaderboards][key][pos] -= 1
+      if (guild.leaderboards.userID.score > guild.leaderboards[key].score) {
+        guild.leaderboards[userID].pos += 1
+        guild.leaderboards[key].pos -= 1
         return guild;
       }
     }
   }
-  guild[leaderboards][userID] = {
+  guild.leaderboards[userID] = {
     score: 1,
-    pos: Object.keys(guild[leaderboards]).length,
+    pos: Object.keys(guild.leaderboards).length,
     username: username
   }
   return guild;
@@ -176,4 +176,5 @@ function updateLeaderboards(guild, userID, username) {
 module.exports = {
   startQuiz,
   checkAnswer,
+  sendLeaderboards
 };

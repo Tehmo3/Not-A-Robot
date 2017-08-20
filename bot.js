@@ -15,6 +15,7 @@ function start() {
   const sendAdvice = require('./helpers/advice.js');
   const startQuiz = require('./helpers/quiz.js').startQuiz;
   const checkAnswer = require('./helpers/quiz.js').checkAnswer;
+  const sendLeaderboards = require('./helpers/quiz.js').sendLeaderboards;
   const adminCommands = require('./helpers/adminCommands.js');
   const port = process.env.PORT || 5000;
 
