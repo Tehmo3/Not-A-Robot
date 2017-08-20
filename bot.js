@@ -120,9 +120,9 @@ function start() {
         }
         else if (!guild.leaderboards) {
           guild.leaderboards = {};
-          guiguild.save((error) => {
+          guild.save((error) => {
             if (error) throw error;
-            console.log('Quiz updated');
+            console.log('leaderboards');
           });
         }
         else {
