@@ -86,6 +86,7 @@ function start() {
       return;
     }
     console.log('Logged in!');
+    client.user.setGame("Type !help!", "http://www.not-a-bot.com/");
   });
 
   client.on('guildCreate', (guild) => {
