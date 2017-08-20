@@ -122,11 +122,9 @@ function checkAnswer(client, guess, channel, id, author) {
       guild.textQuiz = null;
       guild = updateLeaderboards(guild, authID, author);
       guild.markModified('leaderboards');
-      console.log(guild.leaderboards);
       guild.save((error) => {
         if (error) throw error;
-        console.log(guild.leaderboards);
-        console.log('Quiz updated');
+        console.log('Quiz + leaderboards updated');
       })
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
@@ -134,11 +132,9 @@ function checkAnswer(client, guess, channel, id, author) {
       guild.songQuiz = null;
       guild = updateLeaderboards(guild, authID, author);
       guild.markModified('leaderboards');
-      console.log(guild.leaderboards);
       guild.save((error) => {
         if (error) throw error;
-        console.log(guild.leaderboards);
-        console.log('Quiz updated');
+        console.log('Quiz + leaderboards updated');
       })
     };
   });
@@ -148,7 +144,7 @@ function sendLeaderboards(client, channel, leaderboards) {
   for (var key in leaderboards) {
     if (leaderboards.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
-        if (leaderboards.key.pos === i) {
+        if (leaderboards[key].pos === i) {
           channel.send(`${i}. ${leaderboards[key].username} - ${leaderboards[key].score} questions correct`);
         }
       }
