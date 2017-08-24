@@ -154,6 +154,7 @@ function sendLeaderboards(client, channel, leaderboards) {
 }
 
 function updateLeaderboards(guild, userID, username) {
+  guild.leaderboards[userID].username = username
   for (var key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
