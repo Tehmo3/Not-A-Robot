@@ -124,17 +124,20 @@ function start() {
             if (error) throw error;
             console.log('leaderboards');
           });
+          return;
         }
         else {
           // Check if user has a blacklisted role
           if (message.member.roles.find(role => guild.blacklist.indexOf(role.name) !== -1)) {
             message.channel.send('```Sorry. You don\'t have permission to do that. ```');
             console.log('That user does not have permission for that');
+            return;
           }
           // Check if the channel is allowed
           else if (guild.allowedChannels.indexOf(message.channel.name) === -1) {
             message.channel.send('```Sorry, this channel does not have permission to use the bot!```');
             console.log('not a valid channel');
+            return;
           }
           else if (messageArray[0] === '!log') {
             if (!getIfAdmin(message.author.id, message.guild)) {
@@ -153,22 +156,28 @@ function start() {
               const time = msToTime(guild.refreshRate - timeDiff);
               message.channel.send(`Sorry. It hasn't been one week since your last !log. You can log again in ${time}.`);
               console.log('Cant log too quick!');
+              return;
             }
           }
           else if (messageArray[0] === '!advice') {
             sendAdvice(message.channel);
+            return;
           }
           else if (messageArray[0] === '!help') {
             message.author.send(helpMessage());
+            return;
           }
           else if (messageArray[0] === '!adminCommands') {
             message.author.send(adminHelp());
+            return;
           }
           else if (messageArray[0] === '!disallowRole') {
             adminCommands.disallowRole(message, messageArray.slice(1));
+            return;
           }
           else if (messageArray[0] === '!allowRole') {
             adminCommands.allowRole(message, messageArray.slice(1));
+            return;
           }
           else if (messageArray[0] === '!allowChannel') {
             if (!getIfAdmin(message.author.id, message.guild)) {
@@ -177,6 +186,7 @@ function start() {
               return;
             }
             adminCommands.allowChannel(message, messageArray.slice(1));
+            return;
           }
           else if (messageArray[0] === '!disallowChannel') {
             if (!getIfAdmin(message.author.id, message.guild)) {
@@ -185,13 +195,16 @@ function start() {
               return;
             }
             adminCommands.disallowChannel(message, messageArray.slice(1));
+            return;
           }
           else if (messageArray[0] === '!answer') {
             const sliced = messageArray.slice(1);
             checkAnswer(client, sliced.join(' '), message.channel, message.guild.id, message.member.displayName);
+            return;
           }
           else if (messageArray[0] === "!leaderboards") {
             sendLeaderboards(client, message.channel, guild.leaderboards);
+            return;
           }
           else {
             const channelQuery = { guildID: message.guild.id, channelID: message.channel.id };
@@ -204,18 +217,23 @@ function start() {
               const channel = merge(channels[0], channels.shift());
               if (messageArray[0] === '!text') {
                 sendText(client, message.channel, messageArray.slice(1).join(' '), channel.messages.messageObject);
+                return;
               }
               else if (messageArray[0] === '!link') {
                 sendLink(client, message.channel, messageArray.slice(1).join(' '), channel.messages.linkObject);
+                return;
               }
               else if (messageArray[0] === '!song') {
                 sendSong(message.channel, channel.messages.songObject);
+                return;
               }
               else if (messageArray[0] === '!whosaidthat') {
                 startQuiz(client, 'text', channel.messages, message.guild.id, message.channel);
+                return;
               }
               else if (messageArray[0] === '!wholinkedthat') {
                 startQuiz(client, 'link', channel.messages, message.guild.id, message.channel);
+                return;
               }
             });
           }
