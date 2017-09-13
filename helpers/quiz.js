@@ -154,6 +154,14 @@ function sendLeaderboards(client, channel, leaderboards) {
 }
 
 function updateLeaderboards(guild, userID, username) {
+  if (!guild.leaderboards[userID]) {
+    guild.leaderboards[userID] = {
+      score: 1,
+      pos: Object.keys(guild.leaderboards).length+1,
+      username: username
+    }
+    return guild;
+  }
   for (var key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
@@ -171,11 +179,6 @@ function updateLeaderboards(guild, userID, username) {
         return guild;
       }
     }
-  }
-  guild.leaderboards[userID] = {
-    score: 1,
-    pos: Object.keys(guild.leaderboards).length+1,
-    username: username
   }
   return guild;
 }
