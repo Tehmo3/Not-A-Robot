@@ -155,11 +155,11 @@ function sendLeaderboards(client, channel, leaderboards) {
 }
 
 function updateLeaderboards(guild, userID, username) {
-  guild.leaderboards[userID].username = username
   for (var key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
         guild.leaderboards[key].score += 1;
+        guild.leaderboards[userID].username = username;
         return guild;
       }
     }
