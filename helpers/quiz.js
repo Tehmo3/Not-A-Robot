@@ -141,7 +141,7 @@ function checkAnswer(client, guess, channel, id, author) {
 }
 
 function sendLeaderboards(client, channel, leaderboards) {
-  let outputString = ``;
+  let outputString = `\n`;
   for (var key in leaderboards) {
     if (leaderboards.hasOwnProperty(key)) {
       for (let i=1; i<=5; i++) {
