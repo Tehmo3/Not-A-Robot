@@ -158,14 +158,14 @@ function updateLeaderboards(guild, userID, username) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (key === userID) {
         guild.leaderboards[key].score += 1;
-        guild.leaderboards[userID].username = username;
+        guild.leaderboards[key].username = username;
         return guild;
       }
     }
   }
   for (key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
-      if (guild.leaderboards.userID.score > guild.leaderboards[key].score) {
+      if (guild.leaderboards[userID].score > guild.leaderboards[key].score) {
         guild.leaderboards[userID].pos += 1
         guild.leaderboards[key].pos -= 1
         return guild;
