@@ -141,15 +141,17 @@ function checkAnswer(client, guess, channel, id, author) {
 }
 
 function sendLeaderboards(client, channel, leaderboards) {
+  let outputString = ``;
   for (var key in leaderboards) {
     if (leaderboards.hasOwnProperty(key)) {
-      for (let i=5; i>0; i--) {
+      for (let i=1; i<=5; i++) {
         if (leaderboards[key].pos === i) {
-          channel.send(`${i}. ${leaderboards[key].username} - ${leaderboards[key].score} questions correct`);
+          outputString = outputString + `${i}. ${leaderboards[key].username} - ${leaderboards[key].score} questions correct\n`;
         }
       }
     }
   }
+  channel.send(outputString);
   console.log("Leaderboards sent");
 }
 
