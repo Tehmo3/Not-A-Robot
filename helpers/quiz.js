@@ -116,7 +116,8 @@ function checkAnswer(client, guess, channel, id, author) {
   }
   Guild.findOne(query, { textQuiz: 1, linkQuiz: 1 , leaderboards: 1}, (err, guild) => {
     if (err) { throw err; }
-    if (!guild) { return; }
+    if (!guild) { throw new Error("Guild does not exist"); }
+    console.log("Testing answer", guessID, guiid.textQuiz.answer);
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
