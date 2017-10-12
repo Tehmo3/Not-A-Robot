@@ -173,9 +173,14 @@ function updateLeaderboards(guild, userID, username) {
       }
     }
   }
-  guild.leaderboards.sort((a, b) => {
-    return a.score - b.score;
-  });
+  for (key in guild.leaderboards) {
+    if (guild.leaderboards.hasOwnProperty(key)) {
+      if (guild.leaderboards[userID].score > guild.leaderboards[key].score) {
+        guild.leaderboards[userID].pos += 1;
+        guild.leaderboards[key].pos -= 1;
+      }
+    }
+  }        
 }
 
 module.exports = {
