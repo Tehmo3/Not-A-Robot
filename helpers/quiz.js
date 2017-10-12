@@ -142,9 +142,9 @@ function checkAnswer(client, guess, channel, id, author) {
 
 function sendLeaderboards(client, channel, leaderboards) {
   let outputString = `\n`;
-  let i = 0;
+  let i = 1;
   for (var key in leaderboards) {
-    if (leaderboards.hasOwnProperty(key)) {
+    if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
       if (i === 5) {
         break;
       }
