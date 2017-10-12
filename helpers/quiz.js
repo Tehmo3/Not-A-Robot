@@ -175,7 +175,7 @@ function updateLeaderboards(guild, userID, username) {
   }
   guild.leaderboards.sort((a, b) => {
     return a.score - b.score;
-  }
+  });
 }
 
 module.exports = {
