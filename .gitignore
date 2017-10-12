@@ -50,3 +50,6 @@ data.json
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Vim stuff
+*.swp

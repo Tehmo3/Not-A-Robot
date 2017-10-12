@@ -142,13 +142,14 @@ function checkAnswer(client, guess, channel, id, author) {
 
 function sendLeaderboards(client, channel, leaderboards) {
   let outputString = `\n`;
+  let i = 0;
   for (var key in leaderboards) {
     if (leaderboards.hasOwnProperty(key)) {
-      for (let i=1; i<=5; i++) {
-        if (leaderboards[key].pos === i) {
-          outputString = outputString + `${i}. ${leaderboards[key].username} - ${leaderboards[key].score} questions correct\n`;
-        }
+      if (i === 5) {
+        break;
       }
+      outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
+      i++;
     }
   }
   channel.send(outputString);
@@ -169,24 +170,17 @@ function updateLeaderboards(guild, userID, username) {
       if (key === userID) {
         guild.leaderboards[key].score += 1;
         guild.leaderboards[key].username = username;
-        return guild;
       }
     }
   }
-  for (key in guild.leaderboards) {
-    if (guild.leaderboards.hasOwnProperty(key)) {
-      if (guild.leaderboards[userID].score > guild.leaderboards[key].score) {
-        guild.leaderboards[userID].pos += 1
-        guild.leaderboards[key].pos -= 1
-        return guild;
-      }
-    }
+  guild.leaderboards.sort((a, b) => {
+    return a.score - b.score;
   }
-  return guild;
 }
 
 module.exports = {
   startQuiz,
   checkAnswer,
   sendLeaderboards
+
 };
