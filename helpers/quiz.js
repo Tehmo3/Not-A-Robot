@@ -181,6 +181,7 @@ function updateLeaderboards(guild, userID, username) {
       }
     }
   }        
+  return guild;
 }
 
 module.exports = {
