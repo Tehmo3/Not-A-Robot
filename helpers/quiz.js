@@ -154,7 +154,7 @@ function sendLeaderboards(client, channel, leaderboards) {
         outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
         i++;
       }
-      if (i === Object.keys(leaderboards).length) {
+      if (i === Object.keys(leaderboards).length -1) {
         loop = false;
         break;
       }
