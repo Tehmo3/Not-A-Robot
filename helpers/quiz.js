@@ -143,13 +143,17 @@ function checkAnswer(client, guess, channel, id, author) {
 function sendLeaderboards(client, channel, leaderboards) {
   let outputString = `\n`;
   let i = 1;
-  for (var key in leaderboards) {
-    if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
-      if (i === 5) {
-        break;
+  let loop = true;
+  while (loop) {
+    for (var key in leaderboards) {
+      if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
+        if (i === 5) {
+          loop = false;
+          break;
+        }
+        outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
+        i++;
       }
-      outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
-      i++;
     }
   }
   channel.send(outputString);
@@ -176,11 +180,11 @@ function updateLeaderboards(guild, userID, username) {
   for (key in guild.leaderboards) {
     if (guild.leaderboards.hasOwnProperty(key)) {
       if (guild.leaderboards[userID].score > guild.leaderboards[key].score) {
-        guild.leaderboards[userID].pos += 1;
-        guild.leaderboards[key].pos -= 1;
+        guild.leaderboards[key].pos += 1;
+        guild.leaderboards[userID].pos -= 1;
       }
     }
-  }        
+  }
   return guild;
 }
 
