@@ -147,7 +147,7 @@ function sendLeaderboards(client, channel, leaderboards) {
   while (loop) {
     for (var key in leaderboards) {
       if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
-        if (i === 5) {
+        if (i === 5 || i === Object.keys(leaderboards).length) {
           loop = false;
           break;
         }
