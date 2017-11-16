@@ -147,12 +147,16 @@ function sendLeaderboards(client, channel, leaderboards) {
   while (loop) {
     for (var key in leaderboards) {
       if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
-        if (i === 5 || i === Object.keys(leaderboards).length) {
+        if (i === 5) {
           loop = false;
           break;
         }
         outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
         i++;
+      }
+      if (i === Object.keys(leaderboard).length) {
+        loop = false;
+        break;
       }
     }
   }
