@@ -66,7 +66,7 @@ function start() {
   }
 
   function newServerMessage() {
-    return `Hmmm, somewhere new!\n ${helpMessage}`;
+    return `Hmmm, somewhere new!\n ${helpMessage()}`;
   }
 
   function adminHelp() {

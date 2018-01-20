@@ -36,7 +36,7 @@ function textQuiz(client, obj) {
   return { answer: user.id, question: text, solved: false };
 }
 
-function linkQuiz(client, obj) { //Bug here! Infinite loop sometimes....
+function linkQuiz(client, obj) {
   let i = 0;
   let userID = fetchRandom(obj);
   let user = findId(client, userID.slice(2, -1));
