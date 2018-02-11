@@ -150,7 +150,7 @@ function sendLeaderboards(client, channel, leaderboards) {
   const leaderboardsLength = leaderboards.length < 5 ? leaderboards.length : 5;
 
   for (let i = 0; i < leaderboardsLength; i += 1) {
-    outputString += `${i}. ${leaderboards[i].username}  - ${leaderboards[i].score} questions correct\n`;
+    outputString += `${i + 1}. ${leaderboards[i].username}  - ${leaderboards[i].score} questions correct\n`;
   }
   channel.send(outputString);
   console.log('Leaderboards sent');
