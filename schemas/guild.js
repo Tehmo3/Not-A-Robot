@@ -11,5 +11,5 @@ module.exports = new Schema({
   linkQuiz: Schema.Types.Mixed,
   refreshRate: Number,
   lastRefresh: Schema.Types.Mixed,
-  leaderboards: Schema.Types.Mixed
+  leaderboards: [Schema.Types.Mixed],
 });

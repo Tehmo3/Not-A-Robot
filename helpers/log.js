@@ -13,7 +13,13 @@ function logMessages(message, client) {
   message.guild.channels.forEach((channel) => {
     if (channel.permissionsFor(client.user).has(['READ_MESSAGES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES']) && channel.type === 'text') {
       console.log('New Channel');
-      const data = { linkObject: {}, messageObject: {}, songObject: [], num_messages: 0, numChars: 0 };
+      const data = {
+        linkObject: {},
+        messageObject: {},
+        songObject: [],
+        num_messages: 0,
+        numChars: 0,
+      };
       const index = 0;
       fetchMoreMessages(channel, null, data, true, index, (outputData) => {
         processed += 1;

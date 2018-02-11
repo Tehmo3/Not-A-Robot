@@ -10,7 +10,6 @@ function findId(client, userID) {
 }
 
 function fetchRandom(obj) {
-  let tempKey = '';
   const keys = Object.keys(obj);
   return keys[Math.floor(Math.random() * keys.length)];
 }
@@ -45,20 +44,20 @@ function linkQuiz(client, obj) {
     user = findId(client, userID.slice(2, -1));
     i += 1;
     if (i > 100) {
-      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false };
     }
   }
   let newObj = obj[userID];
   let text = newObj[Math.floor(Math.random() * newObj.length)];
   while (text === undefined || text === null) {
     if (i > 100) {
-      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+      return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false };
     }
     userID = fetchRandom(obj);
     user = findId(client, userID.slice(2, -1));
     while (!user) {
       if (i > 100) {
-        return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false }
+        return { answer: null, question: 'Hmm... Something hasn\'t worked', solved: false };
       }
       userID = fetchRandom(obj);
       console.log(userID, userID.slice(2, -1));
@@ -114,9 +113,9 @@ function checkAnswer(client, guess, channel, id, author) {
   if (guessID === null) {
     return;
   }
-  Guild.findOne(query, { textQuiz: 1, linkQuiz: 1 , leaderboards: 1}, (err, guild) => {
+  Guild.findOne(query, { textQuiz: 1, linkQuiz: 1, leaderboards: 1 }, (err, guild) => {
     if (err) { throw err; }
-    if (!guild) { throw new Error("Guild does not exist"); }
+    if (!guild) { throw new Error('Guild does not exist'); }
     if (guild.textQuiz && guessID === guild.textQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
       guild.textQuiz = null;
@@ -125,7 +124,7 @@ function checkAnswer(client, guess, channel, id, author) {
       guild.save((error) => {
         if (error) throw error;
         console.log('Quiz + leaderboards updated');
-      })
+      });
     }
     else if (guild.linkQuiz && guessID === guild.linkQuiz.answer) {
       channel.send(`CORRECT! Congratulations ${author}`);
@@ -135,60 +134,39 @@ function checkAnswer(client, guess, channel, id, author) {
       guild.save((error) => {
         if (error) throw error;
         console.log('Quiz + leaderboards updated');
-      })
-    };
+      });
+    }
   });
 }
 
+function leaderboardsCompare(a, b) {
+  return a.score - b.score;
+}
+
 function sendLeaderboards(client, channel, leaderboards) {
-  let outputString = `\n`;
+  let outputString = '\n';
   let i = 1;
   console.log(leaderboards);
-  let loop = Object.keys(leaderboards).length != 0;
-  while (loop) {
-    for (var key in leaderboards) {
-      if (leaderboards.hasOwnProperty(key) && leaderboards[key].pos === i) {
-        if (i === 5) {
-          loop = false;
-          break;
-        }
-        outputString += `${i}. ${leaderboards[key].username}  - ${leaderboards[key].score} question correct\n`;
-        i++;
-      }
-      if (i === Object.keys(leaderboards).length  + 1) {
-        loop = false;
-        break;
-      }
-    }
+  leaderboards.sort(leaderboardsCompare);
+
+  for (i = 0; i < 5; i += 1) {
+    outputString += `${i}. ${leaderboards[i].username}  - ${leaderboards[i].score} questions correct\n`;
   }
   channel.send(outputString);
-  console.log("Leaderboards sent");
+  console.log('Leaderboards sent');
 }
 
 function updateLeaderboards(guild, userID, username) {
-  if (!guild.leaderboards[userID]) {
-    guild.leaderboards[userID] = {
+  const found = guild.leaderboards.find(elem => elem.userID === userID);
+  if (found === undefined) {
+    guild.leaderboards.push({
       score: 1,
-      pos: Object.keys(guild.leaderboards).length+1,
-      username: username
-    }
-    return guild;
+      username,
+      userID,
+    });
   }
-  for (var key in guild.leaderboards) {
-    if (guild.leaderboards.hasOwnProperty(key)) {
-      if (key === userID) {
-        guild.leaderboards[key].score += 1;
-        guild.leaderboards[key].username = username;
-      }
-    }
-  }
-  for (key in guild.leaderboards) {
-    if (guild.leaderboards.hasOwnProperty(key)) {
-      if (guild.leaderboards[userID].score > guild.leaderboards[key].score) {
-        guild.leaderboards[key].pos += 1;
-        guild.leaderboards[userID].pos -= 1;
-      }
-    }
+  else {
+    found.score += 1;
   }
   return guild;
 }
@@ -196,6 +174,5 @@ function updateLeaderboards(guild, userID, username) {
 module.exports = {
   startQuiz,
   checkAnswer,
-  sendLeaderboards
-
+  sendLeaderboards,
 };

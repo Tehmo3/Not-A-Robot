@@ -18,6 +18,7 @@ node_modules/
 
 config.json
 data.json
+package-lock.json
 
 # Windows shortcuts
 *.lnk
