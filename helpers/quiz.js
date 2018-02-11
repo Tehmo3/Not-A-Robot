@@ -147,8 +147,9 @@ function sendLeaderboards(client, channel, leaderboards) {
   let outputString = '\n';
   console.log(leaderboards);
   leaderboards.sort(leaderboardsCompare);
+  const leaderboardsLength = leaderboards.length < 5 ? leaderboards.length : 5;
 
-  for (let i = 0; i < 5 || i === leaderboards.length; i += 1) {
+  for (let i = 0; i < leaderboardsLength; i += 1) {
     outputString += `${i}. ${leaderboards[i].username}  - ${leaderboards[i].score} questions correct\n`;
   }
   channel.send(outputString);
