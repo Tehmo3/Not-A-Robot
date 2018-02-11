@@ -145,11 +145,10 @@ function leaderboardsCompare(a, b) {
 
 function sendLeaderboards(client, channel, leaderboards) {
   let outputString = '\n';
-  let i = 1;
   console.log(leaderboards);
   leaderboards.sort(leaderboardsCompare);
 
-  for (i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 5; i += 1) {
     outputString += `${i}. ${leaderboards[i].username}  - ${leaderboards[i].score} questions correct\n`;
   }
   channel.send(outputString);
