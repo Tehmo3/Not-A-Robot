@@ -140,7 +140,7 @@ function checkAnswer(client, guess, channel, id, author) {
 }
 
 function leaderboardsCompare(a, b) {
-  return a.score - b.score;
+  return b.score - a.score;
 }
 
 function sendLeaderboards(client, channel, leaderboards) {
