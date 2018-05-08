@@ -6,7 +6,7 @@ module.exports = class LogCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'log',
-      group: 'logcommands',
+      group: 'setupcommands',
       memberName: 'log',
       description: 'Logs the messages in the current channel',
       examples: ['log'],

@@ -9,7 +9,7 @@ const messageSchema = new Schema({
   authorID: String,
   messageID: String,
   messageType: {
-    type: string,
+    type: String,
     enum: ['TEXT', 'LINK']
   }
 })

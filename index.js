@@ -19,8 +19,8 @@ mongoose.connection.on('error', (err) => {
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['logcommands', 'A set of commands to handle the logging of messages'],
-        ['textcommands', 'A set of commands based on markov chains around text']
+        ['setupcommands', 'A set of commands to handle the set up of the bot'],
+        ['impersonatecommands', 'A set of commands based on impersonating yourfriends']
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
