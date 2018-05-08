@@ -7,7 +7,11 @@ const messageSchema = new Schema({
   channelName: String,
   content: String,
   authorID: String,
-  messageID: String
+  messageID: String,
+  messageType: {
+    type: string,
+    enum: ['TEXT', 'LINK']
+  }
 })
 
 module.exports = mongoose.model('Message', messageSchema);

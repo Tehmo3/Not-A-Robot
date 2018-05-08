@@ -91,6 +91,8 @@ async function loggingComplete(channel) {
 }
 
 async function saveMessages(messages) {
+  const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+  const regex = new RegExp(expression);
   const messagesToInsert = []
   messages.forEach(msg => {
     const newMsg = new Message();
@@ -99,6 +101,7 @@ async function saveMessages(messages) {
     newMsg.content = msg.content;
     newMsg.authorID = msg.author.id;
     newMsg.messageID = msg.id;
+    newMsg.messageType = msg.content.match(regex) ? "LINK" : "TEXT"
     messagesToInsert.push(newMsg);
   });
   if (messagesToInsert.length) {

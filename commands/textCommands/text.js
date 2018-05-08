@@ -25,7 +25,8 @@ module.exports = class TextCommand extends Command {
     const userID = userToID(user, msg.guild);
     const query = {
       'authorID': userID,
-      'channelName': msg.channel.name
+      'channelName': msg.channel.name,
+      'messageType': 'TEXT'
     }
     const messagesQuery = Message.find(query);
     let messages = await messagesQuery.exec();
