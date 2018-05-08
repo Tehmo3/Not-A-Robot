@@ -1,6 +1,8 @@
 const { Command } = require('discord.js-commando');
 const Message = require('../../models/message.js');
 const userToID = require('../../helpers/userToID.js');
+const Text = require('markov-chains-text').default;
+
 module.exports = class TextCommand extends Command {
   constructor(client) {
     super(client, {
@@ -21,10 +23,22 @@ module.exports = class TextCommand extends Command {
 
   async run(msg, { user }) {
     const userID = userToID(user, msg.guild);
-
-    const messages = await Message.find({'authorID': userID}).exec();
-
+    const query = {
+      'authorID': userID,
+      'channelName': msg.channel.name
+    }
+    const messagesQuery = Message.find(query);
+    let messages = await messagesQuery.exec();
+    messages = messages.map(e => e.content).join(' ');
     console.log(messages);
+    const messageGenerator = new Text(messages);
+    const settings = {
+      maxOverlapRatio: 1,
+      maxOverlapTotal: 150000,
+      tries: 200
+    }
+    msg.channel.send(`${messageGenerator.makeSentence(null, settings)} - ${user}`);
+
   }
 
 }

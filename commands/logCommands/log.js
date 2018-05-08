@@ -10,7 +10,8 @@ module.exports = class LogCommand extends Command {
       memberName: 'log',
       description: 'Logs the messages in the current channel',
       examples: ['log'],
-      clientPermissions: ['MANAGE_MESSAGES']
+      clientPermissions: ['MANAGE_MESSAGES'],
+      userPermissions: ['MANAGE_MESSAGES']
     });
   }
 
