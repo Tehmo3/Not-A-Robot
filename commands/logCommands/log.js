@@ -9,7 +9,8 @@ module.exports = class LogCommand extends Command {
       group: 'logcommands',
       memberName: 'log',
       description: 'Logs the messages in the current channel',
-      examples: ['log']
+      examples: ['log'],
+      clientPermissions: ['MANAGE_MESSAGES']
     });
   }
 
@@ -18,22 +19,43 @@ module.exports = class LogCommand extends Command {
       guildID : msg.guild.id,
       channelName: msg.channel.name
     }
-    const lastMessageLoggedID = Channel.findOne(query).select('lastMessageLoggedID');
+    const dbChannel = Channel.findOne(query);
+    const firstLog = dbChannel.size ? 1 : 0
+
+    if (!dbChannel.size) {
+      dbChannel = new Channel();
+      dbChannel.guildID = msg.guild.id
+      dbChannel.channelName = msg.channel.name
+      dbChannel.lastMessageLoggedID = null
+    }
+
     msg.channel.send('Logging Messages! This my take a while.');
-    if (lastMessageLoggedID) {
-      fetchNewMessages(msg.channel, lastMessageLoggedID, loggingComplete);
+
+    const channelAggregate = {
+      db: dbChannel,
+      dc: msg.channel
+    }
+
+    if (firstLog) {
+      fetchNewMessages(channelAggregate, lastMessageLoggedID, loggingComplete);
     }
     else {
-      fetchMessages(msg.channel, null, loggingComplete);
+      fetchMessages(channelAggregate, null, loggingComplete);
     }
   }
+
 }
 
+//This function saves all messages in the channel.
 async function fetchMessages(channel, lastMessage, callback) {
   // console.log(lastMessage);
-  const messages = await channel.fetchMessages({ limit: 100, before: lastMessage});
+  const messages = await channel.dc.fetchMessages({ limit: 100, before: lastMessage});
   if (messages.size) {
     await saveMessages(messages);
+    if (lastMessage === null) {
+      channel.db.lastMessageLoggedID = messages.first().id;
+      await channel.db.save();
+    }
     fetchMessages(channel, messages.last().id, callback);
   }
   else {
@@ -41,8 +63,10 @@ async function fetchMessages(channel, lastMessage, callback) {
   }
 }
 
+//This function only reads new messages since the last call.
+//Will error if fetchMessages has not been run before (I think)
 async function fetchNewMessages(channel, recentMessage, callback) {
-  const messages = await channel.fetchMessages({ limit: 100, after: recentMessage});
+  const messages = await channel.dc.fetchMessages({ limit: 100, after: recentMessage});
   if (messages.size) {
     await saveMessages(messages);
     fetchMessages(channel, messages.last().id, callback);
