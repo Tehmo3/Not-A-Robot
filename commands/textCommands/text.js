@@ -28,16 +28,21 @@ module.exports = class TextCommand extends Command {
       'channelName': msg.channel.name,
       'messageType': 'TEXT'
     }
+
+    //Doesn't work if these two lines are made into one??
     const messagesQuery = Message.find(query);
     let messages = await messagesQuery.exec();
+
     messages = messages.map(e => e.content).join(' ');
-    console.log(messages);
+
     const messageGenerator = new Text(messages);
+
     const settings = {
       maxOverlapRatio: 1,
       maxOverlapTotal: 150000,
       tries: 200
     }
+    
     msg.channel.send(`${messageGenerator.makeSentence(null, settings)} - ${user}`);
 
   }
