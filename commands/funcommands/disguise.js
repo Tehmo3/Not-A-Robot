@@ -100,16 +100,17 @@ async function generateName(tags) {
 
 async function singleWordProcessor1(word) {
   let req = new DatamuseRequest();
-  if (Math.random() < 0.25) {
+  const randomNum = Math.random();
+  if (randomNum < 0.25) {
     req.rhyme(word);
   }
-  else if (Math.random() < 0.5) {
+  else if (randomNum < 0.5) {
     req.soundsLike(word);
   }
-  else if (Math.random() < 0.75) {
+  else if (randomNum < 0.75) {
     req.meansLike(word);
   }
-  else if (Math.random() < 1) {
+  else if (randomNum < 1) {
     req.describe(word);
   }
   await req.send();
