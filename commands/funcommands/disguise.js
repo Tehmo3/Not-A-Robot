@@ -79,7 +79,7 @@ async function generateName(tags) {
   if (randomNum < 1) { //Certain for now
     //Returns a name that rhymes, in the form of Word Rhyme
     let w1 = tags[0].description;
-    let req = new DatamuseRequest().rhyme(w1).meansLike(w1);
+    let req = new DatamuseRequest().rhyme(w1);
     let words = await processRequest(req, 1);
     let output = `${w1} `;
     words.forEach(word => {
