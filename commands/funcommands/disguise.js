@@ -1,7 +1,9 @@
 const { Command } = require('discord.js-commando');
-const request = require('request-promise-native');
 const vision = require('@google-cloud/vision');
 const fs = require('fs');
+const DatamuseRequest = require('../../helpers/DatamuseRequest.js');
+const shuffle = require('../../helpers/shuffle.js');
+
 
 module.exports = class Advice extends Command {
     constructor(client) {
@@ -71,64 +73,84 @@ async function generateName(tags) {
   const option = Math.random();
   tags = shuffle(tags);
   //Should come up with more format for names??
-  const word1 = await wordProcessingPipeline(tags[0].description);
-  const word2 = await wordProcessingPipeline(tags[1].description);
-  return `${word1} ${word2}`
+  let randomNum = Math.random();
+  if (randomNum < 0.5) {
+    const word1 = await wordsProcessingPipeline(tags[0].description);
+    const word2 = await wordsProcessingPipeline(tags[1].description);
+    return `${word1} ${word2}`;
+  }
+  else {
+    let word1 = tags[0].description;
+    let word2 = tags[1].description;
+    let w1, w2, w3, w4;
+    [w1, w2, w3, w4] = await wordsProcessingPipeline(word1, word2);
+    return `${w1} ${w2} ${w3} ${w4}`;
+
+  }
+  return ``;
 }
 
-async function wordProcessingPipeline(word) {
+async function wordsProcessingPipeline(...words) {
+  switch(words.length) {
+    case 1:
+      return await singleWordProcessingPipeline(words[0]);
+    case 2:
+      return await doubleWordProcessingPipeline(words[0], words[1]);
+    default:
+      //Implement more here
+      return;
+  }
+}
+
+async function singleWordProcessingPipeline(word) {
+  let numConditions = 0;
   if (Math.random() < 0.2) {
     return word;
   }
-  if (Math.random() < 0.5) {
-    word = await rhyme(word);
+  let req = new DatamuseRequest();
+  if (Math.random() < 0.3 && numConditions < 2) {
+    req.rhyme(word);
+    numConditions++;
   }
-  if (Math.random() < 0.5) {
-    word = await soundLike(word);
+  if (Math.random() < 0.6 && numConditions < 2) {
+    req.soundsLike(word);
+    numConditions++;
   }
-  if (Math.random() < 0.5) {
-    word = await synonym(word);
+  if (Math.random() < 0.5 && numConditions < 2) {
+    req.meansLike(word);
+    numConditions++;
   }
-  return word;
+  if (Math.random() < 0.5 && numConditions < 2) {
+    req.describe(word);
+    numConditions++;
+  }
+  await req.send();
+  return req.selectWords(1, true);
 }
 
-async function rhyme(word) {
-  let response = await request(`https://api.datamuse.com/words?rel_rhy=${word}&max=10`);
-  response = JSON.parse(response);
-  if (response.length === 0) { return word; }
-  return response[Math.floor(Math.random() * response.length)].word;
-}
+async function doubleWordProcessingPipeline(w1, w2) {
+  if (Math.random() < 1) { //Certain for now, will change with more options
 
-async function soundLike(word) {
-  let response = await request(`https://api.datamuse.com/words?sl=${word}&max=10`);
-  response = JSON.parse(response);
-  if (response.length === 0) { return word; }
-  return response[Math.floor(Math.random() * response.length)].word;
-}
+    let w3Req = new DatamuseRequest().leftContext(w1).rhyme(w1);
+    await w3Req.send();
 
-async function synonym(word) {
-  let response = await request(`https://api.datamuse.com/words?ml=${word}&max=10`);
-  response = JSON.parse(response);
-  if (response.length === 0) { return word; }
-  return response[Math.floor(Math.random() * response.length)].word;
-}
+    let w4Req = new DatamuseRequest().leftContext(w2).rhyme(w2);
+    await w4Req.send();
 
-//https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+    let w1Syl = 1;
+    let w2Syl = 1;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+    let w3 = w3Req.selectWords(1, true, w1Syl);
+    let w4 = w4Req.selectWords(1, true, w2Syl);
+    while (w3 === null || w4 === null) {
+      w1Syl++;
+      w2Syl++;
+      w3 = w3Req.selectWords(1, true, w1Syl);
+      w4 = w4Req.selectWords(1, true, w2Syl);
+    }
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    //Word Word Rhyme Rhyme or Word Rhyme Word Rhyme
+    let finalName = Math.random() < 0.5 ? [w1, w2, w3, w4] : [w1, w3, w2, w4];
+    return finalName;
   }
-
-  return array;
 }
