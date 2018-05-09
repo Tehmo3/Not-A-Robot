@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
     }
   });
 });
-app.listen(port);
+app.listen(2000);
 
-mongoose.connect(SECRETS.mongodbURI);
+mongoose.connect(SECRETS.mongodbURI, {useMongoClient: true });
 
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB error: %s', err);
@@ -37,7 +37,8 @@ client.registry
   .registerGroups([
     ['setupcommands', 'A set of commands to handle the set up of the bot'],
     ['impersonatecommands', 'A set of commands based on impersonating your friends'],
-    ['quizcommands', 'A set of commands for running and answering quizzes']
+    ['quizcommands', 'A set of commands for running and answering quizzes'],
+    ['funcommands', 'A set of fun commands!']
   ])
   .registerDefaultGroups()
   .registerDefaultCommands()

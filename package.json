@@ -10,10 +10,13 @@
     "email": "hello@jaspermiles.me"
   },
   "dependencies": {
-    "discord.js": "11.1.0",
+    "discord.js": "11.3.2",
+    "discord.js-commando": "^0.10.0",
     "express": "4.15.3",
     "markov-chains-text": "1.0.0",
     "mongoose": "4.11.1",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
   },
   "license": "MIT",
   "repository": {
