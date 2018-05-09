@@ -44,7 +44,7 @@ async function setImage(image){
     else {
       fs.readdir(__dirname + '/srcImages', (err, items) => {
         if (err) { throw err; }
-        image = __dirname + '\\srcImages\\' + items[Math.floor(Math.random() * items.length)]
+        image = __dirname + '/srcImages/' + items[Math.floor(Math.random() * items.length)]
         resolve(image);
       })
     }
