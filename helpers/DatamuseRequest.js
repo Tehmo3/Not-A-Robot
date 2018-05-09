@@ -22,36 +22,22 @@ module.exports = class DatamuseRequest {
     return response;
   }
 
-  selectWords(num = 1, shuffle = false, syllables = 1) {
+  selectWords(num = 1, shuffle = false, maxSyllables = null) {
     let output = [];
-    if (syllables) {
-      // https://codegolf.stackexchange.com/questions/47322/how-to-count-the-syllables-in-a-word
+    if (shuffle) {
+      output = shuffleArray(this.response);
+    }
+    if (maxSyllables) {
       output = this.response.filter(word => {
-        return this.countSyllables(word.word) === syllables;
+        return word.numSyllables <= maxSyllables;
       })
     }
     if (output.length < 1) {
       return null;
     }
-    if (shuffle) {
-      output = shuffleArray(this.response);
-    }
-    if (num = 1) {
-      return output[0].word;
-    }
     return output.slice(0, num).map(e => e.word);
   }
 
-//https://stackoverflow.com/questions/13895373/javascript-equivalent-of-rubys-stringscan
-  countSyllables(s, re = /[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/gi ) {
-    if (!re.global) throw "ducks";
-    var m, r = [];
-    while (m = re.exec(s)) {
-        m.shift();
-        r.push(m);
-    }
-    return r.length;
-  }
 
 
   meansLike(...words) {

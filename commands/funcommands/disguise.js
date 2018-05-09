@@ -3,6 +3,7 @@ const vision = require('@google-cloud/vision');
 const fs = require('fs');
 const DatamuseRequest = require('../../helpers/DatamuseRequest.js');
 const shuffle = require('../../helpers/shuffle.js');
+const randomInt = require('../../helpers/randomInt.js');
 
 
 module.exports = class Advice extends Command {
@@ -31,7 +32,7 @@ module.exports = class Advice extends Command {
       const tags = await getTags(image);
       if (tags[0].error) {
         if (tags[0].error.code === 7) {
-          msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf. Please try another url`);
+          msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf. Please try another url.`);
           return;
         }
         //The other errors will be handled by Commando, if any become issues
@@ -74,55 +75,33 @@ async function generateName(tags) {
   tags = shuffle(tags);
   //Should come up with more format for names??
   let randomNum = Math.random();
-  console.log(randomNum);
   if (randomNum < 1) { //Certain for now
-    //2 word rhyme
-    if (randomNum < 0.25) {
-      //No context
-      let w1 = tags[0].description;
-      let req = new DatamuseRequest().rhyme(w1);
-      let w2 = await processRequest(req, 1);
-      return `${w1} ${w2}`;
-    }
-    else if (randomNum < 1) {
-      //Left context
-      if (randomNum < 0.50) {
-        let word1 = tags[0].description;
-        let req = new DatamuseRequest().rhyme(w1).leftContext(w1);
-        let w2 = await processRequest(req, 1);
-        return `${w1} ${w2}`;
-      }
-      else if (randomNum < 0.75) {
-        let w1 = tags[0].description;
-        let w2, w3;
-        let req = new DatamuseRequest().rhyme(w1).leftContext(w1)
-        [w2, w3] = await processRequest(req, 2);
-        return `${w1} ${w2} ${w3}`;
-      }
-      else if (randomNum < 1) {
-        let w1 = tags[0].description;
-        let w2, w3, w4;
-        let req = new DatamuseRequest().rhyme(w1).leftContext(w1)
-        [w2, w3, w4] = await processRequest(req, 3);
-        return `${w1} ${w2} ${w3} ${w4}`;
-      }
-    }
+    //Returns a name that rhymes, with somewhere between 2 and 4 words.
+    let w1 = tags[0].description;
+    let req = new DatamuseRequest().rhyme(w1).leftContext(w1);
+    let words = await processRequest(req, randomInt(1, 2));
+    console.log(words);
+    let output = `${w1} `;
+    words.forEach(word => {
+      output += `${word} `
+    });
+    return output;
   }
+
   return ``;
 }
 
 
 async function processRequest(req, numWords = 1) {
-
   await req.send();
-
-  let syl = 1;
-
-  words = req.selectWords(numWords, true, syl);
-
-  while (words === null) {
-    syl++;
-    words = req.selectWords(numWords, true, syl);
+  let maxSyl = 1;
+  let words = req.selectWords(numWords, true, maxSyl);
+  while (words === null || words.length < numWords) {
+    maxSyl++;
+    words = req.selectWords(numWords, true, maxSyl);
   }
+
+
+
   return words;
 }
