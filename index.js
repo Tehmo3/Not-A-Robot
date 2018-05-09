@@ -54,4 +54,4 @@ client.on('ready', () => {
 //   guild.defaultChannel.send(newServerMessage());
 // });
 
-client.login(SECRETS.appBotUserToken);
+client.login(process.env.token);
