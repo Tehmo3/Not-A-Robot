@@ -12,12 +12,14 @@ module.exports = class DatamuseRequest {
     if (this.url[this.url.length - 1] == '&') {
       this.url = this.url.slice(0, -1);
     }
+    this.url += `&md=ps`
     let response = await request(this.url);
     response = JSON.parse(response);
     if (response.length === 0 || !response) {
       throw new Error(`Empty response from datamuse`);
     }
     this.response = response;
+    console.log(response);
     return response;
   }
 
