@@ -98,12 +98,15 @@ async function processRequest(req, numWords = 1) {
   await req.send();
   let maxSyl = 1;
   let words = req.selectWords(numWords, true, maxSyl);
-  console.log("First select");
+  console.log(numWords);
+  console.log(req.responseSize);
   if (req.responseSize < numWords) {
     return req.selectWords(req.responseSize, true);
   }
   while (words === null || words.length < numWords) {
-    console.log('Finding words');
+    if (maxSyl < 10) {
+      console.log('Finding words');
+    }
     maxSyl++;
     words = req.selectWords(numWords, true, maxSyl);
   }

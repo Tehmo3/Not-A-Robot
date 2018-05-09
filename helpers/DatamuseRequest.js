@@ -23,7 +23,7 @@ module.exports = class DatamuseRequest {
   }
 
   responseSize() {
-    return this.response.length
+    return this.response.length;
   }
 
   selectWords(num = 1, shuffle = false, maxSyllables = null) {
