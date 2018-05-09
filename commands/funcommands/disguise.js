@@ -75,44 +75,36 @@ async function generateName(tags) {
   //Should come up with more format for names??
   let randomNum = Math.random();
   if (randomNum < 0.5) {
-    const word1 = await wordsProcessingPipeline(tags[0].description);
-    const word2 = await wordsProcessingPipeline(tags[1].description);
-    return `${word1} ${word2}`;
+    if (randomNum < 0.25) {
+      const w1 = await singleWordProcessor1(tags[0].description);
+      const w2 = await singleWordProcessor2(tags[1].description);
+      return `${w1} ${w2}`;
+    }
+    else if (randomNum < 0.5) {
+      let word1 = tags[0].description;
+      let w1, w2;
+      [w1, w2] = await singleWordProcessor2(word1);
+      return `${w1} ${w2}`;
+    }
   }
   else {
     let word1 = tags[0].description;
     let word2 = tags[1].description;
     let w1, w2, w3, w4;
-    [w1, w2, w3, w4] = await wordsProcessingPipeline(word1, word2);
+    [w1, w2, w3, w4] = await doubleWordProcessor1(word1, word2);
     return `${w1} ${w2} ${w3} ${w4}`;
-
   }
   return ``;
 }
 
-async function wordsProcessingPipeline(...words) {
-  switch(words.length) {
-    case 1:
-      return await singleWordProcessingPipeline(words[0]);
-    case 2:
-      return await doubleWordProcessingPipeline(words[0], words[1]);
-    default:
-      //Implement more here
-      return;
-  }
-}
-
-async function singleWordProcessingPipeline(word) {
+async function singleWordProcessor1(word) {
   let numConditions = 0;
-  if (Math.random() < 0.2) {
-    return word;
-  }
   let req = new DatamuseRequest();
-  if (Math.random() < 0.3 && numConditions < 2) {
+  if (Math.random() < 0.5 && numConditions < 2) {
     req.rhyme(word);
     numConditions++;
   }
-  if (Math.random() < 0.6 && numConditions < 2) {
+  if (Math.random() < 0.5 && numConditions < 2) {
     req.soundsLike(word);
     numConditions++;
   }
@@ -128,8 +120,25 @@ async function singleWordProcessingPipeline(word) {
   return req.selectWords(1, true);
 }
 
-async function doubleWordProcessingPipeline(w1, w2) {
-  if (Math.random() < 1) { //Certain for now, will change with more options
+async function singleWordProcessor2(word) {
+  let req = new DatamuseRequest().rhyme(word).describe(word);
+
+  await req.send();
+  let syl = 1;
+  w2 = req.selectWords(1, true, syl);
+  while (w2 === null) {
+    syl++;
+    w2 = req.selectWords(1, true, syl);
+  }
+  
+  return [word, w2]
+
+}
+
+async function doubleWordProcessor1(w1, w2) {
+  const randomNum = Math.random();
+  if (randomNum < 0.5) {
+    //Option 1: Word Rhyme Word Rhyme or Word Word Rhyme Rhyme
 
     let w3Req = new DatamuseRequest().leftContext(w1).rhyme(w1);
     await w3Req.send();
@@ -147,10 +156,16 @@ async function doubleWordProcessingPipeline(w1, w2) {
       w2Syl++;
       w3 = w3Req.selectWords(1, true, w1Syl);
       w4 = w4Req.selectWords(1, true, w2Syl);
+      if (w1Syl > 4|| w2Syl > 4) {
+        throw new Error("No words match those conditions");
+      }
     }
 
     //Word Word Rhyme Rhyme or Word Rhyme Word Rhyme
     let finalName = Math.random() < 0.5 ? [w1, w2, w3, w4] : [w1, w3, w2, w4];
     return finalName;
+  }
+  else if (randomNum < 1) {
+
   }
 }
