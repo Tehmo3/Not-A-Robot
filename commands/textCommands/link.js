@@ -31,13 +31,13 @@ module.exports = class LinkCommand extends Command {
       }
 
       //Doesn't work if these two lines are made into one??
-      const messagesQuery = Message.find(query);
+      const linkQuery = Message.find(query);
 
-      let messages = await messagesQuery.exec();
+      let links = await linkQuery.exec();
 
-      messages = messages.map(e => e.content);
+      links = links.map(e => e.content);
 
-      const link = messages[Math.floor(Math.random()*messages.length)];
+      const link = links[Math.floor(Math.random()*links.length)];
 
       msg.channel.send(`${link} - ${user}`);
 
