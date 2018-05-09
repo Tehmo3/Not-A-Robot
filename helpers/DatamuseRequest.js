@@ -15,7 +15,6 @@ module.exports = class DatamuseRequest {
     let response = await request(this.url);
     response = JSON.parse(response);
     if (response.length === 0 || !response) {
-      console.log(this.url);
       throw new Error(`Empty response from datamuse`);
     }
     this.response = response;

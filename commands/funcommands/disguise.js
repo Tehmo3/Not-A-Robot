@@ -77,16 +77,14 @@ async function generateName(tags) {
   //Should come up with more format for names??
   let randomNum = Math.random();
   if (randomNum < 1) { //Certain for now
-    //Returns a name that rhymes, with somewhere between 2 and 3 words.
+    //Returns a name that rhymes, in the form of Word Rhyme
     let w1 = tags[0].description;
     let req = new DatamuseRequest().rhyme(w1).meansLike(w1);
-    console.log('processing request');
-    let words = await processRequest(req, randomInt(1, 2));
+    let words = await processRequest(req, 1);
     let output = `${w1} `;
     words.forEach(word => {
       output += `${word} `
     });
-    console.log(output);
     return output;
   }
 
@@ -98,15 +96,11 @@ async function processRequest(req, numWords = 1) {
   await req.send();
   let maxSyl = 1;
   let words = req.selectWords(numWords, true, maxSyl);
-  console.log(numWords);
-  console.log(req.responseSize);
-  if (req.responseSize < numWords) {
+
+  if (req.responseSize() < numWords) {
     return req.selectWords(req.responseSize, true);
   }
   while (words === null || words.length < numWords) {
-    if (maxSyl < 10) {
-      console.log('Finding words');
-    }
     maxSyl++;
     words = req.selectWords(numWords, true, maxSyl);
   }
