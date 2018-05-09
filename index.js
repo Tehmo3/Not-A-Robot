@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 app.listen(process.env.PORT || 5000);
 
-mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true });
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB error: %s', err);
@@ -47,7 +47,7 @@ client.registry
 
 client.on('ready', () => {
   console.log('Logged in!');
-  client.user.setActivity('game');
+  client.user.setActivity('!help');
 });
 
 // client.on('guildCreate', (guild) => {
