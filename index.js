@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 
 const client = new CommandoClient({
-  commandPrefix: '$',
+  commandPrefix: '!',
   owner: "124827035838316544",
   disableEveryone: true
 })
@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
     }
   });
 });
-app.listen(2000);
+app.listen(process.env.PORT || 5000);
 
-mongoose.connect(SECRETS.mongodbURI, {useMongoClient: true });
+mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true });
 
 mongoose.connection.on('error', (err) => {
   console.error('MongoDB error: %s', err);

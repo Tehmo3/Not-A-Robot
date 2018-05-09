@@ -24,7 +24,7 @@ module.exports = class Advice extends Command {
 
     async run(msg, { image }) {
       //Step 1, get image, turn into tags
-      msg.channel.
+      msg.channel.send(`Creating your new identity....`);
       image = await setImage(image);
       const tags = await getTags(image);
       const name = await generateName(tags[0].labelAnnotations);
@@ -53,7 +53,7 @@ async function setImage(image){
 
 async function getTags(image) {
   const client = new vision.ImageAnnotatorClient({
-    keyFilename: 'Not-A-Robot-de14d9a0dccc.json'
+    credentials: JSON.parse(process.env.googleKey)
   });
   const labels = await client.labelDetection(image);
   return labels;
@@ -62,21 +62,14 @@ async function getTags(image) {
 async function generateName(tags) {
   const option = Math.random();
   tags = shuffle(tags);
-  if (option < 0.5) {
-    const word1 = await wordProcessingPipeline(tags[0].description);
-    const word2 = await wordProcessingPipeline(tags[1].description);
-    return `${word1} ${word2}`
-  }
-  else {
-    const word1 = await wordProcessingPipeline(tags[0].description);
-    const word2 = await wordProcessingPipeline(tags[1].description);
-    const word3 = await wordProcessingPipeline(tags[2].description);
-    return `${word1}, ${word2} and ${word3}`
-  }
+  //Should come up with more format for names??
+  const word1 = await wordProcessingPipeline(tags[0].description);
+  const word2 = await wordProcessingPipeline(tags[1].description);
+  return `${word1} ${word2}`
 }
 
 async function wordProcessingPipeline(word) {
-  if (Math.random() < 0.5) {
+  if (Math.random() < 0.2) {
     return word;
   }
   if (Math.random() < 0.5) {
@@ -94,18 +87,21 @@ async function wordProcessingPipeline(word) {
 async function rhyme(word) {
   let response = await request(`https://api.datamuse.com/words?rel_rhy=${word}&max=10`);
   response = JSON.parse(response);
+  if (response.length === 0) { return word; }
   return response[Math.floor(Math.random() * response.length)].word;
 }
 
 async function soundLike(word) {
   let response = await request(`https://api.datamuse.com/words?sl=${word}&max=10`);
   response = JSON.parse(response);
+  if (response.length === 0) { return word; }
   return response[Math.floor(Math.random() * response.length)].word;
 }
 
 async function synonym(word) {
   let response = await request(`https://api.datamuse.com/words?ml=${word}&max=10`);
   response = JSON.parse(response);
+  if (response.length === 0) { return word; }
   return response[Math.floor(Math.random() * response.length)].word;
 }
 
