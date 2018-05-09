@@ -27,6 +27,7 @@ module.exports = class Advice extends Command {
       msg.channel.send(`Creating your new identity....`);
       image = await setImage(image);
       const tags = await getTags(image);
+      console.log(tags);
       const name = await generateName(tags[0].labelAnnotations);
       msg.channel.send(`Your new identity:\nName: ${name}`, {
         file: image
