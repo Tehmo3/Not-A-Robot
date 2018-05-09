@@ -1,6 +1,5 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
-const SECRETS = require('./secrets.js');
 const mongoose = require('mongoose');
 const express = require('express');
 
