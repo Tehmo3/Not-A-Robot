@@ -31,6 +31,7 @@ module.exports = class Advice extends Command {
       image = await setImage(image);
       const tags = await getTags(image);
       if (tags[0].error) {
+        console.log(tags[0].error);
         if (tags[0].error.code === 7) {
           msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf. Please try another url.`);
           return;
@@ -76,15 +77,16 @@ async function generateName(tags) {
   //Should come up with more format for names??
   let randomNum = Math.random();
   if (randomNum < 1) { //Certain for now
-    //Returns a name that rhymes, with somewhere between 2 and 4 words.
+    //Returns a name that rhymes, with somewhere between 2 and 3 words.
     let w1 = tags[0].description;
-    let req = new DatamuseRequest().rhyme(w1).leftContext(w1);
+    let req = new DatamuseRequest().rhyme(w1).meansLike(w1);
+    console.log('processing request');
     let words = await processRequest(req, randomInt(1, 2));
-    console.log(words);
     let output = `${w1} `;
     words.forEach(word => {
       output += `${word} `
     });
+    console.log(output);
     return output;
   }
 
@@ -96,7 +98,12 @@ async function processRequest(req, numWords = 1) {
   await req.send();
   let maxSyl = 1;
   let words = req.selectWords(numWords, true, maxSyl);
+  console.log("First select");
+  if (req.responseSize < numWords) {
+    return req.selectWords(req.responseSize, true);
+  }
   while (words === null || words.length < numWords) {
+    console.log('Finding words');
     maxSyl++;
     words = req.selectWords(numWords, true, maxSyl);
   }

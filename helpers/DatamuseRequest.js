@@ -22,6 +22,10 @@ module.exports = class DatamuseRequest {
     return response;
   }
 
+  responseSize() {
+    return this.response.length
+  }
+
   selectWords(num = 1, shuffle = false, maxSyllables = null) {
     let output = [];
     if (shuffle) {
@@ -81,6 +85,7 @@ module.exports = class DatamuseRequest {
     });
     return this;
   }
+
 
 
 }
