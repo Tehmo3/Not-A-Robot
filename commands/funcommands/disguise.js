@@ -27,7 +27,17 @@ module.exports = class Advice extends Command {
       msg.channel.send(`Creating your new identity....`);
       image = await setImage(image);
       const tags = await getTags(image);
-      console.log(tags);
+      console.log(tags)
+      console.log(tags.error)
+      if (tags.error) {
+        if (tags.error.code === 7) {
+          msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf.
+                            Please try another url`);
+          return;
+        }
+        //The other errors will be handled by Commando, if any become issues
+        //we can add them here
+      }
       const name = await generateName(tags[0].labelAnnotations);
       msg.channel.send(`Your new identity:\nName: ${name}`, {
         file: image
