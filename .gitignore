@@ -19,6 +19,8 @@ node_modules/
 config.json
 data.json
 package-lock.json
+secrets.js
+Not-A-Robot-de14d9a0dccc.json
 
 # Windows shortcuts
 *.lnk
