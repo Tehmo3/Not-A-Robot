@@ -1,9 +1,9 @@
 const { Command } = require('discord.js-commando');
 const vision = require('@google-cloud/vision');
 const fs = require('fs');
-const DatamuseRequest = require('../../helpers/DatamuseRequest.js');
 const shuffle = require('../../helpers/shuffle.js');
-const randomInt = require('../../helpers/randomInt.js');
+const NameGenerator = require('../../helpers/NameGenerator/NameGenerator.js');
+const TwoWordRhymeTemplate = require('../../helpers/NameGenerator/templates/TwoWordRhymeTemplate.js');
 
 
 module.exports = class Advice extends Command {
@@ -34,6 +34,10 @@ module.exports = class Advice extends Command {
         console.log(tags[0].error);
         if (tags[0].error.code === 7) {
           msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf. Please try another url.`);
+          return;
+        }
+        if (tags[0].error.code === 3) {
+          msg.channel.send(`404 Not Found error on image :(`);
           return;
         }
         //The other errors will be handled by Commando, if any become issues
@@ -75,37 +79,13 @@ async function generateName(tags) {
   const option = Math.random();
   tags = shuffle(tags);
   //Should come up with more format for names??
+  const generator = new NameGenerator(tags);
   let randomNum = Math.random();
   if (randomNum < 1) { //Certain for now
-    //Returns a name that rhymes, in the form of Word Rhyme
-    let w1 = tags[0].description;
-    let req = new DatamuseRequest().rhyme(w1);
-    let words = await processRequest(req, 1);
-    let output = `${w1} `;
-    words.forEach(word => {
-      output += `${word} `
-    });
-    return output;
+    const template = new TwoWordRhymeTemplate();
+    name = generator.generate(template);
+    return name;
   }
 
   return ``;
-}
-
-
-async function processRequest(req, numWords = 1) {
-  await req.send();
-  let maxSyl = 1;
-  let words = req.selectWords(numWords, true, maxSyl);
-
-  if (req.responseSize() < numWords) {
-    return req.selectWords(req.responseSize, true);
-  }
-  while (words === null || words.length < numWords) {
-    maxSyl++;
-    words = req.selectWords(numWords, true, maxSyl);
-  }
-
-
-
-  return words;
 }

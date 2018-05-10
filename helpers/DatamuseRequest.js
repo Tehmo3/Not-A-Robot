@@ -19,7 +19,6 @@ module.exports = class DatamuseRequest {
       throw new Error(`Empty response from datamuse`);
     }
     this.response = response;
-    console.log(response);
     return response;
   }
 
@@ -28,7 +27,7 @@ module.exports = class DatamuseRequest {
   }
 
   selectWords(num = 1, shuffle = false, maxSyllables = null) {
-    let output = [];
+    let output = this.response;
     if (shuffle) {
       output = shuffleArray(this.response);
     }
