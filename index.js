@@ -7,7 +7,7 @@ const client = new CommandoClient({
   commandPrefix: '!',
   owner: "124827035838316544",
   disableEveryone: true,
-  unkownCommandResponse: false
+  unknownCommandResponse: false
 })
 
 const app = express();
