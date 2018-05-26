@@ -15,7 +15,7 @@ module.exports = class Advice extends Command {
             description: 'Generates a disguise for you',
             examples: ['disguise'],
             throttling: { //Im not sure if this works on the Heroku server. Not tested.
-              usages: 20
+              usages: 20,
               duration: 86400
             }
             args: [
