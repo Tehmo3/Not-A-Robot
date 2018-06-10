@@ -86,7 +86,7 @@ async function generateName(tags) {
   const generator = new NameGenerator(tags);
   let randomNum = Math.random();
   let template = null;
-  if (randomNum < 0.5) { //Certain for now
+  if (randomNum < 0.65) { //Certain for now
     template = new TwoWordRhymeTemplate();
   }
   else {
