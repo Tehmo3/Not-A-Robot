@@ -35,7 +35,6 @@ module.exports = class Advice extends Command {
       image = await setImage(image);
       const tags = await getTags(image);
       if (tags[0].error) {
-        console.log(tags[0].error);
         if (tags[0].error.code === 7) {
           msg.channel.send(`Not-A-Robot is not allowed to access the URL on your behalf. Please try another url.`);
           return;

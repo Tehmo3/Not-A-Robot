@@ -1,6 +1,8 @@
 const Template = require('../Template.js');
 const DataMuseRequest = require('../../DatamuseRequest.js');
 
+//A concrete 'Template'
+
 module.exports = class TwoWordRhymeTemplate extends Template {
   constructor() {
     super("{0} {1}", ["adj", "v", "adv"], ["any"]);

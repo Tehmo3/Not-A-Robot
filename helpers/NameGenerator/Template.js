@@ -1,17 +1,23 @@
 module.exports = class Template {
-  //Format is of format: "{0} {1}"
+  //Arguments
+  //Format: String. In form "{0} {1}"
+  //details: [String]. e.g ["adj", "noun", "any"]
   constructor(format, ...details) {
-    // if (new.target === Template) {
-    //   throw new TypeError("Cannot construct Template classes. Please construct a subclass.")
-    // }
+    if (new.target === Template) {
+      throw new TypeError("Cannot construct Template classes. Please construct a subclass.");
+    }
     this.format = format;
     this.wordsNeeded = format.match(/{(\d+)}/g).length
     this.typesNeeded = details;
   }
 
+  //words: [[String]], a list of words to fill the template from.
+  //Words.length = details.length = num of words to fill in template
+  //num = num of times to fill template
   async fill(words, num = 1) {
     //fill template here
     //TODO: Refactor
+    let workingWords = words;
     let workingWords = await this.generateWords(words);
     let output = [];
     let i = 0;
@@ -47,6 +53,7 @@ module.exports = class Template {
 
   async generateWords(words) {
     //Perform some algorithm to get a new set of words here
+    //Transforms input words into words that will fill template
     //Should return an array of arrays, outerarray.length = num of words to fill
     //Inner array are words that could fill that slot
     throw new Error('This method must be overwritten')
