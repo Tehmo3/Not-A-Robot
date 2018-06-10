@@ -18,7 +18,7 @@ module.exports = class Template {
     //fill template here
     //TODO: Refactor
     let workingWords = words;
-    let workingWords = await this.generateWords(words);
+    workingWords = await this.generateWords(words);
     let output = [];
     let i = 0;
     for (i = 0; i < num; i++) {
