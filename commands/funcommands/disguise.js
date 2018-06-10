@@ -85,11 +85,12 @@ async function generateName(tags) {
   //Should come up with more format for names??
   const generator = new NameGenerator(tags);
   let randomNum = Math.random();
+  let template = null;
   if (randomNum < 0.5) { //Certain for now
-    const template = new TwoWordRhymeTemplate();
+    template = new TwoWordRhymeTemplate();
   }
   else {
-    const template = new TwoWordRelatedTemplate();
+    template = new TwoWordRelatedTemplate();
   }
   name = generator.generate(template);
   return name;
