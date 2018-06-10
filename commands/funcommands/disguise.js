@@ -4,6 +4,7 @@ const fs = require('fs');
 const shuffle = require('../../helpers/shuffle.js');
 const NameGenerator = require('../../helpers/NameGenerator/NameGenerator.js');
 const TwoWordRhymeTemplate = require('../../helpers/NameGenerator/templates/TwoWordRhymeTemplate.js');
+const TwoWordRelatedTemplate = require('../../helpers/NameGenerator/templates/TwoWordRelatedTemplate.js');
 
 
 module.exports = class Advice extends Command {
@@ -84,11 +85,12 @@ async function generateName(tags) {
   //Should come up with more format for names??
   const generator = new NameGenerator(tags);
   let randomNum = Math.random();
-  if (randomNum < 1) { //Certain for now
+  if (randomNum < 0.5) { //Certain for now
     const template = new TwoWordRhymeTemplate();
-    name = generator.generate(template);
-    return name;
   }
-
-  return ``;
+  else {
+    const template = new TwoWordRelatedTemplate();
+  }
+  name = generator.generate(template);
+  return name;
 }
