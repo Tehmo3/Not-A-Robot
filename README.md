@@ -8,9 +8,12 @@ Not A Robot logs your discord servers messages and uses probability to impersona
 
 
 # How do I install the bot?
-1. Go to https://www.not-a-bot.com/
+1. Go to https://not-a-robot-discord.herokuapp.com/
 2. Press 'ADD YOUR SERVER', log in, select your server from the drop down and press 'Authorize'.
 3. Thats it! Now the bot is in your Discord server!
 
 
-# NOTE: To use the bot, you need to viist https://www.not-a-bot.com/ to start the server.
+# NOTE: Due to ongoing upkeep costs, the bot has been moved to a free server and database. Due to this, most of the bots functionality
+# will only work on a small set of servers that got in first! 
+
+To use the bot, you need to visit https://not-a-robot-discord.herokuapp.com/ to start the server.
