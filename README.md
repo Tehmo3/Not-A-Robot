@@ -13,6 +13,6 @@ Not A Robot logs your discord servers messages and uses probability to impersona
 3. Thats it! Now the bot is in your Discord server!
 
 
-# NOTE: Due to ongoing upkeep costs, the bot has been moved to a free server and database. Due to this, most of the bots functionality will only work on a small set of servers that got in first! 
+# NOTE: Due to ongoing upkeep costs, the bot has been moved to a free server and database. Therefore most of the bots functionality will only work on a small set of servers that got in first! 
 
 To use the bot, you need to visit https://not-a-robot-discord.herokuapp.com/ to start the server.
